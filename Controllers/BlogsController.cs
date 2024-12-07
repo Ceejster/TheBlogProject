@@ -23,8 +23,10 @@ namespace TheBlogProject.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Blogs.Include(b => b.BlogUser);
-            return View(await applicationDbContext.ToListAsync());
+            var blogs = await applicationDbContext.ToListAsync();
+            return View(blogs); // Pass blogs to the view
         }
+
 
         // GET: Blogs/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -11,5 +11,15 @@ namespace TheBlogProject.Data
         public DbSet<Comment>? Comments { get; set; }
         public DbSet<Tag>? Tags { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Defining the relationship between Blog and Post
+            modelBuilder.Entity<Post>()
+                .HasOne(p => p.Blog) // Each Post is associated with a Blog
+                .WithMany(b => b.Posts) // A Blog has many Posts
+                .HasForeignKey(p => p.BlogId); // Foreign key in Post referencing Blog
+        }
     }
 }

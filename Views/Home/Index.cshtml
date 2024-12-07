@@ -1,8 +1,56 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@foreach (var blog in Model)
+{
+    @* 
+<div class="city-legend">
+    <h4>Cities Featured:</h4>
+    <ul>
+        @foreach (var post in blog.Posts)
+        {
+            <li><a href="@Url.Action("Details", "Posts", new { id = post.Id })">@post.Title</a></li>
+        }
+    </ul>
+</div> *@
+    <div class="blog">
+        <h2 class="country-title" style="text-align: center;">
+            @blog.Name
+        </h2>
+
+        @if (blog.Image != null)
+        {
+            <img src="@($"data:image/{blog.ContentType};base64,{Convert.ToBase64String(blog.Image)}")" alt="Blog Image" />
+        }
+        else
+        {
+            <img src="/images/placeholder.jpg" alt="Place Holder" /> <!-- Optional default image -->
+        }
+
+        <div class="blog-description">
+            <p>@blog.Description</p>
+        </div>
+
+        <div class="post-list">
+            <h3>Cities:</h3>
+            @foreach (var post in blog.Posts)
+            {
+                <div class="post">
+                    <h4>@post.Title</h4>
+
+                    @if (post.Image != null)
+                    {
+                        <img src="@($"data:image/{post.ContentType};base64,{Convert.ToBase64String(post.Image)}")" alt="City Image" />
+                    }
+                    else
+                    {
+                        <img src="/images/default-city-image.jpg" alt="Default City Image" /> <!-- Optional default image -->
+                    }
+
+                    <p>@post.Content</p>
+                </div>
+            }
+        </div>
+    </div>
+}

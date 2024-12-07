@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.Updated)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageData)
+                @Html.DisplayNameFor(model => model.Image)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ContentType)
@@ -45,14 +45,10 @@
             <td>
                     @Html.DisplayFor(modelItem => blog.Description)
             </td>
+                <td>@blog.Created.ToString("yyyy-MM-dd")</td>
+                <td>@blog.Updated?.ToString("yyyy-MM-dd")</td>
             <td>
-                    @Html.DisplayFor(modelItem => blog.Created)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => blog.Updated)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => blog.ImageData)
+                    @Html.DisplayFor(modelItem => blog.Image)
             </td>
             <td>
                     @Html.DisplayFor(modelItem => blog.ContentType)
