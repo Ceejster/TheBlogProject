@@ -3,17 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using TheBlogProject.Data;
 using TheBlogProject.Models;
+using TheBlogProject.Services;
+using TheBlogProject.ViewModels;
 
 namespace TheBlogProject.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger _logger;
+        private readonly IBlogEmailSender _emailSender;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context, IBlogEmailSender emailSender)
         {
             _context = context;
+            _emailSender = emailSender;
         }
 
         public async Task<IActionResult> Index()
@@ -33,6 +36,27 @@ namespace TheBlogProject.Controllers
         public IActionResult Contact()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Contact(ContactMe model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var subject = "New Contact Form Submission";
+            var plainTextContent = $"Message from {model.Name} ({model.Email}): {model.Message} <br>{model.Phone}";
+            var htmlContent = $"<strong>Message from {model.Name} ({model.Email}):</strong><br>{model.Message}";
+
+            await _emailSender.SendEmailAsync(model.Email, subject, plainTextContent, htmlContent);
+
+            ViewBag.Message = "Your message has been sent!";
+
+            //CHANGE THIS TO A THANKS FOR CONTACTING ME PAGE
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

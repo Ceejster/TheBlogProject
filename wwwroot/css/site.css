@@ -45,3 +45,6 @@
 .bi {
     color: black;
 }
+img {
+    max-height: 9rem;
+}

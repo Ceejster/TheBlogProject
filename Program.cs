@@ -2,13 +2,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TheBlogProject.Data;
 using TheBlogProject.Models;
+using TheBlogProject.Services;
+using TheBlogProject.ViewModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -16,11 +20,48 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.R
     .AddDefaultUI()
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
 
+// Bind MailSettings from configuration
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddScoped<DataService>();
+
+builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+// Register your DataService
+builder.Services.AddScoped<DataService>();
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddTransient<IBlogEmailSender, BlogEmailSender>();
+
+// Register ImageService
+builder.Services.AddScoped<IImageService, BasicImageService>();
+
+//Register SluService
+builder.Services.AddScoped<ISlugService, BasicSlugService>();
+
 var app = builder.Build();
+
+// Apply pending migrations and seed roles/users on startup
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var dbService = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var dataService = scope.ServiceProvider.GetRequiredService<DataService>();
+
+        // Apply pending migrations automatically
+        dbService.Database.Migrate();
+
+        // Seed roles and users
+        await dataService.ManageDataAsync();
+    }
+    catch (Exception ex)
+    {
+        // Log exceptions (optional: replace with your logger)
+        Console.WriteLine($"Error during migration or seeding: {ex.Message}");
+        throw;
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -30,7 +71,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

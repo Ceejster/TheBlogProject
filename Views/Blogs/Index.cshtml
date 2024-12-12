@@ -1,4 +1,7 @@
-﻿@model IEnumerable<TheBlogProject.Models.Blog>
+﻿@using TheBlogProject.Services
+
+@inject IImageService imageService
+@model IEnumerable<TheBlogProject.Models.Blog>
 
 @{
     ViewData["Title"] = "Blogs";
@@ -28,9 +31,6 @@
                 @Html.DisplayNameFor(model => model.Image)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ContentType)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.BlogUser)
             </th>
             <th></th>
@@ -48,10 +48,7 @@
                 <td>@blog.Created.ToString("yyyy-MM-dd")</td>
                 <td>@blog.Updated?.ToString("yyyy-MM-dd")</td>
             <td>
-                    @Html.DisplayFor(modelItem => blog.Image)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => blog.ContentType)
+                    <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
             </td>
             <td>
                     @Html.DisplayFor(modelItem => blog.BlogUser.Id)

@@ -11,10 +11,16 @@ namespace TheBlogProject.Models
         [StringLength(20, ErrorMessage = "The {0} is too long.", MinimumLength = 2)]
         [Display(Name  = "First Name")]
         public required string FirstName { get; set; }
+
         [Required]
         [StringLength(20, ErrorMessage = "The {0} is too long.", MinimumLength = 2)]
         [Display(Name = "Last Name")]
         public required string LastName { get; set; }
+
+        [Required]
+        [StringLength(20, ErrorMessage = "The {0} is too long.", MinimumLength = 2)]
+        [Display(Name = "Display Name")]
+        public required string DisplayName { get; set; }
 
         public byte[]? ImageData {  get; set; }
         public string? ContentType { get; set; }
