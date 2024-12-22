@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TheBlogProject.Models
@@ -8,7 +7,7 @@ namespace TheBlogProject.Models
     {
         public int Id { get; set; }
 
-        [Display(Name="Bloginame")]
+        [Display(Name = "Bloginame")]
         public string? BlogUserId { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]
@@ -34,10 +33,10 @@ namespace TheBlogProject.Models
         public string? ContentType { get; set; }
 
         [NotMapped]
-        public IFormFile? Image {  get; set; }
+        public IFormFile? Image { get; set; }
 
         //Navigation Property
-        [Display(Name="Blogthor")]
+        [Display(Name = "Blogthor")]
         public virtual BlogUser? BlogUser { get; set; }
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
     }

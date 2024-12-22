@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using SendGrid.Helpers.Mail;
 using SendGrid;
+using SendGrid.Helpers.Mail;
 using MailSettings = TheBlogProject.ViewModels.MailSettings;
 
 namespace TheBlogProject.Services

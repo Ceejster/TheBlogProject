@@ -1,13 +1,17 @@
-﻿@model IEnumerable<TheBlogProject.Models.Post>
+﻿@using TheBlogProject.Services
+
+@inject IImageService imageService
+
+@model IEnumerable<TheBlogProject.Models.Post>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Details";
 }
 
 <h1>Posts</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Write new post?</a>
 </p>
 <table class="table">
     <thead>
@@ -19,35 +23,61 @@
                 @Html.DisplayNameFor(model => model.Abstract)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Created)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Updated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ReadyStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BlogUser)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Abstract)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReadyStatus)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var post in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => post.Title)
+                </td>
+                <td>
+                    @Html.Raw(post.Abstract)
+                </td>
+                <td>
+                    @Html.Raw(post.Content)
+                </td>
+                <td>@post.Created?.ToString("yyyy-MM-dd")</td>
+                <td>@post.Updated?.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => post.ReadyStatus)
+                </td>
+                <td>
+                    @post.BlogUser?.UserName
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@post.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@post.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@post.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<form asp-controller="Comments" asp-action="Create">
+</form>
+
+<!--Eventually display comments and author photo.-->

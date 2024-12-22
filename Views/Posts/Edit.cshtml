@@ -10,7 +10,7 @@
 <h4>Post</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8 mb-6">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -24,12 +24,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Abstract" class="control-label"></label>
-                <textarea asp-for="Abstract" class="form-control"></textarea>
+                <textarea asp-for="Abstract" class="form-control tinymce-editor"></textarea>
                 <span asp-validation-for="Abstract" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
-                <textarea asp-for="Content" class="form-control"></textarea>
+                <textarea asp-for="Content" class="form-control tinymce-editor"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,7 +39,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
-                <input type="file" asp-for="Image" class="form-control" />
+                <input type="file" name="newImage" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">

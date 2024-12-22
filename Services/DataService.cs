@@ -64,11 +64,23 @@ namespace TheBlogProject.Services
             };
 
             await _userManager.CreateAsync(adminUser, "Passpass123!");
-            
-            await _userManager.AddToRoleAsync(adminUser, BlogRoles.Administrator.ToString());
-           
 
-            //can create modUser if want to
+            await _userManager.AddToRoleAsync(adminUser, BlogRoles.Administrator.ToString());
+
+            var moderatorUser = new BlogUser()
+            {
+                Email = "craigjessie11@gmail.com",
+                UserName = "craigjessie11@gmail.com",
+                FirstName = "Craig Jessie",
+                LastName = "Bowmans",
+                DisplayName = "Ceejay",
+                PhoneNumber = "307-690-7593",
+                EmailConfirmed = true
+            };
+
+            await _userManager.CreateAsync(moderatorUser, "Passpass123!");
+
+            await _userManager.AddToRoleAsync(moderatorUser, BlogRoles.Moderator.ToString());
         }
 
     }

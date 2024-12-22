@@ -39,6 +39,9 @@ builder.Services.AddScoped<IImageService, BasicImageService>();
 //Register SluService
 builder.Services.AddScoped<ISlugService, BasicSlugService>();
 
+//Register Sanitization
+builder.Services.AddScoped<ISanitizeService, SanitizationService>();
+
 var app = builder.Build();
 
 // Apply pending migrations and seed roles/users on startup

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TheBlogProject.Enums;
 
@@ -14,7 +13,7 @@ namespace TheBlogProject.Models
         public string? BlogUserId { get; set; }
 
         [Required]
-        [StringLength (50, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 5)]
         public required string Title { get; set; }
 
         [Required]
@@ -30,8 +29,8 @@ namespace TheBlogProject.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Updated Date")]
-        public DateTime? Updated { get; set;}
-        
+        public DateTime? Updated { get; set; }
+
         public required ReadyStatus ReadyStatus { get; set; }
 
         public string? Slug { get; set; }

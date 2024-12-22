@@ -1,4 +1,9 @@
-﻿@{
+﻿@using TheBlogProject.Services
+
+@inject IImageService imageService
+@model IEnumerable<TheBlogProject.Models.Blog>
+
+@{
     ViewData["Title"] = "Home";
 }
 
@@ -18,18 +23,9 @@
         <h2 class="country-title" style="text-align: center;">
             @blog.Name
         </h2>
-
-        @if (blog.Image != null)
-        {
-            <img src="@($"data:image/{blog.ContentType};base64,{Convert.ToBase64String(blog.Image)}")" alt="Blog Image" />
-        }
-        else
-        {
-            <img src="/images/placeholder.jpg" alt="Place Holder" /> <!-- Optional default image -->
-        }
-
+            <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
         <div class="blog-description">
-            <p>@blog.Description</p>
+            <p>@Html.Raw(blog.Description)</p>
         </div>
 
         <div class="post-list">
@@ -38,17 +34,8 @@
             {
                 <div class="post">
                     <h4>@post.Title</h4>
-
-                    @if (post.Image != null)
-                    {
-                        <img src="@($"data:image/{post.ContentType};base64,{Convert.ToBase64String(post.Image)}")" alt="City Image" />
-                    }
-                    else
-                    {
-                        <img src="/images/default-city-image.jpg" alt="Default City Image" /> <!-- Optional default image -->
-                    }
-
-                    <p>@post.Content</p>
+                    <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" />
+                    <p>@Html.Raw(post.Abstract)</p>
                 </div>
             }
         </div>

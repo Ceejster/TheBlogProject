@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TheBlogProject.styles.css" asp-append-version="true" />
+
+    <!--TinyMCE integration-->
+    <script src="https://cdn.tiny.cloud/1/irkc0iejql1hl34e3s6yiuvnslby9sluoig07ngrx87gnd9i/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
     <header class="site-header">
@@ -26,6 +29,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Blogs" asp-action="Index">Blogs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Posts" asp-action="Index">Posts</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="About">About</a>
@@ -63,6 +69,16 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea.tinymce-editor',
+            valid_elements: 'p,strong,em,ul,li,a[href|title]',
+            menubar: false,
+            plugins: 'lists link image table code',
+            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | code'
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

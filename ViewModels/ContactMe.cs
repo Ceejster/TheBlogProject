@@ -1,5 +1,4 @@
-﻿using DataAnnotationsExtensions;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TheBlogProject.ViewModels
 {
@@ -14,7 +13,7 @@ namespace TheBlogProject.ViewModels
 
         [Phone]
 
-        [Display(Name="WhatsApp")]
+        [Display(Name = "WhatsApp")]
         public string? Phone { get; set; }
 
         [Required]

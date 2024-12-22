@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,12 +14,14 @@ namespace TheBlogProject.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IImageService _imageService;
         private readonly UserManager<BlogUser> userManager;
+        private readonly ISanitizeService _sanitizeService;
 
-        public BlogsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager)
+        public BlogsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager, ISanitizeService sanitizeService)
         {
             _context = context;
             _imageService = imageService;
             this.userManager = userManager;
+            _sanitizeService = sanitizeService;
         }
 
         // GET: Blogs
@@ -55,7 +53,7 @@ namespace TheBlogProject.Controllers
         }
 
         // GET: Blogs/Create
-        [Authorize]
+        //[Authorize]
         public IActionResult Create()
         {
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
@@ -63,20 +61,22 @@ namespace TheBlogProject.Controllers
         }
 
         // POST: Blogs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Description,Image")] Blog blog)
         {
             if (ModelState.IsValid)
             {
+                //Sanitize raw HTML
+                blog.Description = _sanitizeService.Sanitize(blog.Description) ?? string.Empty;
+
                 blog.BlogUserId = userManager.GetUserId(User);
                 blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
                 blog.ContentType = _imageService.ContentType(blog.Image);
 
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", blog.BlogUserId);
@@ -100,11 +100,9 @@ namespace TheBlogProject.Controllers
         }
 
         // POST: Blogs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Image")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Blog blog, IFormFile? newImage)
         {
             if (id != blog.Id)
             {
@@ -115,6 +113,9 @@ namespace TheBlogProject.Controllers
             {
                 try
                 {
+                    //Sanitize raw HTML
+                    blog.Description = _sanitizeService.Sanitize(blog.Description) ?? string.Empty;
+
                     var existingBlog = await _context.Blogs.FindAsync(id);
                     if (existingBlog == null)
                     {
@@ -127,10 +128,10 @@ namespace TheBlogProject.Controllers
                     existingBlog.Updated = DateTime.UtcNow;
 
                     // Update Image if provided
-                    if (blog.Image != null)
+                    if (newImage != null)
                     {
-                        existingBlog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
-                        existingBlog.ContentType = _imageService.ContentType(blog.Image);
+                        existingBlog.ImageData = await _imageService.EncodeImageAsync(newImage);
+                        existingBlog.ContentType = _imageService.ContentType(newImage);
                     }
 
                     _context.Update(existingBlog);

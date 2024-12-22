@@ -2,16 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 using TheBlogProject.Models;
+using TheBlogProject.Services;
 
 namespace TheBlogProject.Areas.Identity.Pages.Account
 {
@@ -19,9 +17,9 @@ namespace TheBlogProject.Areas.Identity.Pages.Account
     public class RegisterConfirmationModel : PageModel
     {
         private readonly UserManager<BlogUser> _userManager;
-        private readonly IEmailSender _sender;
+        private readonly IBlogEmailSender _sender;
 
-        public RegisterConfirmationModel(UserManager<BlogUser> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(UserManager<BlogUser> userManager, IBlogEmailSender sender)
         {
             _userManager = userManager;
             _sender = sender;
@@ -60,8 +58,7 @@ namespace TheBlogProject.Areas.Identity.Pages.Account
             }
 
             Email = email;
-            // Once you add a real email sender, you should remove this code that lets you confirm the account
-            DisplayConfirmAccountLink = true;
+
             if (DisplayConfirmAccountLink)
             {
                 var userId = await _userManager.GetUserIdAsync(user);

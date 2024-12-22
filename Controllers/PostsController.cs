@@ -1,21 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TheBlogProject.Data;
 using TheBlogProject.Models;
 using TheBlogProject.Services;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TheBlogProject.Controllers
 {
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
         private readonly ISlugService _slugService;
+        private readonly ISanitizeService _sanitizeService;
 
-        public PostsController(ApplicationDbContext context, ISlugService slugService)
+        public PostsController(ApplicationDbContext context, IImageService imageService, ISlugService slugService, ISanitizeService sanitizeService)
         {
             _context = context;
+            _imageService = imageService;
             _slugService = slugService;
+            _sanitizeService = sanitizeService;
         }
 
         // GET: Posts
@@ -47,6 +54,7 @@ namespace TheBlogProject.Controllers
         }
 
         // GET: Posts/Create
+        //[Authorize]
         public IActionResult Create()
         {
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
@@ -55,26 +63,36 @@ namespace TheBlogProject.Controllers
         }
 
         // POST: Posts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> tagValues)
         {
             if (ModelState.IsValid)
             {
-                post.Created = DateTime.Now;
+                //Sanitizing the content since viewing it .Raw
+                post.Content = _sanitizeService.Sanitize(post.Content) ?? string.Empty;
+                post.Abstract = _sanitizeService.Sanitize(post.Abstract) ?? string.Empty;
 
-                post.Created = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+                post.Created = DateTime.UtcNow;
+
+                post.ImageData = await _imageService.EncodeImageAsync(post.Image);
+                post.ContentType = _imageService.ContentType(post.Image);
 
                 //Create the slug and see if it's unique
                 var slug = _slugService.UrlFriendly(post.Title);
-                if(!_slugService.IsUnique(slug))
+                if (!_slugService.IsUnique(slug))
                 {
                     ModelState.AddModelError("Title", "The title provided is already being used in another post.");
                     ViewData["TagValues"] = string.Join(", ", tagValues);
                     return View(post);
                 }
+                //If not unique can use this if statement instead to always insure it is unique
+                //if (!_slugService.IsUnique(slug))
+                //{
+                //    slug = $"{slug}-{DateTime.UtcNow.Ticks}";
+                //}
+                //post.Slug = slug;
+
 
                 post.Slug = slug;
 
@@ -104,13 +122,11 @@ namespace TheBlogProject.Controllers
         }
 
         // POST: Posts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post updatedPost, IFormFile? newImage)
         {
-            if (id != post.Id)
+            if (id != updatedPost.Id)
             {
                 return NotFound();
             }
@@ -119,14 +135,30 @@ namespace TheBlogProject.Controllers
             {
                 try
                 {
-                    post.Updated = DateTime.UtcNow;
+                    var existingPost = await _context.Posts.FindAsync(id);
+                    if (existingPost == null)
+                    {
+                        return NotFound();
+                    }
 
-                    _context.Update(post);
+                    existingPost.Title = updatedPost.Title;
+                    existingPost.Abstract = _sanitizeService.Sanitize(updatedPost.Abstract) ?? string.Empty;
+                    existingPost.Content = _sanitizeService.Sanitize(updatedPost.Content) ?? string.Empty;
+                    existingPost.ReadyStatus = updatedPost.ReadyStatus;
+                    existingPost.Updated = DateTime.UtcNow;
+
+                    if (newImage != null)
+                    {
+                        existingPost.ImageData = await _imageService.EncodeImageAsync(newImage);
+                        existingPost.ContentType = _imageService.ContentType(newImage);
+                    }
+
+                    _context.Update(existingPost);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PostExists(post.Id))
+                    if (!PostExists(updatedPost.Id))
                     {
                         return NotFound();
                     }
@@ -137,9 +169,9 @@ namespace TheBlogProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
-            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", post.BlogUserId);
-            return View(post);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", updatedPost.BlogId);
+            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", updatedPost.BlogUserId);
+            return View(updatedPost);
         }
 
         // GET: Posts/Delete/5

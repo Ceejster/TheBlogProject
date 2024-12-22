@@ -31,7 +31,7 @@
                 @Html.DisplayNameFor(model => model.Image)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BlogUser)
+                @Html.DisplayNameFor(model => model.BlogUserId)
             </th>
             <th></th>
         </tr>
@@ -43,16 +43,16 @@
                     @Html.DisplayFor(modelItem => blog.Name)
             </td>
             <td>
-                    @Html.DisplayFor(modelItem => blog.Description)
+                    @Html.Raw(blog.Description)
             </td>
                 <td>@blog.Created.ToString("yyyy-MM-dd")</td>
                 <td>@blog.Updated?.ToString("yyyy-MM-dd")</td>
             <td>
                     <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
             </td>
-            <td>
-                    @Html.DisplayFor(modelItem => blog.BlogUser.Id)
-            </td>
+                <td>
+                    @blog.BlogUser?.UserName
+                </td>
             <td>
                     <a asp-action="Edit" asp-route-id="@blog.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@blog.Id">Details</a> |

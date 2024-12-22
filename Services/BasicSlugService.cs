@@ -1,9 +1,5 @@
-﻿using System.Diagnostics.Metrics;
-using System.Runtime.Intrinsics.X86;
-using System.Text.RegularExpressions;
-using System;
+﻿using System.Text.RegularExpressions;
 using TheBlogProject.Data;
-using TheBlogProject.Models;
 
 namespace TheBlogProject.Services
 {
