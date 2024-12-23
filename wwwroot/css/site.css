@@ -53,3 +53,25 @@ img {
     max-height: 9rem;
 }
 
+.profile-img {
+    width: 10rem; /* Set the width */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 90%; /* Make it a circle */
+    display: block; /* Ensure proper layout for centering */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for better appearance */
+    justify-content: center;
+    align-items: center;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
