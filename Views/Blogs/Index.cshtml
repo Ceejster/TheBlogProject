@@ -21,10 +21,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
+            <th class="d-none d-lg-table-cell">
                 @Html.DisplayNameFor(model => model.Created)
             </th>
-            <th>
+            <th class="d-none d-lg-table-cell">
                 @Html.DisplayNameFor(model => model.Updated)
             </th>
             <th>
@@ -37,28 +37,29 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var blog in Model) {
-        <tr>
-            <td>
+        @foreach (var blog in Model)
+        {
+            <tr>
+                <td>
                     @Html.DisplayFor(modelItem => blog.Name)
-            </td>
-            <td>
+                </td>
+                <td>
                     @Html.Raw(blog.Description)
-            </td>
-                <td>@blog.Created.ToString("yyyy-MM-dd")</td>
-                <td>@blog.Updated?.ToString("yyyy-MM-dd")</td>
-            <td>
-                    <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
-            </td>
+                </td>
+                <td class="d-none d-lg-table-cell">@blog.Created.ToString("yyyy-MM-dd")</td>
+                <td class="d-none d-lg-table-cell">@blog.Updated?.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" class="img-fluid" />
+                </td>
                 <td>
                     @blog.BlogUser?.UserName
                 </td>
-            <td>
+                <td>
                     <a asp-action="Edit" asp-route-id="@blog.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@blog.Id">Details</a> |
                     <a asp-action="Delete" asp-route-id="@blog.Id">Delete</a>
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

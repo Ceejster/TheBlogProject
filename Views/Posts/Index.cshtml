@@ -13,70 +13,74 @@
 <p>
     <a asp-action="Create">Write new post?</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Abstract)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReadyStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BlogUser)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var post in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => post.Title)
-                </td>
-                <td>
-                    @Html.Raw(post.Abstract)
-                </td>
-                <td>
-                    @Html.Raw(post.Content)
-                </td>
-                <td>@post.Created?.ToString("yyyy-MM-dd")</td>
-                <td>@post.Updated?.ToString("yyyy-MM-dd")</td>
-                <td>
-                    <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => post.ReadyStatus)
-                </td>
-                <td>
-                    @post.BlogUser?.UserName
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@post.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@post.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@post.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
+<div class="container">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Abstract)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Content)
+                    </th>
+                    <th class="d-none d-lg-table-cell">
+                        @Html.DisplayNameFor(model => model.Created)
+                    </th>
+                    <th class="d-none d-lg-table-cell">
+                        @Html.DisplayNameFor(model => model.Updated)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Image)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ReadyStatus)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BlogUser)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var post in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => post.Title)
+                        </td>
+                        <td>
+                            @Html.Raw(post.Abstract)
+                        </td>
+                        <td>
+                            @Html.Raw(post.Content)
+                        </td>
+                        <td class="d-none d-lg-table-cell">@post.Created?.ToString("yyyy-MM-dd")</td>
+                        <td class="d-none d-lg-table-cell">@post.Updated?.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" class="img-fluid" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => post.ReadyStatus)
+                        </td>
+                        <td>
+                            @post.BlogUser?.UserName
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@post.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-slug="@post.Slug">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@post.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 <form asp-controller="Comments" asp-action="Create">
 </form>
 

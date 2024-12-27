@@ -13,14 +13,14 @@ namespace TheBlogProject.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IImageService _imageService;
-        private readonly UserManager<BlogUser> userManager;
+        private readonly UserManager<BlogUser> _userManager;
         private readonly ISanitizeService _sanitizeService;
 
         public BlogsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager, ISanitizeService sanitizeService)
         {
             _context = context;
             _imageService = imageService;
-            this.userManager = userManager;
+            _userManager = userManager;
             _sanitizeService = sanitizeService;
         }
 
@@ -70,7 +70,7 @@ namespace TheBlogProject.Controllers
                 //Sanitize raw HTML
                 blog.Description = _sanitizeService.Sanitize(blog.Description) ?? string.Empty;
 
-                blog.BlogUserId = userManager.GetUserId(User);
+                blog.BlogUserId = _userManager.GetUserId(User);
                 blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
                 blog.ContentType = _imageService.ContentType(blog.Image);
 

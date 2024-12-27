@@ -32,8 +32,44 @@
                 <textarea asp-for="Content" class="form-control tinymce-editor"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
+
+             <!-- Adding or deleting tags buttons. Refer to tags.js to view the functions that add/delete tags. Span to add a warning for duplicate tags-->
             <div class="form-group">
-                <label asp-for="ReadyStatus" class="control-label"></label>
+                <div class="row">
+                    <div class="col">
+                        <label class="control-label">Manage Tags</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row mb-2">
+                            <div class="col">
+                                <input type="text" class="form-control" id="tagEntry" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button onclick="AddTag()" name="addTag" type="button" class="btn-dark btn-sm w-100">Add</button>
+                            </div>
+                            <div class="col">
+                                <button onclick="DeleteTag()" name="deleteTag" type="button" class="btn-dark btn-sm w-100">Delete</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <span id="tagMessage"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-control" id="tagValues" multiple></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ReadyStatus" class="control-label">Ready to post?</label>
                 <select asp-for="ReadyStatus" asp-items="@Html.GetEnumSelectList<ReadyStatus>()" class="form-control"></select>
                 <span asp-validation-for="ReadyStatus" class="text-danger"></span>
             </div>
@@ -54,5 +90,6 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/tags.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

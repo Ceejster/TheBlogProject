@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TheBlogProject.Data;
 using TheBlogProject.Models;
 using TheBlogProject.Services;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace TheBlogProject.Controllers
 {
@@ -14,15 +13,17 @@ namespace TheBlogProject.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IImageService _imageService;
+        private readonly UserManager<BlogUser> _userManager;
         private readonly ISlugService _slugService;
         private readonly ISanitizeService _sanitizeService;
 
-        public PostsController(ApplicationDbContext context, IImageService imageService, ISlugService slugService, ISanitizeService sanitizeService)
+        public PostsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager, ISlugService slugService, ISanitizeService sanitizeService)
         {
             _context = context;
             _imageService = imageService;
             _slugService = slugService;
             _sanitizeService = sanitizeService;
+            _userManager = userManager;
         }
 
         // GET: Posts
@@ -34,9 +35,9 @@ namespace TheBlogProject.Controllers
         }
 
         // GET: Posts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string slug)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
@@ -44,7 +45,8 @@ namespace TheBlogProject.Controllers
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.Tags)
+                .FirstOrDefaultAsync(m => m.Slug == slug);
             if (post == null)
             {
                 return NotFound();
@@ -75,6 +77,10 @@ namespace TheBlogProject.Controllers
 
                 post.Created = DateTime.UtcNow;
 
+                //Setting the author Id
+                var authorId = _userManager.GetUserId(User);
+                post.BlogUserId = authorId;
+
                 post.ImageData = await _imageService.EncodeImageAsync(post.Image);
                 post.ContentType = _imageService.ContentType(post.Image);
 
@@ -84,7 +90,9 @@ namespace TheBlogProject.Controllers
                 {
                     ModelState.AddModelError("Title", "The title provided is already being used in another post.");
                     ViewData["TagValues"] = string.Join(", ", tagValues);
-                    return View(post);
+
+                    ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
+                    return View();
                 }
                 //If not unique can use this if statement instead to always insure it is unique
                 //if (!_slugService.IsUnique(slug))
@@ -93,11 +101,24 @@ namespace TheBlogProject.Controllers
                 //}
                 //post.Slug = slug;
 
-
                 post.Slug = slug;
 
                 _context.Add(post);
                 await _context.SaveChangesAsync();
+
+                foreach (var tagText in tagValues)
+                {
+                    _context.Add(new Tag()
+                    {
+                        PostId = post.Id,
+                        BlogUserId = authorId,
+                        Text = tagText
+                    });
+
+                }
+
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);

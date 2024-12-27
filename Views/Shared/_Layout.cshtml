@@ -15,7 +15,7 @@
 </head>
 <body>
     <header class="site-header">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 w-100">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">The Blog Project</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -52,10 +52,10 @@
     </div>
     <footer class="site-footer bg-light border-top py-3 fixed-bottom">
         <div class="d-flex justify-content-between align-items-center">
-            <div class="">
+            <div class="ms-3">
                 <span>&copy; 2024</span> <a href="mailto:CJBowman@live.com">CJBowman@live.com</a>
             </div>
-            <div class="">
+            <div class="mx-4">
                 <a href="https://github.com/Ceejster" target="_blank" class="me-3">
                     <i class="bi bi-github" style="font-size: 1.5rem;"></i>
                 </a>
@@ -68,7 +68,6 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
         tinymce.init({
             selector: 'textarea.tinymce-editor',

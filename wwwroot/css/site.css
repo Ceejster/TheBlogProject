@@ -49,9 +49,7 @@ body {
 .bi {
     color: black;
 }
-img {
-    max-height: 9rem;
-}
+
 
 .profile-img {
     width: 10rem; /* Set the width */
@@ -75,3 +73,16 @@ img {
     align-items: center;
 }
 
+.form-group {
+    margin-bottom: 1rem;
+}
+
+#tagValues {
+    font-weight: bold;
+}
+
+.postDetailTags {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+}
