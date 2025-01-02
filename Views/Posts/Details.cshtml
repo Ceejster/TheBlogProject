@@ -26,15 +26,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <p>Tags:</p>
+        <div class="col">
             @if (Model.Tags != null && Model.Tags.Any())
             {
                 <p>Tags:</p>
+                <div class="center">
                 @foreach (var tag in Model.Tags)
                 {
-                    <a asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
+                    <a class="tagButton" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
                 }
+                </div>
             }
             else
             {
