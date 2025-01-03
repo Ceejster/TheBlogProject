@@ -30,9 +30,23 @@ namespace TheBlogProject.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Posts.Include(p => p.Blog).Include(p => p.BlogUser);
+            var applicationDbContext = _context.Posts
+                .Include(p => p.Blog)
+                .Include(p => p.BlogUser);
             var posts = await applicationDbContext.ToListAsync();
             return View(posts); // Pass posts to the view
+        }
+
+        // BlogPostIndex
+        public async Task<IActionResult> BlogPostIndex(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var posts = _context.Posts.Where(p => p.BlogId == id);
+            return View("Index", posts);
         }
 
         // GET: Posts/Details/5
@@ -93,11 +107,11 @@ namespace TheBlogProject.Controllers
                 if (string.IsNullOrEmpty(slug))
                 {
                     validateError = true;
-                    ModelState.AddModelError("", "There is no title provided.");
+                    ModelState.AddModelError("Title", "There is no title provided.");
                 }
 
                 // Detect duplicate slugs
-                if (!_slugService.IsUnique(slug))
+                else if (!_slugService.IsUnique(slug))
                 {
                     validateError = true;
                     ModelState.AddModelError("Title", "The title provided is already being used in another post.");

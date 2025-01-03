@@ -22,6 +22,7 @@ namespace TheBlogProject.Controllers
         public async Task<IActionResult> Index()
         {
             var blogs = await _context.Blogs
+                .Include(b => b.BlogUser)
                 .Include(b => b.Posts) // Load posts for each blog
                 .ToListAsync();
 
