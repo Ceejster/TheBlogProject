@@ -14,8 +14,8 @@
 
 @foreach (var blog in Model)
 {
-    
-@* <div class="city-legend">
+
+    @* <div class="city-legend">
     <h4>Cities Featured:</h4>
     <ul>
         @foreach (var post in blog.Posts)
@@ -25,29 +25,32 @@
     </ul>
 </div>  *@
     <div class="blog">
-        <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-        <h2 class="country-title" style="text-align: center;">
-            @blog.Name
-        </h2>
+        <a asp-controller="Blogs" asp-action="BlogIndex" asp-route-id="@blog.Id">
+            <h2 class="country-title" style="text-align: center;">
+                @blog.Name
+            </h2>
             <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
+        </a>
+
         <div class="blog-description">
             <p>@Html.Raw(blog.Description)</p>
-            
-                <p>Author: @blog.BlogUser.FullName</p>
-            
+
+            <p>Author: @blog.BlogUser.FullName</p>
+
             <p>Created: @blog.Created.ToString("dd MMM yyyy")</p>
         </div>
-        <hr />
-        </a>
+
         <div class="post-list">
             <h3>Cities:</h3>
             @foreach (var post in blog.Posts)
             {
-                <div class="post">
-                    <h4>@post.Title</h4>
-                    <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" />
-                    <p>@Html.Raw(post.Abstract)</p>
-                </div>
+                <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@post.Id">
+                    <div class="post">
+                        <h4>@post.Title</h4>
+                        <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" />
+                        <p>@Html.Raw(post.Abstract)</p>
+                    </div>
+                </a>
             }
         </div>
     </div>
