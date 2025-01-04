@@ -33,6 +33,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.BlogUserId)
             </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model.BlogUser)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -52,7 +55,10 @@
                     <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" class="img-fluid" />
                 </td>
                 <td>
-                    @blog.BlogUser?.UserName
+                    @blog.BlogUser?.DisplayName
+                </td>
+                <td>
+                    @blog.BlogUser
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@blog.Id">Edit</a> |

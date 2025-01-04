@@ -7,10 +7,15 @@
     ViewData["Title"] = "Home";
 }
 
+<div class="blogHeader">
+    <h1>Welcome to my travel blog!</h1>
+    <p>This is where I keep track of places that I've been to, lived in, or just visited. You'll see a header that will list each country and then there will be sections that list each city I've visited.</p>
+</div>
+
 @foreach (var blog in Model)
 {
-    @* 
-<div class="city-legend">
+    
+@* <div class="city-legend">
     <h4>Cities Featured:</h4>
     <ul>
         @foreach (var post in blog.Posts)
@@ -18,16 +23,22 @@
             <li><a href="@Url.Action("Details", "Posts", new { id = post.Id })">@post.Title</a></li>
         }
     </ul>
-</div> *@
+</div>  *@
     <div class="blog">
+        <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
         <h2 class="country-title" style="text-align: center;">
             @blog.Name
         </h2>
             <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
         <div class="blog-description">
             <p>@Html.Raw(blog.Description)</p>
+            
+                <p>Author: @blog.BlogUser.FullName</p>
+            
+            <p>Created: @blog.Created.ToString("dd MMM yyyy")</p>
         </div>
-
+        <hr />
+        </a>
         <div class="post-list">
             <h3>Cities:</h3>
             @foreach (var post in blog.Posts)

@@ -49,10 +49,10 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <button onclick="AddTag()" name="addTag" type="button" class="btn-dark btn-sm w-100">Add</button>
+                                <button onclick="AddTag()" type="button" class="btn-dark btn-sm w-100">Add</button>
                             </div>
                             <div class="col">
-                                <button onclick="DeleteTag()" name="deleteTag" type="button" class="btn-dark btn-sm w-100">Delete</button>
+                                <button onclick="DeleteTag()" type="button" class="btn-dark btn-sm w-100">Delete</button>
                             </div>
                         </div>
                         <div class="row">
@@ -62,19 +62,19 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <select class="form-control" id="tagValues" multiple></select>
+                        <select class="form-control" id="tagValues" name="tagValues" title="tags" multiple></select>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReadyStatus" class="control-label"></label>
-                <select asp-for="ReadyStatus" asp-items="@Html.GetEnumSelectList<ReadyStatus>()" class="form-control"></select>
-                <span asp-validation-for="ReadyStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
                 <input type="file" name="newImage" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReadyStatus" class="control-label"></label>
+                <select asp-for="ReadyStatus" asp-items="@Html.GetEnumSelectList<ReadyStatus>()" class="form-control"></select>
+                <span asp-validation-for="ReadyStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Edit" class="btn btn-primary" />
@@ -88,5 +88,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <!-- Define allTagValues globally so it can be accessed in tags.js -->
+    <script>
+        var allTagValues = @Html.Raw(Json.Serialize(ViewData["TagValues"] ?? ""));
+    </script>
+    <script src="~/js/tags.js"></script>
 }

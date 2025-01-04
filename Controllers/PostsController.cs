@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using TheBlogProject.Data;
 using TheBlogProject.Models;
 using TheBlogProject.Services;
+using Microsoft.Extensions.Hosting;
 
 namespace TheBlogProject.Controllers
 {
@@ -29,9 +30,23 @@ namespace TheBlogProject.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Posts.Include(p => p.Blog).Include(p => p.BlogUser);
+            var applicationDbContext = _context.Posts
+                .Include(p => p.Blog)
+                .Include(p => p.BlogUser);
             var posts = await applicationDbContext.ToListAsync();
             return View(posts); // Pass posts to the view
+        }
+
+        // BlogPostIndex
+        public async Task<IActionResult> BlogPostIndex(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var posts = _context.Posts.Where(p => p.BlogId == id);
+            return View("Index", posts);
         }
 
         // GET: Posts/Details/5
@@ -56,11 +71,10 @@ namespace TheBlogProject.Controllers
         }
 
         // GET: Posts/Create
-        //[Authorize]
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
-            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -86,20 +100,29 @@ namespace TheBlogProject.Controllers
 
                 //Create the slug and see if it's unique
                 var slug = _slugService.UrlFriendly(post.Title);
-                if (!_slugService.IsUnique(slug))
-                {
-                    ModelState.AddModelError("Title", "The title provided is already being used in another post.");
-                    ViewData["TagValues"] = string.Join(", ", tagValues);
 
-                    ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
-                    return View();
+                // Create a var to store whether an error has occured
+                var validateError = false;
+
+                if (string.IsNullOrEmpty(slug))
+                {
+                    validateError = true;
+                    ModelState.AddModelError("Title", "There is no title provided.");
                 }
-                //If not unique can use this if statement instead to always insure it is unique
-                //if (!_slugService.IsUnique(slug))
-                //{
-                //    slug = $"{slug}-{DateTime.UtcNow.Ticks}";
-                //}
-                //post.Slug = slug;
+
+                // Detect duplicate slugs
+                else if (!_slugService.IsUnique(slug))
+                {
+                    validateError = true;
+                    ModelState.AddModelError("Title", "The title provided is already being used in another post.");
+                }
+
+                if (validateError)
+                {
+
+                    ViewData["TagValues"] = string.Join(",", tagValues);
+                    return View(post);
+                }
 
                 post.Slug = slug;
 
@@ -114,7 +137,6 @@ namespace TheBlogProject.Controllers
                         BlogUserId = authorId,
                         Text = tagText
                     });
-
                 }
 
                 await _context.SaveChangesAsync();
@@ -133,19 +155,20 @@ namespace TheBlogProject.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
             if (post == null)
             {
                 return NotFound();
             }
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
+            ViewData["TagValues"] = string.Join(", ", post.Tags.Select(t => t.Text));
             return View(post);
         }
 
         // POST: Posts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post updatedPost, IFormFile? newImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post updatedPost, IFormFile? newImage, List<string> tagValues)
         {
             if (id != updatedPost.Id)
             {
@@ -156,7 +179,7 @@ namespace TheBlogProject.Controllers
             {
                 try
                 {
-                    var existingPost = await _context.Posts.FindAsync(id);
+                    var existingPost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == updatedPost.Id);
                     if (existingPost == null)
                     {
                         return NotFound();
@@ -168,10 +191,42 @@ namespace TheBlogProject.Controllers
                     existingPost.ReadyStatus = updatedPost.ReadyStatus;
                     existingPost.Updated = DateTime.UtcNow;
 
+                    var newSlug = _slugService.UrlFriendly(updatedPost.Title);
+                    if (newSlug != existingPost.Title)
+                    {
+                        if (_slugService.IsUnique(newSlug))
+                        {
+                            existingPost.Title = updatedPost.Title;
+                            existingPost.Slug = newSlug;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Title", "The title provided is already being used in another post.");
+                            ViewData["TagValues"] = string.Join(",", tagValues);
+                            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", existingPost.BlogId);
+                            return View(existingPost);
+                        }
+                    }
+
+
                     if (newImage != null)
                     {
                         existingPost.ImageData = await _imageService.EncodeImageAsync(newImage);
                         existingPost.ContentType = _imageService.ContentType(newImage);
+                    }
+
+                    // Remove all Tags previously associated with the Post
+                    _context.Tags.RemoveRange(existingPost.Tags);
+
+                    //Add in the new Tags from the Edit form
+                    foreach (var tagText in tagValues)
+                    {
+                        _context.Add(new Tag() 
+                        {
+                            PostId = existingPost.Id,
+                            BlogUserId = existingPost.BlogUserId,
+                            Text = tagText
+                        });
                     }
 
                     _context.Update(existingPost);
@@ -191,7 +246,6 @@ namespace TheBlogProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", updatedPost.BlogId);
-            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", updatedPost.BlogUserId);
             return View(updatedPost);
         }
 

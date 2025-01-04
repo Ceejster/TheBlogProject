@@ -86,3 +86,43 @@ body {
     font-weight: bold;
     font-size: 1rem;
 }
+
+.tagButton {
+    justify-content: center;
+    display: inline-block;
+    color: #fff;
+    background-color: #343a40; /* Dark background like Bootstrap's btn-dark */
+    border: 1px solid #343a40; /* Matching border */
+    padding: 0.375rem 0.75rem; /* Padding similar to Bootstrap buttons */
+    font-size: 1rem; /* Font size */
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 0.25rem; /* Rounded corners */
+    cursor: pointer;
+    transition: all 0.15s ease-in-out; /* Smooth hover transition */
+}
+
+    .tagButton:hover {
+        background-color: #23272b; /* Slightly darker background on hover */
+        border-color: #1d2124; /* Matching border on hover */
+        color: azure;
+    }
+
+    .tagButton:active {
+        background-color: #1d2124; /* Active state background */
+        border-color: #171a1d; /* Active state border */
+        transform: scale(0.95); /* Slight scale effect on click */
+    }
+
+    .tagButton:disabled {
+        background-color: #6c757d; /* Disabled state background */
+        border-color: #6c757d; /* Disabled state border */
+        cursor: not-allowed;
+        opacity: 0.65;
+    }
+
+.center {
+    justify-content: center;
+    text-align: center;
+}
