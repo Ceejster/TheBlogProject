@@ -45,7 +45,7 @@ namespace TheBlogProject.Controllers
                 return NotFound();
             }
 
-            var posts = _context.Posts.Where(p => p.BlogId == id);
+            var posts = _context.Posts.Where(p => p.Id == id);
             return View("Index", posts);
         }
 
@@ -121,6 +121,7 @@ namespace TheBlogProject.Controllers
                 {
 
                     ViewData["TagValues"] = string.Join(",", tagValues);
+                    ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
                     return View(post);
                 }
 
@@ -221,7 +222,7 @@ namespace TheBlogProject.Controllers
                     //Add in the new Tags from the Edit form
                     foreach (var tagText in tagValues)
                     {
-                        _context.Add(new Tag() 
+                        _context.Add(new Tag()
                         {
                             PostId = existingPost.Id,
                             BlogUserId = existingPost.BlogUserId,

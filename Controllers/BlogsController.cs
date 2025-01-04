@@ -32,6 +32,17 @@ namespace TheBlogProject.Controllers
             return View(blogs); // Pass blogs to the view
         }
 
+        public async Task<IActionResult> BlogIndex(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var blogs = _context.Blogs.Where(b => b.Id == id);
+            return View("Index", blogs);
+        }
+
 
         // GET: Blogs/Details/5
         public async Task<IActionResult> Details(int? id)
