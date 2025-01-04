@@ -26,9 +26,9 @@
 </div>  *@
     <div class="blog">
         <a asp-controller="Blogs" asp-action="BlogIndex" asp-route-id="@blog.Id">
-            <h2 class="country-title" style="text-align: center;">
-                @blog.Name
-            </h2>
+        <h2 class="country-title" style="text-align: center;">
+            @blog.Name
+        </h2>
             <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
         </a>
 
@@ -39,17 +39,17 @@
 
             <p>Created: @blog.Created.ToString("dd MMM yyyy")</p>
         </div>
-
+        
         <div class="post-list">
             <h3>Cities:</h3>
             @foreach (var post in blog.Posts)
             {
                 <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@post.Id">
-                    <div class="post">
-                        <h4>@post.Title</h4>
-                        <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" />
-                        <p>@Html.Raw(post.Abstract)</p>
-                    </div>
+                <div class="post">
+                    <h4>@post.Title</h4>
+                    <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" />
+                    <p>@Html.Raw(post.Abstract)</p>
+                </div>
                 </a>
             }
         </div>
