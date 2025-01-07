@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using TheBlogProject.Data;
 using TheBlogProject.Models;
 using TheBlogProject.Services;
-using Microsoft.Extensions.Hosting;
 
 namespace TheBlogProject.Controllers
 {
@@ -17,14 +16,26 @@ namespace TheBlogProject.Controllers
         private readonly UserManager<BlogUser> _userManager;
         private readonly ISlugService _slugService;
         private readonly ISanitizeService _sanitizeService;
+        private readonly BlogSearchService _blogSearchService;
 
-        public PostsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager, ISlugService slugService, ISanitizeService sanitizeService)
+        public PostsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager, ISlugService slugService, ISanitizeService sanitizeService, BlogSearchService blogSearchService)
         {
             _context = context;
             _imageService = imageService;
             _slugService = slugService;
             _sanitizeService = sanitizeService;
             _userManager = userManager;
+            _blogSearchService = blogSearchService;
+        }
+
+        // For users searching the blogs for key words. Reference the service for more insight
+        public IActionResult SearchIndex(string searchTerm)
+        {
+            ViewData["SearchTerm"] = searchTerm;
+
+            var posts = _blogSearchService.Search(searchTerm);
+            
+            return View(posts);
         }
 
         // GET: Posts
@@ -186,29 +197,27 @@ namespace TheBlogProject.Controllers
                         return NotFound();
                     }
 
-                    existingPost.Title = updatedPost.Title;
-                    existingPost.Abstract = _sanitizeService.Sanitize(updatedPost.Abstract) ?? string.Empty;
-                    existingPost.Content = _sanitizeService.Sanitize(updatedPost.Content) ?? string.Empty;
-                    existingPost.ReadyStatus = updatedPost.ReadyStatus;
-                    existingPost.Updated = DateTime.UtcNow;
-
-                    var newSlug = _slugService.UrlFriendly(updatedPost.Title);
-                    if (newSlug != existingPost.Title)
+                    // Check if the title has changed
+                    if (!string.Equals(existingPost.Title, updatedPost.Title, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (_slugService.IsUnique(newSlug))
-                        {
-                            existingPost.Title = updatedPost.Title;
-                            existingPost.Slug = newSlug;
-                        }
-                        else
+                        var newSlug = _slugService.UrlFriendly(updatedPost.Title);
+
+                        if (!_slugService.IsUnique(newSlug))
                         {
                             ModelState.AddModelError("Title", "The title provided is already being used in another post.");
                             ViewData["TagValues"] = string.Join(",", tagValues);
                             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", existingPost.BlogId);
                             return View(existingPost);
                         }
+
+                        existingPost.Title = updatedPost.Title;
+                        existingPost.Slug = newSlug;
                     }
 
+                    existingPost.Abstract = _sanitizeService.Sanitize(updatedPost.Abstract) ?? string.Empty;
+                    existingPost.Content = _sanitizeService.Sanitize(updatedPost.Content) ?? string.Empty;
+                    existingPost.ReadyStatus = updatedPost.ReadyStatus;
+                    existingPost.Updated = DateTime.UtcNow;
 
                     if (newImage != null)
                     {
@@ -219,10 +228,10 @@ namespace TheBlogProject.Controllers
                     // Remove all Tags previously associated with the Post
                     _context.Tags.RemoveRange(existingPost.Tags);
 
-                    //Add in the new Tags from the Edit form
+                    // Add in the new Tags from the Edit form
                     foreach (var tagText in tagValues)
                     {
-                        _context.Add(new Tag()
+                        _context.Add(new Tag
                         {
                             PostId = existingPost.Id,
                             BlogUserId = existingPost.BlogUserId,
@@ -249,6 +258,7 @@ namespace TheBlogProject.Controllers
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", updatedPost.BlogId);
             return View(updatedPost);
         }
+
 
         // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)

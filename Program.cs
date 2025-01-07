@@ -32,6 +32,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<DataService>();
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<IBlogEmailSender, BlogEmailSender>();
+builder.Services.AddScoped<BlogSearchService>();
 
 // Register ImageService
 builder.Services.AddScoped<IImageService, BasicImageService>();
@@ -65,6 +66,18 @@ using (var scope = app.Services.CreateScope())
         throw;
     }
 }
+
+// Add CSP Middleware to help protect from malicious code being injected.
+// Resolve to allow bootstrap, JS, and CSS
+//app.Use(async (context, next) =>
+//{
+//    context.Response.Headers.Append("Content-Security-Policy",
+//        "default-src 'self'; " +
+//        "script-src 'self'; " +
+//        "style-src 'self' 'unsafe-inline'; " +
+//        "img-src 'self' data:;");
+//    await next();
+//});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

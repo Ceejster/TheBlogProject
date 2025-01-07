@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DataAnnotationsExtensions" Version="5.0.1.27" />
+    <!-- Dont think it's needed and can be removed.
+	<PackageReference Include="DataAnnotationsExtensions" Version="5.0.1.27" />
+	-->
     <PackageReference Include="HtmlSanitizer" Version="8.1.870" />
     <PackageReference Include="MailKit" Version="4.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.0" />

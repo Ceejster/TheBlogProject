@@ -44,6 +44,18 @@
                 </div>
             </div>
         </nav>
+        <div class="searchIndex">
+            <!-- Can move this later. Form used to search for specific terms throughout the blog-->
+            <form asp-action="SearchIndex" asp-controller="Posts">
+                <div class="input-group mt-5">
+                    <input type="text" name="SearchTerm" class="form-control" placeholder="Searching for?" />
+                    <div class="input-group-append">
+                        <button class="commonButton" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">
