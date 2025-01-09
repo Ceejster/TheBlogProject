@@ -8,10 +8,13 @@
 }
 
 <h1>Blogs</h1>
+@if (User.IsInRole("Administrator"))
+{
+    <p>
+        <a asp-action="Create">Write new blog?</a>
+    </p>
+}
 
-<p>
-    <a asp-action="Create">Write new blog?</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -50,7 +53,13 @@
                     @Html.Raw(blog.Description)
                 </td>
                 <td class="d-none d-lg-table-cell">@blog.Created.ToString("yyyy-MM-dd")</td>
-                <td class="d-none d-lg-table-cell">@blog.Updated?.ToString("yyyy-MM-dd")</td>
+                <td class="d-none d-lg-table-cell">
+                    @if (blog.Updated.HasValue)
+                    {
+                        @blog.Updated?.ToString("yyyy-MM-dd")
+
+                    }
+                </td>
                 <td>
                     <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" class="img-fluid" />
                 </td>
@@ -60,11 +69,15 @@
                 <td>
                     @blog.BlogUser
                 </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@blog.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@blog.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@blog.Id">Delete</a>
-                </td>
+                @if (User.IsInRole("Administrator"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@blog.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@blog.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@blog.Id">Delete</a>
+                    </td>
+                }
+
             </tr>
         }
     </tbody>

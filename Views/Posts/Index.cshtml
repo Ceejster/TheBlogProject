@@ -10,9 +10,13 @@
 
 <h1>Posts</h1>
 
-<p>
-    <a asp-action="Create">Write new post?</a>
-</p>
+@if (User.IsInRole("Administrator"))
+{
+    <p>
+        <a asp-action="Create">Write new post?</a>
+    </p>
+}
+
 
 <div class="container">
     <div class="table-responsive">
@@ -37,9 +41,13 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Image)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ReadyStatus)
-                    </th>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <th>
+                            @Html.DisplayNameFor(model => model.ReadyStatus)
+                        </th>
+                    }
+
                     <th>
                         @Html.DisplayNameFor(model => model.BlogUser)
                     </th>
@@ -60,21 +68,34 @@
                             @Html.Raw(post.Content)
                         </td>
                         <td class="d-none d-lg-table-cell">@post.Created?.ToString("yyyy-MM-dd")</td>
-                        <td class="d-none d-lg-table-cell">@post.Updated?.ToString("yyyy-MM-dd")</td>
+                        <td class="d-none d-lg-table-cell">
+                            @if (post.Updated.HasValue)
+                            {
+                                @post.Updated?.ToString("yyyy-MM-dd")
+                            }
+                        </td>
                         <td>
                             <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" class="img-fluid" />
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => post.ReadyStatus)
-                        </td>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => post.ReadyStatus)
+                            </td>
+                        }
+
                         <td>
                             @post.BlogUser?.UserName
                         </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@post.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-slug="@post.Slug">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@post.Id">Delete</a>
-                        </td>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@post.Id">Edit</a> |
+                                <a asp-action="Details" asp-route-slug="@post.Slug">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@post.Id">Delete</a>
+                            </td>
+                        }
+
                     </tr>
                 }
             </tbody>
