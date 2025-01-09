@@ -51,7 +51,28 @@
 
 </form>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+<div class="commonButton">
+   @if(User.IsInRole("Administrator"))
+   {
+<a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+   }
     <a asp-action="Index">Back to List</a>
+</div>
+<div>
+    @if(User.Identity.IsAuthenticated)
+    {
+        <form asp-action="Create" asp-controller="Comments" method="post">
+            <!-- Hidden field for PostId-->
+            @Html.Hidden("PostId", Model.Id)
+            <div class="form-group">
+                <label class="control-label" for="Body">Add Comment</label>
+                <textarea name="Body" id="Body" class="form-control" rows="10"></textarea>
+            </div>
+            <button type="submit" class="commonButton">Comment</button>
+        </form>
+    }
+    else
+    {
+        <a class="commonButton" asp-area="Identity" asp-page="/Account/Login">Login to comment</a>
+    }
 </div>

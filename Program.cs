@@ -98,14 +98,18 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+//OG use if anything broken
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// For better SEO later
-//name: "SlugRoute",
-//pattern: "BlogPosts/UrlFriendly/{slug}",
-//defaults: new { controller = "Posts", action = "Details");
+// For better SEO 
+//app.MapControllerRoute(
+//    name: "SlugRoute",
+//    defaults: new { controller = "Posts", action = "Details" },
+//    pattern: "BlogPosts/UrlFriendly/{slug}");
+
 
 app.MapRazorPages();
 

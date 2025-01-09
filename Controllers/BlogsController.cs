@@ -39,7 +39,9 @@ namespace TheBlogProject.Controllers
                 return NotFound();
             }
 
-            var blogs = _context.Blogs.Where(b => b.Id == id);
+            var blogs = _context.Blogs
+                .Where(b => b.Id == id)
+                .Include(b => b.BlogUser);
             return View("Index", blogs);
         }
 

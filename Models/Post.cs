@@ -13,7 +13,7 @@ namespace TheBlogProject.Models
         public string? BlogUserId { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 3)]
         public required string Title { get; set; }
 
         [Required]

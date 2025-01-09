@@ -7,13 +7,13 @@ namespace TheBlogProject.Models
     {
         public int Id { get; set; }
         public int PostId { get; set; }
-        public required string BlogUserId { get; set; }
-        public required string ModeratorId { get; set; }
+        public string? BlogUserId { get; set; }
+        public string? ModeratorId { get; set; }
 
         [Required]
-        [StringLength(500, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 10)]
+        [StringLength(500, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 2)]
         [Display(Name = "Comment")]
-        public required string Body { get; set; }
+        public string? Body { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Created Date")]
@@ -32,8 +32,8 @@ namespace TheBlogProject.Models
         public ModerationType ModerationType { get; set; }
 
         //Navigation properties
-        public required virtual Post Post { get; set; }
-        public required virtual BlogUser BlogUser { get; set; }
-        public required virtual BlogUser Moderator { get; set; }
+        public virtual Post? Post { get; set; }
+        public virtual BlogUser? BlogUser { get; set; }
+        public virtual BlogUser? Moderator { get; set; }
     }
 }

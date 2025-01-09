@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TheBlogProject.Data;
@@ -9,10 +10,12 @@ namespace TheBlogProject.Controllers
     public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<BlogUser> _userManager;
 
-        public CommentsController(ApplicationDbContext context)
+        public CommentsController(ApplicationDbContext context, UserManager<BlogUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Comments
@@ -32,14 +35,27 @@ namespace TheBlogProject.Controllers
         //}
 
         // POST: Comments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PostId,BlogUserId,ModeratorId,Body,Created,Updated,Moderated,Deleted,ModeratedBody,ModerationType")] Comment comment)
+        public async Task<IActionResult> Create([Bind("PostId,Body")] Comment comment)
         {
+            Console.WriteLine($"Body: {comment.Body}");
+            Console.WriteLine($"PostId: {comment.PostId}");
+
             if (ModelState.IsValid)
             {
+                // Assign properties
+                comment.BlogUserId = _userManager.GetUserId(User);
+                comment.Created = DateTime.UtcNow;
+                
+                comment.Post = await _context.Posts.FindAsync(comment.PostId);
+
+                if (comment.Post == null)
+                {
+                    ModelState.AddModelError("PostId", "Invalid Post.");
+                    return View(comment);
+                }
+
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

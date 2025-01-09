@@ -97,6 +97,7 @@ body {
     border-radius: 0.25rem; /* Rounded corners */
     cursor: pointer;
     transition: all 0.15s ease-in-out; /* Smooth hover transition */
+    margin: 0.5rem;
 }
 
 .tagButton {
