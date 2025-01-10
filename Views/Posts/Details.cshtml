@@ -1,24 +1,28 @@
-﻿@model TheBlogProject.Models.Post
+﻿@using TheBlogProject.Services
+
+@inject IImageService imageService
+
+@model TheBlogProject.Models.Post
 
 @{
     ViewData["Title"] = "Details";
 }
+<div>
+    <h1>Details</h1>
 
-<h1>Details</h1>
 
-
-<!--Post Content-->
-<article>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-10 mx-auto">
-                @Html.Raw(Model.Content)
+    <!--Post Content-->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    @Html.Raw(Model.Content)
+                </div>
             </div>
         </div>
-    </div>
-</article>
+    </article>
 
-<hr />
+    <hr />
     <article>
         <div class="row">
             <div class="col postDetailTags">
@@ -26,53 +30,87 @@
             </div>
         </div>
         <div class="row">
-        <div class="col">
-            @if (Model.Tags != null && Model.Tags.Any())
-            {
-                <p>Tags:</p>
-                <div class="center">
-                @foreach (var tag in Model.Tags)
+            <div class="col">
+                @if (Model.Tags != null && Model.Tags.Any())
                 {
-                    <a class="tagButton" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
+                    <p>Tags:</p>
+                    <div class="center">
+                        @foreach (var tag in Model.Tags)
+                        {
+                            <a class="tagButton" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
+                        }
+                    </div>
                 }
-                </div>
-            }
-            else
-            {
-                <p>No tags available.</p>
-            }
+                else
+                {
+                    <p>No tags available.</p>
+                }
             </div>
         </div>
     </article>
-<hr />
+    <hr />
 
 
-<form asp-controller="Comments" asp-action="Create">
+    <form asp-controller="Comments" asp-action="Create">
+    </form>
 
-</form>
+    <div class="commonButton">
+        @if (User.IsInRole("Administrator"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+        }
+        <a asp-action="Index">Back to List</a>
+    </div>
+    <div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form asp-action="Create" asp-controller="Comments" method="post">
+                <!-- Hidden field for PostId-->
+                @Html.Hidden("PostId", Model.Id)
+                <div class="form-group commentBox">
+                    <label class="control-label" for="Body">Add Comment</label>
+                    <textarea name="Body" id="Body" class="form-control" rows="10"></textarea>
+                </div>
+                <button type="submit" class="commonButton">Comment</button>
+            </form>
+        }
+        else
+        {
+            <a class="commonButton" asp-area="Identity" asp-page="/Account/Login">Login to comment</a>
+        }
+    </div>
 
-<div class="commonButton">
-   @if(User.IsInRole("Administrator"))
-   {
-<a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
-   }
-    <a asp-action="Index">Back to List</a>
-</div>
-<div>
-    @if(User.Identity.IsAuthenticated)
-    {
-        <form asp-action="Create" asp-controller="Comments" method="post">
-            <!-- Hidden field for PostId-->
-            @Html.Hidden("PostId", Model.Id)
-            <div class="form-group">
-                <label class="control-label" for="Body">Add Comment</label>
-                <textarea name="Body" id="Body" class="form-control" rows="10"></textarea>
+    <hr />
+
+    <!-- Temporary style -->
+    <span class="commonButton">@Model.Comments.Count COMMENT(S)</span>
+
+    <div class="commentCards">
+        @foreach (var comment in Model.Comments)
+        {
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="commentUserCard">
+                        <img class="commentImage"
+                             src="@imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)"
+                             alt="User Image" />
+                        <h4 class="commentUserName">@comment.BlogUser.DisplayName</h4>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="row">
+                        <p class="commentText">@comment.Body</p>
+                        <div class="row">
+                            <small class="postedDate"><i>Posted: @comment.Created.ToString("dd MM, yyyy")</i></small>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="commonButton">Comment</button>
-        </form>
-    }
-    else
-    {
-        <a class="commonButton" asp-area="Identity" asp-page="/Account/Login">Login to comment</a>
-    }
+
+            <hr />
+        }
+
+
+
 </div>
