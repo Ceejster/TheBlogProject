@@ -25,7 +25,6 @@ namespace TheBlogProject.Models
         public DateTime? Moderated { get; set; }
         public DateTime? Deleted { get; set; }
 
-        [StringLength(550, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 10)]
         [Display(Name = "Moderated Comment")]
         public string? ModeratedBody { get; set; }
 

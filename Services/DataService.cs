@@ -46,12 +46,7 @@ namespace TheBlogProject.Services
 
         private async Task SeedUsersAsync()
         {
-            if (await _userManager.FindByEmailAsync("CJBowman@live.com") != null)
-            {
-                Console.WriteLine("Admin user already exists. Skipping user seeding.");
-                return;
-            }
-
+            // Admin User
             var adminUser = new BlogUser()
             {
                 Email = "CJBowman@live.com",
@@ -63,25 +58,39 @@ namespace TheBlogProject.Services
                 EmailConfirmed = true
             };
 
-            await _userManager.CreateAsync(adminUser, "Passpass123!");
+            if (await _userManager.FindByEmailAsync(adminUser.Email) == null)
+            {
+                var adminResult = await _userManager.CreateAsync(adminUser, "Passpass123!");
+                if (!adminResult.Succeeded)
+                {
+                    throw new Exception($"Failed to create admin user: {string.Join(", ", adminResult.Errors.Select(e => e.Description))}");
+                }
+                await _userManager.AddToRoleAsync(adminUser, BlogRoles.Administrator.ToString());
+            }
 
-            await _userManager.AddToRoleAsync(adminUser, BlogRoles.Administrator.ToString());
+            // Moderator User
+            var moderatorUser = new BlogUser()
+            {
+                Email = "craigjessie11@gmail.com",
+                UserName = "craigjessie11@gmail.com",
+                FirstName = "Craig Jessie",
+                LastName = "Bowman",
+                DisplayName = "Ceejay",
+                PhoneNumber = "307-690-7593",
+                EmailConfirmed = true
+            };
 
-            //var moderatorUser = new BlogUser()
-            //{
-            //    Email = "craigjessie11@gmail.com",
-            //    UserName = "craigjessie11@gmail.com",
-            //    FirstName = "Craig Jessie",
-            //    LastName = "Bowman",
-            //    DisplayName = "Ceejay",
-            //    PhoneNumber = "307-690-7593",
-            //    EmailConfirmed = true
-            //};
-
-            //await _userManager.CreateAsync(moderatorUser, "Passpass123!");
-
-            //await _userManager.AddToRoleAsync(moderatorUser, BlogRoles.Moderator.ToString());
+            if (await _userManager.FindByEmailAsync(moderatorUser.Email) == null)
+            {
+                var moderatorResult = await _userManager.CreateAsync(moderatorUser, "thisPassword123!");
+                if (!moderatorResult.Succeeded)
+                {
+                    throw new Exception($"Failed to create moderator user: {string.Join(", ", moderatorResult.Errors.Select(e => e.Description))}");
+                }
+                await _userManager.AddToRoleAsync(moderatorUser, BlogRoles.Moderator.ToString());
+            }
         }
+
 
     }
 }

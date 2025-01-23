@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace TheBlogProject.Enums
 {
     public enum ModerationType
     {
         [Description("Hate speech")]
+        [Display(Name = "Hate Speech")]
         HateSpeech,
         [Description("Offensive language")]
         Language,

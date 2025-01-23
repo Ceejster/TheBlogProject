@@ -25,33 +25,45 @@
     </ul>
 </div>  *@
     <div class="blog">
-        <a asp-controller="Blogs" asp-action="BlogIndex" asp-route-id="@blog.Id">
-        <h2 class="country-title" style="text-align: center;">
-            @blog.Name
-        </h2>
-            <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
-        </a>
+        <!-- Blog Banner with Name Overlaid -->
+        <div class="blog-banner">
+            <a asp-controller="Blogs" asp-action="BlogIndex" asp-route-id="@blog.Id">
+                <div class="banner-image-container" style="background-image: url('@imageService.DecodeImage(blog.ImageData, blog.ContentType)');">
+                    <!-- Country Title and Description -->
+                    <div class="country-title">
+                        <h2>@blog.Name</h2>
+                        <p class="blog-description">@Html.Raw(blog.Description)</p>
+                    </div>
 
-        <div class="blog-description">
-            <p>@Html.Raw(blog.Description)</p>
-
-            <p>Author: @blog.BlogUser.FullName</p>
-
-            <p>Created: @blog.Created.ToString("dd MMM yyyy")</p>
+                    <!-- Blog Metadata -->
+                    <div class="blog-meta">
+                        <p>Author: @blog.BlogUser.FullName</p>
+                        <p>Created: @blog.Created.ToString("dd MMM yyyy")</p>
+                    </div>
+                </div>
+            </a>
         </div>
-        
+
+        <!-- Blog Posts Section -->
         <div class="post-list">
             <h3>Cities:</h3>
-            @foreach (var post in blog.Posts)
-            {
-                <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@post.Id">
-                <div class="post">
-                    <h4>@post.Title</h4>
-                    <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" />
-                    <p>@Html.Raw(post.Abstract)</p>
-                </div>
-                </a>
-            }
+            <div class="post-cards">
+                @foreach (var post in blog.Posts)
+                {
+                    <div class="post-card">
+                        <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@post.Id">
+                            <div class="post-image-container">
+                                <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" alt="Post Image" class="post-image" />
+                            </div>
+                            <div class="post-content">
+                                <h4>@post.Title</h4>
+                                <p>@Html.Raw(post.Abstract)</p>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
         </div>
     </div>
+
 }

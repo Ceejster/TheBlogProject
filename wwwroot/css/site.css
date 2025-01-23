@@ -1,50 +1,149 @@
 body {
-    padding-bottom: 5rem;
+    padding-bottom: 2rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Home Index */
+.blog {
+    background-color: lightgray;
+    margin: 2rem;
+    padding: 1rem;
+    border-radius: 5px;
+}
+/* Blog Banner */
+.blog-banner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.banner-image-container {
+    position: relative;
+}
+
+.banner-image-container {
+    width: 100%;
+    height: 25rem; /* Keeps the height consistent */
+    background-size: cover; /* Ensures the image covers the entire area */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+    position: relative;
+    border-radius: 5px;
 }
 
 .country-title {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 10px 10px;
     font-size: 24px;
-    margin: 10px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    min-width: 20rem;
 }
 
-.blog-description {
-    font-size: 18px;
-    margin: 10px;
+    .country-title p {
+        font-size: 15px;
+        font-weight: lighter;
+        text-align: center;
+    }
+
+/* Blog Metadata */
+.blog-meta {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    text-align: right;
+    color: white;
+    font-size: 0.6rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Improves readability */
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 0.2rem;
+    border-radius: 5px;
 }
 
+    .blog-meta p {
+        margin: 0;
+    }
+/* Post Cards Layout */
 .post-list {
     margin-top: 20px;
 }
 
-.city-legend ul {
-    list-style-type: none;
-    padding: 0;
+.post-cards {
+    display: grid; /* Use grid for layout */
+    grid-template-columns: repeat(4, 1fr); /* Default: 4 cards per row */
+    gap: 20px; /* Space between cards */
+    justify-content: center; /* Center cards horizontally */
+    align-content: center; /* Center cards vertically */
 }
 
-.city-legend li {
-    font-size: 16px;
-    margin: 5px 0;
+@media (max-width: 1025px) { /* For tablets or smaller screens */
+    .post-cards {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+    }
 }
 
-.post img {
-    max-width: 100px;
-    margin: 10px 0;
+@media (max-width: 768px) { /* For tablets or smaller screens */
+    .post-cards {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+    }
 }
 
-.blog img {
-    max-width: 200px;
-    display: block;
-    margin: 0 auto;
+@media (max-width: 576px) { /* For extra small screens */
+    .post-cards {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row, full width */
+    }
 }
 
-.post img {
-    max-width: 100px;
-    display: inline-block;
+.post-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-.bi {
+    .post-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+
+.post-image-container {
+    width: 100%;
+    height: 150px; /* Set a consistent height for images */
+    overflow: hidden;
+}
+
+.post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-content {
+    padding: 15px;
+    text-align: center;
     color: black;
 }
+
+    .post-content h4 {
+        font-size: 18px;
+        margin: 0 0 10px;
+    }
+
+    .post-content p {
+        font-size: 14px;
+        color: #666;
+    }
 
 
 .profile-img {
@@ -140,86 +239,15 @@ body {
     text-align: center;
 }
 
-.blog {
-    border: 1px solid #ddd; /* Light border for structure */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    margin: 20px auto; /* Center the card and add vertical spacing */
-    max-width: 90%; /* Allow the card to shrink for smaller screens */
-    width: 800px; /* Default width on larger screens */
-    overflow: hidden; /* Ensure content fits inside the card */
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transition for hover effects */
-    background-color: lightgrey; /* Card background */
-}
 
-    .blog:hover {
-        transform: translateY(-5px); /* Slight pop-out effect */
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
-    }
-
-    .blog img {
-        display: block; /* Ensure the image is block-level */
-        max-width: 100%; /* Fit the image within the card */
-        height: auto; /* Maintain aspect ratio */
-        border-bottom: 1px solid #ddd; /* Separator between image and content */
-    }
-
-.blog-description {
-    padding: 15px; /* Add space for text readability */
-    color: #333; /* Text color */
-    font-size: 16px; /* Readable font size */
-    line-height: 1.6; /* Improve line spacing */
-}
-
-    .blog-description p {
-        margin: 10px 0; /* Space out paragraphs */
-    }
-
-.country-title {
-    font-size: 24px; /* Prominent title font size */
-    color: #007bff; /* Highlighted color for titles */
-    text-align: center; /* Center the text */
-    margin: 15px 0; /* Add vertical spacing */
-}
-
-.post-list {
-    padding: 15px; /* Consistent padding for posts */
-    border-top: 1px solid #ddd; /* Separator for post list */
-}
-
-.post {
-    margin-bottom: 15px; /* Space between posts */
-}
-
-    .post img {
-        display: block;
-        max-width: 100%;
-        height: auto;
-        margin-bottom: 10px; /* Space below images */
-    }
-
-    .post h4 {
-        font-size: 18px; /* Slightly smaller font for post titles */
-        margin: 10px 0; /* Add spacing around titles */
-    }
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .blog {
-        width: 100%; /* Use full width on smaller screens */
-        max-width: 95%; /* Add a bit of margin on the sides */
-    }
-
-    .country-title {
-        font-size: 20px; /* Slightly smaller title font for smaller screens */
-    }
-
-    .blog-description {
-        font-size: 14px; /* Adjust font size for readability */
-    }
+.userSearch {
+    display: flex;
+    justify-content: end;
 }
 
 .searchIndex {
+    margin-right: 1rem;
+    width: 20rem;
 }
 
 .card-title {
@@ -294,4 +322,15 @@ body {
     padding: 15px; /* Padding for inner content */
     margin: 10px 0; /* Spacing between cards */
     max-width: 80%; /* Restrict width to not fill the entire column */
+}
+
+.moderationButtons {
+    display: flex;
+    justify-content: end;
+}
+
+
+/* Footer */
+.bi {
+    color: black;
 }

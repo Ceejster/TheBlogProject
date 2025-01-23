@@ -15,7 +15,7 @@
 </head>
 <body>
     <header class="site-header">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 w-100">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow w-100">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">The Blog Project</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -39,13 +39,13 @@
                         @if (User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Posts" asp-action="Create">Create Blog</a>
+                                <a class="nav-link text-dark" asp-controller="Blogs" asp-action="Create">Create Blog</a>
                             </li>
                         }
                         @if (User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Blogs" asp-action="Create">Create Post</a>
+                                <a class="nav-link text-dark" asp-controller="Posts" asp-action="Create">Create Post</a>
                             </li>
                         }
 
@@ -57,17 +57,20 @@
                 </div>
             </div>
         </nav>
-        <div class="searchIndex">
-            <!-- Can move this later. Form used to search for specific terms throughout the blog-->
-            <form asp-action="SearchIndex" asp-controller="Posts">
-                <div class="input-group mt-5">
-                    <input type="text" name="SearchTerm" class="form-control" placeholder="Searching for?" />
-                    <div class="input-group-append">
-                        <button class="commonButton" type="submit">Search</button>
+        <div class="userSearch">
+            <div class="searchIndex">
+                <!-- Can move this later. Form used to search for specific terms throughout the blog-->
+                <form asp-action="SearchIndex" asp-controller="Posts">
+                    <div class="input-group mt-5">
+                        <input type="text" name="SearchTerm" class="form-control" placeholder="Searching for?" />
+                        <div class="input-group-append">
+                            <button class="commonButton" type="submit">Search</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
+        
 
     </header>
     <div class="container">

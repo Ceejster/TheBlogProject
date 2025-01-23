@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TheBlogProject.Data;
@@ -11,9 +12,11 @@ using TheBlogProject.Data;
 namespace TheBlogProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250120152822_012")]
+    partial class _012
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -311,7 +314,8 @@ namespace TheBlogProject.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModeratedBody")
-                        .HasColumnType("text");
+                        .HasMaxLength(550)
+                        .HasColumnType("character varying(550)");
 
                     b.Property<int>("ModerationType")
                         .HasColumnType("integer");
