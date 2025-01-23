@@ -1,5 +1,6 @@
 body {
-    padding-bottom: 2rem;
+    padding-bottom: 5rem;
+    background-color: whitesmoke;
 }
 
 a {
@@ -8,7 +9,7 @@ a {
 
 /* Home Index */
 .blog {
-    background-color: lightgray;
+    background-color: white;
     margin: 2rem;
     padding: 1rem;
     border-radius: 5px;
@@ -75,6 +76,10 @@ a {
 /* Post Cards Layout */
 .post-list {
     margin-top: 20px;
+}
+
+.post-list h3 {
+    text-align: center;
 }
 
 .post-cards {

@@ -202,6 +202,12 @@ namespace TheBlogProject.Controllers
                         return NotFound();
                     }
 
+                    //Check if Name has changed
+                    if (!existingPost.BlogId.Equals(existingPost.BlogId))
+                    {
+                        existingPost.BlogId = updatedPost.BlogId;
+                    }
+
                     // Check if the title has changed
                     if (!string.Equals(existingPost.Title, updatedPost.Title, StringComparison.OrdinalIgnoreCase))
                     {
