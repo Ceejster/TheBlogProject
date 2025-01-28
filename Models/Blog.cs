@@ -7,6 +7,10 @@ namespace TheBlogProject.Models
     {
         public int Id { get; set; }
 
+        //Will need to add destination ID?
+        [Display(Name = "Area Name")]
+        public int? DestinationId { get; set; }
+
         [Display(Name = "Bloginame")]
         public string? BlogUserId { get; set; }
 
@@ -25,6 +29,7 @@ namespace TheBlogProject.Models
         [DataType(DataType.Date)]
         [Display(Name = "Updated Date")]
         public DateTime? Updated { get; set; }
+        public string? Slug { get; set; }
 
         [Display(Name = "Blog Image")]
         public byte[]? ImageData { get; set; }
@@ -36,6 +41,8 @@ namespace TheBlogProject.Models
         public IFormFile? Image { get; set; }
 
         //Navigation Property
+        public virtual Destination? Destination { get; set; }
+
         [Display(Name = "Blogthor")]
         public virtual BlogUser? BlogUser { get; set; }
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();

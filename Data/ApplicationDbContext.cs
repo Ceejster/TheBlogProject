@@ -6,6 +6,7 @@ namespace TheBlogProject.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<BlogUser>(options)
     {
+        public DbSet<Destination>? Destination { get; set; }
         public DbSet<Blog>? Blogs { get; set; }
         public DbSet<Post>? Posts { get; set; }
         public DbSet<Comment>? Comments { get; set; }
@@ -14,6 +15,13 @@ namespace TheBlogProject.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            //Defining relationshipship between destination, blog, and post
+            modelBuilder.Entity<Blog>()
+                .HasOne(b => b.Destination)
+                .WithMany(d => d.Blogs)
+                .HasForeignKey(b => b.DestinationId);
+
+
 
             // Defining the relationship between Blog and Post
             modelBuilder.Entity<Post>()

@@ -8,10 +8,37 @@ a {
 }
 
 /* Home Index */
+.blogHeader {
+    margin: 2.5rem 0; /* Add some spacing around the section */
+    padding-bottom: 2.5rem;
+    border-bottom: 2px solid black;
+}
+
+    .blogHeader img {
+        max-width: 100%; /* Ensure the image is responsive */
+        height: auto; /* Maintain aspect ratio */
+        border-radius: 5px; /* Optional: Add rounded corners for aesthetics */
+    }
+
+    .blogHeader h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .blogHeader p {
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #333; /* Optional: Add text color for better readability */
+    }
+
+.blogHeaderText {
+    text-align: end;
+}
+
 .blog {
     background-color: white;
     margin: 2rem;
-    padding: 1rem;
     border-radius: 5px;
 }
 /* Blog Banner */
@@ -73,9 +100,10 @@ a {
     .blog-meta p {
         margin: 0;
     }
+
 /* Post Cards Layout */
 .post-list {
-    margin-top: 20px;
+    margin-top: 0.5rem;
 }
 
 .post-list h3 {
@@ -84,10 +112,16 @@ a {
 
 .post-cards {
     display: grid; /* Use grid for layout */
-    grid-template-columns: repeat(4, 1fr); /* Default: 4 cards per row */
+    grid-template-columns: repeat(3, 1fr); /* Default: 4 cards per row */
     gap: 20px; /* Space between cards */
     justify-content: center; /* Center cards horizontally */
     align-content: center; /* Center cards vertically */
+}
+
+.post-cards-center {
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
 
 @media (max-width: 1025px) { /* For tablets or smaller screens */
@@ -98,13 +132,13 @@ a {
 
 @media (max-width: 768px) { /* For tablets or smaller screens */
     .post-cards {
-        grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+        grid-template-columns: repeat(1, 1fr); /* 2 cards per row */
     }
 }
 
 @media (max-width: 576px) { /* For extra small screens */
     .post-cards {
-        grid-template-columns: repeat(2, 1fr); /* 2 cards per row, full width */
+        grid-template-columns: repeat(1, 1fr); /* 2 cards per row, full width */
     }
 }
 
@@ -121,10 +155,9 @@ a {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-
 .post-image-container {
-    width: 100%;
-    height: 150px; /* Set a consistent height for images */
+    width: auto;
+    height: 250px; /* Set a consistent height for images */
     overflow: hidden;
 }
 
@@ -150,6 +183,220 @@ a {
         color: #666;
     }
 
+        /* DESTINATIONS INDEX LAYOUT */
+/* Container for All Destination Cards */
+.destination-details-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Display 3 destination cards per row */
+    gap: 20px;
+    justify-content: center;
+    align-content: center;
+    padding: 20px;
+}
+
+.destination-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1025px) {
+    .destination-details-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 destination cards per row on tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .destination-details-container {
+        grid-template-columns: repeat(1, 1fr); /* 1 destination card per row on smaller screens */
+    }
+}
+
+
+
+/* Blog Cards Layout */
+.destination-details {
+    margin-top: 2rem;
+}
+
+.area-banner {
+    min-height: 50rem; /* Increased height */
+    text-align: center;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Position for layering content */
+    background-size: cover; /* Ensure image fits properly */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat;
+    border-radius: 5px;
+}
+
+.blog-list {
+    margin-top: 0.5rem;
+}
+
+    .blog-list h3 {
+        text-align: center;
+    }
+
+.blog-cards {
+    display: grid; /* Use grid for layout */
+    grid-template-columns: repeat(3, 1fr); /* Default: 4 cards per row */
+    gap: 20px; /* Space between cards */
+    justify-content: center; /* Center cards horizontally */
+    align-content: center; /* Center cards vertically */
+    margin: 1rem;
+}
+
+@media (max-width: 1025px) { /* For tablets or smaller screens */
+    .blog-cards {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+    }
+}
+
+@media (max-width: 768px) { /* For tablets or smaller screens */
+    .blog-cards {
+        grid-template-columns: repeat(1, 1fr); /* 2 cards per row */
+    }
+}
+
+@media (max-width: 576px) { /* For extra small screens */
+    .blog-cards {
+        grid-template-columns: repeat(1, 1fr); /* 2 cards per row, full width */
+    }
+}
+
+.blog-card {
+    border-radius: 5px;
+    overflow: hidden;
+    background: #fff;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+    .blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+.blog-image-container {
+    width: auto;
+    height: 250px; /* Set a consistent height for images */
+    overflow: hidden;
+}
+
+.blog-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.blog-content {
+    padding: 15px;
+    text-align: center;
+    color: black;
+}
+
+    .blog-content h4 {
+        font-size: 18px;
+        margin: 0 0 10px;
+    }
+
+    .blog-content p {
+        font-size: 14px;
+        color: #666;
+    }
+
+/* CONTACT FORM */
+/* Container for the entire contact section */
+.contact-section {
+    background-color: white; /* Light background for the section */
+    padding: 40px 20px; /* Add spacing around the section */
+    border-radius: 5px;
+}
+
+/* Default layout (desktop and larger screens) */
+.contact-container {
+    display: flex; /* Keep the side-by-side layout */
+    justify-content: space-between; /* Space the sections appropriately */
+    align-items: stretch; /* Ensure both sections align in height */
+    gap: 20px; /* Add spacing between the two sections */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 768px) {
+    .contact-left {
+        order: 2; /* Move the left section to the bottom */
+    }
+
+    .contact-right {
+        order: 1; /* Ensure the form is at the top */
+    }
+
+    .contact-container {
+        flex-direction: column; /* Stack items vertically */
+    }
+}
+
+/* Left section (quick write-up) */
+.contact-left {
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Keep the content vertical */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    text-align: center; /* Center the text itself */
+    padding: 20px; /* Add some padding for spacing */
+    border-radius: 8px; /* Optional: rounded corners */
+    flex: 1; /* Allow it to take an equal portion of space */
+    text-align: end;
+}
+
+/* Right section (contact form) */
+.contact-right {
+    flex: 1; /* Take up available space */
+    max-width: 55%; /* Limit the width of the form section */
+}
+
+/* Form styling */
+.contact-form .form-group {
+    margin-bottom: 20px; /* Space between form fields */
+}
+
+.contact-form label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.contact-input,
+.contact-textarea {
+    width: 100%; /* Full width for inputs */
+    padding: 10px;
+    border: 1px solid #ccc; /* Subtle border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 1rem;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.contact-textarea {
+    resize: vertical; /* Allow resizing only vertically */
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+    .contact-container {
+        flex-direction: column; /* Stack sections vertically */
+    }
+
+    .contact-left,
+    .contact-right {
+        max-width: 100%; /* Full width for both sections */
+    }
+}
 
 .profile-img {
     width: 10rem; /* Set the width */
@@ -203,6 +450,10 @@ a {
     transition: all 0.15s ease-in-out; /* Smooth hover transition */
     margin: 0.5rem;
 }
+
+    .commonButton:hover {
+        background-color: darkred; /* Darker shade on hover */
+    }
 
 .tagButton {
     justify-content: center;

@@ -1,0 +1,37 @@
+﻿@using TheBlogProject.Services
+
+@inject IImageService imageService
+@model Destination
+
+<div class="destination-details">
+    <!-- Area Section -->
+    <div class="area-banner" style="background-image: url('@imageService.DecodeImage(Model.ImageData, Model.ContentType)');">
+        <div class="area-banner-overlay"></div>
+        <h2>@Model.Area</h2>
+
+        @if (Model.Blogs.Any())
+        {
+            <!-- Blogs Section Inside Banner -->
+            <div class="blog-cards">
+                @foreach (var blog in Model.Blogs)
+                {
+                    <div class="blog-card">
+                        <a asp-controller="Blogs" asp-action="BlogIndex" asp-route-id="@blog.Id">
+                            <div class="blog-image-container">
+                                <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" alt="Blog Image" class="blog-image" />
+                            </div>
+                            <div class="blog-content">
+                                <h4>@blog.Name</h4>
+                                <p>@Html.Raw(blog.Description)</p>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>No blogs available for this destination.</p>
+        }
+    </div>
+</div>

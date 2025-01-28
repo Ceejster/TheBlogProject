@@ -1,4 +1,7 @@
 ﻿@using TheBlogProject.Enums
+@using TheBlogProject.Services
+
+@inject IImageService imageService
 @model TheBlogProject.Models.Post
 
 @{
@@ -65,6 +68,17 @@
                         <select class="form-control" id="tagValues" name="tagValues" title="tags" multiple></select>
                     </div>
                 </div>
+            </div>
+            <div>
+                <p>Current image:</p>
+                @if (Model.ImageData != null && !string.IsNullOrEmpty(Model.ContentType))
+                {
+                    <img src="@imageService.DecodeImage(Model.ImageData, Model.ContentType)" class="img-fluid" alt="Current Image" />
+                }
+                else
+                {
+                    <p>No image available.</p>
+                }
             </div>
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>

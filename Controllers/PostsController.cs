@@ -32,30 +32,24 @@ namespace TheBlogProject.Controllers
         public IActionResult SearchIndex(string searchTerm)
         {
             ViewData["SearchTerm"] = searchTerm;
-
             var posts = _blogSearchService.Search(searchTerm);
-            
             return View(posts);
         }
 
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Posts
+            var posts = await _context.Posts
                 .Include(p => p.Blog)
-                .Include(p => p.BlogUser);
-            var posts = await applicationDbContext.ToListAsync();
-            return View(posts); // Pass posts to the view
+                .Include(p => p.BlogUser)
+                .ToListAsync();
+            return View(posts);
         }
 
         // BlogPostIndex
         public async Task<IActionResult> BlogPostIndex(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
+            if (id == null) return NotFound();
             var posts = _context.Posts.Where(p => p.Id == id);
             return View("Index", posts);
         }
@@ -63,11 +57,7 @@ namespace TheBlogProject.Controllers
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(string slug)
         {
-            if (string.IsNullOrEmpty(slug))
-            {
-                return NotFound();
-            }
-
+            if (string.IsNullOrEmpty(slug)) return NotFound();
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
@@ -75,11 +65,8 @@ namespace TheBlogProject.Controllers
                 .Include(p => p.Comments)
                 .ThenInclude(c => c.BlogUser)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
-            if (post == null)
-            {
-                return NotFound();
-            }
 
+            if (post == null) return NotFound();
             return View(post);
         }
 
@@ -99,41 +86,24 @@ namespace TheBlogProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                //Sanitizing the content since viewing it .Raw
+                // Sanitize content before saving
                 post.Content = _sanitizeService.Sanitize(post.Content) ?? string.Empty;
                 post.Abstract = _sanitizeService.Sanitize(post.Abstract) ?? string.Empty;
-
                 post.Created = DateTime.UtcNow;
 
-                //Setting the author Id
                 var authorId = _userManager.GetUserId(User);
                 post.BlogUserId = authorId;
 
                 post.ImageData = await _imageService.EncodeImageAsync(post.Image);
                 post.ContentType = _imageService.ContentType(post.Image);
 
-                //Create the slug and see if it's unique
+                // Generate and validate slug
                 var slug = _slugService.UrlFriendly(post.Title);
+                var (isValid, errorMessage) = _slugService.ValidateSlug(slug, "post");
 
-                // Create a var to store whether an error has occured
-                var validateError = false;
-
-                if (string.IsNullOrEmpty(slug))
+                if (!isValid)
                 {
-                    validateError = true;
-                    ModelState.AddModelError("Title", "There is no title provided.");
-                }
-
-                // Detect duplicate slugs
-                else if (!_slugService.IsUnique(slug))
-                {
-                    validateError = true;
-                    ModelState.AddModelError("Title", "The title provided is already being used in another post.");
-                }
-
-                if (validateError)
-                {
-
+                    ModelState.AddModelError("Title", errorMessage);
                     ViewData["TagValues"] = string.Join(",", tagValues);
                     ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
                     return View(post);
@@ -141,23 +111,20 @@ namespace TheBlogProject.Controllers
 
                 post.Slug = slug;
 
+                // Add the post
                 _context.Add(post);
                 await _context.SaveChangesAsync();
 
+                // Add tags
                 foreach (var tagText in tagValues)
                 {
-                    _context.Add(new Tag()
-                    {
-                        PostId = post.Id,
-                        BlogUserId = authorId,
-                        Text = tagText
-                    });
+                    _context.Add(new Tag { PostId = post.Id, BlogUserId = authorId, Text = tagText });
                 }
 
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
             return View(post);
         }
@@ -166,16 +133,11 @@ namespace TheBlogProject.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var post = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
-            if (post == null)
-            {
-                return NotFound();
-            }
+            if (post == null) return NotFound();
+
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             ViewData["TagValues"] = string.Join(", ", post.Tags.Select(t => t.Text));
             return View(post);
@@ -187,35 +149,27 @@ namespace TheBlogProject.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post updatedPost, IFormFile? newImage, List<string> tagValues)
         {
-            if (id != updatedPost.Id)
-            {
-                return NotFound();
-            }
+            if (id != updatedPost.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
                     var existingPost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == updatedPost.Id);
-                    if (existingPost == null)
-                    {
-                        return NotFound();
-                    }
+                    if (existingPost == null) return NotFound();
 
-                    //Check if Name has changed
-                    if (!existingPost.BlogId.Equals(existingPost.BlogId))
-                    {
-                        existingPost.BlogId = updatedPost.BlogId;
-                    }
+                    // Check if BlogId has changed
+                    if (existingPost.BlogId != updatedPost.BlogId) existingPost.BlogId = updatedPost.BlogId;
 
-                    // Check if the title has changed
+                    // Check if the title has changed and validate slug
                     if (!string.Equals(existingPost.Title, updatedPost.Title, StringComparison.OrdinalIgnoreCase))
                     {
                         var newSlug = _slugService.UrlFriendly(updatedPost.Title);
+                        var (isValid, errorMessage) = _slugService.ValidateSlug(newSlug, "post");
 
-                        if (!_slugService.IsUnique(newSlug))
+                        if (!isValid)
                         {
-                            ModelState.AddModelError("Title", "The title provided is already being used in another post.");
+                            ModelState.AddModelError("Title", errorMessage);
                             ViewData["TagValues"] = string.Join(",", tagValues);
                             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", existingPost.BlogId);
                             return View(existingPost);
@@ -225,29 +179,24 @@ namespace TheBlogProject.Controllers
                         existingPost.Slug = newSlug;
                     }
 
+                    // Update sanitized fields
                     existingPost.Abstract = _sanitizeService.Sanitize(updatedPost.Abstract) ?? string.Empty;
                     existingPost.Content = _sanitizeService.Sanitize(updatedPost.Content) ?? string.Empty;
                     existingPost.ReadyStatus = updatedPost.ReadyStatus;
                     existingPost.Updated = DateTime.UtcNow;
 
+                    // Update image if a new one is provided
                     if (newImage != null)
                     {
                         existingPost.ImageData = await _imageService.EncodeImageAsync(newImage);
                         existingPost.ContentType = _imageService.ContentType(newImage);
                     }
 
-                    // Remove all Tags previously associated with the Post
+                    // Remove old tags and add new ones
                     _context.Tags.RemoveRange(existingPost.Tags);
-
-                    // Add in the new Tags from the Edit form
                     foreach (var tagText in tagValues)
                     {
-                        _context.Add(new Tag
-                        {
-                            PostId = existingPost.Id,
-                            BlogUserId = existingPost.BlogUserId,
-                            Text = tagText
-                        });
+                        _context.Add(new Tag { PostId = existingPost.Id, BlogUserId = existingPost.BlogUserId, Text = tagText });
                     }
 
                     _context.Update(existingPost);
@@ -255,40 +204,28 @@ namespace TheBlogProject.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PostExists(updatedPost.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!PostExists(updatedPost.Id)) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", updatedPost.BlogId);
             return View(updatedPost);
         }
-
 
         // GET: Posts/Delete/5
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (post == null)
-            {
-                return NotFound();
-            }
 
+            if (post == null) return NotFound();
             return View(post);
         }
 
@@ -299,18 +236,11 @@ namespace TheBlogProject.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var post = await _context.Posts.FindAsync(id);
-            if (post != null)
-            {
-                _context.Posts.Remove(post);
-            }
-
+            if (post != null) _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PostExists(int id)
-        {
-            return _context.Posts.Any(e => e.Id == id);
-        }
+        private bool PostExists(int id) => _context.Posts.Any(e => e.Id == id);
     }
 }

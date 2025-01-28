@@ -40,7 +40,7 @@ namespace TheBlogProject.Controllers
             }
 
             var blogs = _context.Blogs
-                .Where(b => b.Id == id)
+                .Where(b => b.DestinationId == id)
                 .Include(b => b.BlogUser);
             return View("Index", blogs);
         }
@@ -69,15 +69,15 @@ namespace TheBlogProject.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
-            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["DestinationId"] = new SelectList(_context.Destination, "Id", "Area");
             return View();
         }
 
         // POST: Blogs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Create([Bind("Name,Description,Image")] Blog blog)
+        [Authorize(Roles = "Administrator,Moderator")]
+        public async Task<IActionResult> Create([Bind("DestinationId,Name,Description,Image")] Blog blog)
         {
             if (ModelState.IsValid)
             {

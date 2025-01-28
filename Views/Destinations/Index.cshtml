@@ -1,0 +1,51 @@
+﻿@using TheBlogProject.Services
+
+@inject IImageService imageService
+@model IEnumerable<TheBlogProject.Models.Destination>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Area)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BlogUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var destination in Model)
+        {
+        <tr>
+            <td>
+                    @Html.DisplayFor(modelItem => destination.Area)
+            </td>
+                <td>
+                    <img src="@imageService.DecodeImage(destination.ImageData, destination.ContentType)" class="img-fluid" />
+                </td>
+            <td>
+                    @Html.DisplayFor(modelItem => destination.BlogUser.DisplayName)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@destination.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@destination.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@destination.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

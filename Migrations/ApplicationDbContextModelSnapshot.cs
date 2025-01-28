@@ -8,7 +8,7 @@ using TheBlogProject.Data;
 
 #nullable disable
 
-namespace TheBlogProject.Data.Migrations
+namespace TheBlogProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -176,6 +176,9 @@ namespace TheBlogProject.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<int?>("DestinationId")
+                        .HasColumnType("integer");
+
                     b.Property<byte[]>("ImageData")
                         .HasColumnType("bytea");
 
@@ -184,12 +187,17 @@ namespace TheBlogProject.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<string>("Slug")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BlogUserId");
+
+                    b.HasIndex("DestinationId");
 
                     b.ToTable("Blogs");
                 });
@@ -336,6 +344,38 @@ namespace TheBlogProject.Data.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("TheBlogProject.Models.Destination", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Area")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("BlogUserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ContentType")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogUserId");
+
+                    b.ToTable("Destination");
+                });
+
             modelBuilder.Entity("TheBlogProject.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -477,7 +517,13 @@ namespace TheBlogProject.Data.Migrations
                         .WithMany("Blogs")
                         .HasForeignKey("BlogUserId");
 
+                    b.HasOne("TheBlogProject.Models.Destination", "Destination")
+                        .WithMany("Blogs")
+                        .HasForeignKey("DestinationId");
+
                     b.Navigation("BlogUser");
+
+                    b.Navigation("Destination");
                 });
 
             modelBuilder.Entity("TheBlogProject.Models.Comment", b =>
@@ -501,6 +547,15 @@ namespace TheBlogProject.Data.Migrations
                     b.Navigation("Moderator");
 
                     b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("TheBlogProject.Models.Destination", b =>
+                {
+                    b.HasOne("TheBlogProject.Models.BlogUser", "BlogUser")
+                        .WithMany()
+                        .HasForeignKey("BlogUserId");
+
+                    b.Navigation("BlogUser");
                 });
 
             modelBuilder.Entity("TheBlogProject.Models.Post", b =>
@@ -549,6 +604,11 @@ namespace TheBlogProject.Data.Migrations
                     b.Navigation("Blogs");
 
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("TheBlogProject.Models.Destination", b =>
+                {
+                    b.Navigation("Blogs");
                 });
 
             modelBuilder.Entity("TheBlogProject.Models.Post", b =>

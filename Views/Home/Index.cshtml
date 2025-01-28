@@ -1,4 +1,5 @@
 ﻿@using TheBlogProject.Services
+@using TheBlogProject.Enums
 
 @inject IImageService imageService
 @model IEnumerable<TheBlogProject.Models.Blog>
@@ -8,22 +9,36 @@
 }
 
 <div class="blogHeader">
-    <h1>Welcome to my travel blog!</h1>
-    <p>This is where I keep track of places that I've been to, lived in, or just visited. You'll see a header that will list each country and then there will be sections that list each city I've visited.</p>
+    <div class="row d-flex align-items-center">
+        <div class="col-md-8">
+            <img src="/images/bannerImage.jpg" class="img-fluid" alt="Placeholder Image" />
+        </div>
+        <div class="blogHeaderText col-md-4">
+            <h1>Our Life in Travel</h1>
+            <p>
+                This is where I keep track of places that we've been to, lived in, and things we've done.
+                I have never kept track of places, sights, or things we've done very precicley. This is to help keep track
+                of all of that so in the future my wife and I will have this to look back on.
+                If this helps inspire you, or give you advice, that's even better.
+            </p>
+            <hr />
+            <small><i>It's the people you meet along the way that make the journey special</i></small>
+        </div>
+    </div>
 </div>
+
 
 @foreach (var blog in Model)
 {
-
-    @* <div class="city-legend">
-    <h4>Cities Featured:</h4>
-    <ul>
-        @foreach (var post in blog.Posts)
-        {
-            <li><a href="@Url.Action("Details", "Posts", new { id = post.Id })">@post.Title</a></li>
-        }
-    </ul>
-</div>  *@
+@* <div class="city-legend">
+        <h4>Cities Featured:</h4>
+        <ul>
+            @foreach (var post in blog.Posts)
+            {
+                <li><a href="@Url.Action("Details", "Posts", new { id = post.Id })">@post.Title</a></li>
+            }
+        </ul>
+    </div>  *@
     <div class="blog">
         <!-- Blog Banner with Name Overlaid -->
         <div class="blog-banner">
@@ -43,6 +58,7 @@
                 </div>
             </a>
         </div>
+        
 
         <!-- Blog Posts Section -->
         <div class="post-list">
@@ -50,20 +66,36 @@
             <div class="post-cards">
                 @foreach (var post in blog.Posts)
                 {
-                    <div class="post-card">
-                        <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@post.Id">
-                            <div class="post-image-container">
-                                <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" alt="Post Image" class="post-image" />
-                            </div>
-                            <div class="post-content">
-                                <h4>@post.Title</h4>
-                                <p>@Html.Raw(post.Abstract)</p>
-                            </div>
-                        </a>
-                    </div>
+                    @if (post.ReadyStatus.ToString() == "PreviewReady" && (User.IsInRole(BlogRoles.Moderator.ToString()) || User.IsInRole(BlogRoles.Administrator.ToString())))
+                    {
+                        <div class="post-card">
+                            <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@post.Id">
+                                <div class="post-image-container">
+                                    <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" alt="Post Image" class="post-image" />
+                                </div>
+                                <div class="post-content">
+                                    <h4>@post.Title</h4>
+                                    <p>@Html.Raw(post.Abstract)</p>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                    @if (post.ReadyStatus.ToString() == "ProductionReady")
+                    {
+                        <div class="post-card">
+                            <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@post.Id">
+                                <div class="post-image-container">
+                                    <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" alt="Post Image" class="post-image" />
+                                </div>
+                                <div class="post-content">
+                                    <h4>@post.Title</h4>
+                                    <p>@Html.Raw(post.Abstract)</p>
+                                </div>
+                            </a>
+                        </div>
+                    }
                 }
             </div>
         </div>
     </div>
-
 }

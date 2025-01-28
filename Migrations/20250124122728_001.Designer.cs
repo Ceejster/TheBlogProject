@@ -9,11 +9,11 @@ using TheBlogProject.Data;
 
 #nullable disable
 
-namespace TheBlogProject.Data.Migrations
+namespace TheBlogProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250103135845_005")]
-    partial class _005
+    [Migration("20250124122728_001")]
+    partial class _001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -179,6 +179,9 @@ namespace TheBlogProject.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<int?>("DestinationId")
+                        .HasColumnType("integer");
+
                     b.Property<byte[]>("ImageData")
                         .HasColumnType("bytea");
 
@@ -187,12 +190,17 @@ namespace TheBlogProject.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<string>("Slug")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BlogUserId");
+
+                    b.HasIndex("DestinationId");
 
                     b.ToTable("Blogs");
                 });
@@ -297,7 +305,6 @@ namespace TheBlogProject.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BlogUserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Body")
@@ -315,14 +322,12 @@ namespace TheBlogProject.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModeratedBody")
-                        .HasMaxLength(550)
-                        .HasColumnType("character varying(550)");
+                        .HasColumnType("text");
 
                     b.Property<int>("ModerationType")
                         .HasColumnType("integer");
 
                     b.Property<string>("ModeratorId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("PostId")
@@ -340,6 +345,38 @@ namespace TheBlogProject.Data.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("TheBlogProject.Models.Destination", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Area")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("BlogUserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ContentType")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogUserId");
+
+                    b.ToTable("Destination");
                 });
 
             modelBuilder.Entity("TheBlogProject.Models.Post", b =>
@@ -483,22 +520,24 @@ namespace TheBlogProject.Data.Migrations
                         .WithMany("Blogs")
                         .HasForeignKey("BlogUserId");
 
+                    b.HasOne("TheBlogProject.Models.Destination", "Destination")
+                        .WithMany("Blogs")
+                        .HasForeignKey("DestinationId");
+
                     b.Navigation("BlogUser");
+
+                    b.Navigation("Destination");
                 });
 
             modelBuilder.Entity("TheBlogProject.Models.Comment", b =>
                 {
                     b.HasOne("TheBlogProject.Models.BlogUser", "BlogUser")
                         .WithMany()
-                        .HasForeignKey("BlogUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BlogUserId");
 
                     b.HasOne("TheBlogProject.Models.BlogUser", "Moderator")
                         .WithMany()
-                        .HasForeignKey("ModeratorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ModeratorId");
 
                     b.HasOne("TheBlogProject.Models.Post", "Post")
                         .WithMany("Comments")
@@ -511,6 +550,15 @@ namespace TheBlogProject.Data.Migrations
                     b.Navigation("Moderator");
 
                     b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("TheBlogProject.Models.Destination", b =>
+                {
+                    b.HasOne("TheBlogProject.Models.BlogUser", "BlogUser")
+                        .WithMany()
+                        .HasForeignKey("BlogUserId");
+
+                    b.Navigation("BlogUser");
                 });
 
             modelBuilder.Entity("TheBlogProject.Models.Post", b =>
@@ -559,6 +607,11 @@ namespace TheBlogProject.Data.Migrations
                     b.Navigation("Blogs");
 
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("TheBlogProject.Models.Destination", b =>
+                {
+                    b.Navigation("Blogs");
                 });
 
             modelBuilder.Entity("TheBlogProject.Models.Post", b =>

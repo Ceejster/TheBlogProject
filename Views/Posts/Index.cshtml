@@ -24,13 +24,10 @@
             <thead>
                 <tr>
                     <th>
+                        @Html.DisplayNameFor(model => model.BlogId)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.Title)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Abstract)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Content)
                     </th>
                     <th class="d-none d-lg-table-cell">
                         @Html.DisplayNameFor(model => model.Created)
@@ -47,7 +44,6 @@
                             @Html.DisplayNameFor(model => model.ReadyStatus)
                         </th>
                     }
-
                     <th>
                         @Html.DisplayNameFor(model => model.BlogUser)
                     </th>
@@ -59,13 +55,10 @@
                 {
                     <tr>
                         <td>
+                            @Html.Raw(post.BlogId)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => post.Title)
-                        </td>
-                        <td>
-                            @Html.Raw(post.Abstract)
-                        </td>
-                        <td>
-                            @Html.Raw(post.Content)
                         </td>
                         <td class="d-none d-lg-table-cell">@post.Created?.ToString("yyyy-MM-dd")</td>
                         <td class="d-none d-lg-table-cell">
