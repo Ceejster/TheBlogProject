@@ -15,13 +15,15 @@ namespace TheBlogProject.Controllers
         private readonly IImageService _imageService;
         private readonly UserManager<BlogUser> _userManager;
         private readonly ISanitizeService _sanitizeService;
+        private readonly ISlugService _slugService;
 
-        public BlogsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager, ISanitizeService sanitizeService)
+        public BlogsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager, ISanitizeService sanitizeService, ISlugService slugService)
         {
             _context = context;
             _imageService = imageService;
             _userManager = userManager;
             _sanitizeService = sanitizeService;
+            _slugService = slugService;
         }
 
         // GET: Blogs
@@ -47,16 +49,18 @@ namespace TheBlogProject.Controllers
 
 
         // GET: Blogs/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string slug)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
 
             var blog = await _context.Blogs
-                .Include(b => b.BlogUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(d => d.Posts)
+                    .ThenInclude(b => b.BlogUser)
+                .FirstOrDefaultAsync(d => d.Slug == slug);
+
             if (blog == null)
             {
                 return NotFound();
@@ -81,6 +85,18 @@ namespace TheBlogProject.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Generate the slug
+                blog.Slug = _slugService.GenerateSlug(blog.Name);
+                // Validate the sug
+                var (isValid, errorMessage) = _slugService.ValidateSlug(blog.Slug, "destination");
+
+                if (!isValid)
+                {
+                    ModelState.AddModelError("Slug", errorMessage);
+                    ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", blog.BlogUserId);
+                    return View(blog);
+                }
+
                 //Sanitize raw HTML
                 blog.Description = _sanitizeService.Sanitize(blog.Description) ?? string.Empty;
 
@@ -88,6 +104,8 @@ namespace TheBlogProject.Controllers
                 blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
                 blog.ContentType = _imageService.ContentType(blog.Image);
 
+
+                // Add and save to the database
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
 
@@ -136,6 +154,20 @@ namespace TheBlogProject.Controllers
                     if (existingBlog == null)
                     {
                         return NotFound();
+                    }
+
+                    //Regenerate the slug if Area has been changed
+                    if (existingBlog.Name != blog.Name)
+                    {
+                        existingBlog.Slug = _slugService.GenerateSlug(existingBlog.Name);
+
+                        // Validate the new slug
+                        var (isValid, errorMessage) = _slugService.ValidateSlug(existingBlog.Slug, "destination");
+                        if (!isValid)
+                        {
+                            ModelState.AddModelError("Slug", errorMessage);
+                            return View(blog);
+                        }
                     }
 
                     // Update properties

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,13 +15,15 @@ namespace TheBlogProject.Controllers
         private readonly IImageService _imageService;
         private readonly UserManager<BlogUser> _userManager;
         private readonly ISanitizeService _sanitizeService;
+        private readonly ISlugService _slugService;
 
-        public DestinationsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager, ISanitizeService sanitizeService)
+        public DestinationsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager, ISanitizeService sanitizeService, ISlugService slugService)
         {
             _context = context;
             _imageService = imageService;
             _userManager = userManager;
             _sanitizeService = sanitizeService;
+            _slugService = slugService;
         }
 
         // GET: Destinations
@@ -34,16 +31,22 @@ namespace TheBlogProject.Controllers
         {
             var applicationDbContext = _context.Destination.Include(d => d.BlogUser);
             var destinations = await applicationDbContext.ToListAsync();
+
             return View(destinations);
         }
 
         // GET: Destinations/Details/5
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(string slug)
         {
+            if (string.IsNullOrEmpty(slug))
+            {
+                return NotFound();
+            }
+
             var destination = await _context.Destination
                 .Include(d => d.Blogs)
                     .ThenInclude(b => b.BlogUser)
-                .FirstOrDefaultAsync(d => d.Id == id);
+                .FirstOrDefaultAsync(d => d.Slug == slug);
 
             if (destination == null)
             {
@@ -69,10 +72,24 @@ namespace TheBlogProject.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Generate the slug
+                destination.Slug = _slugService.GenerateSlug(destination.Area);
+                // Validate the slug
+                var (isValid, errorMessage) = _slugService.ValidateSlug(destination.Slug, "destination");
+
+                if (!isValid)
+                {
+                    ModelState.AddModelError("Slug", errorMessage);
+                    ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", destination.BlogUserId);
+                    return View(destination);
+                }
+
+                // Set the additional properties
                 destination.BlogUserId = _userManager.GetUserId(User);
                 destination.ImageData = await _imageService.EncodeImageAsync(destination.Image);
                 destination.ContentType = _imageService.ContentType(destination.Image);
 
+                // Add and save the destination to the database
                 _context.Add(destination);
                 await _context.SaveChangesAsync();
 
@@ -121,6 +138,21 @@ namespace TheBlogProject.Controllers
                         return NotFound();
                     }
 
+                    //Regenerate the slug if Area has been changed
+                    if (existingDestination.Area != destination.Area)
+                    {
+                        existingDestination.Slug = _slugService.GenerateSlug(existingDestination.Area);
+
+                        // Validate the new slug
+                        var (isValid, errorMessage) = _slugService.ValidateSlug(existingDestination.Slug, "destination");
+                        if (!isValid)
+                        {
+                            ModelState.AddModelError("Slug", errorMessage);
+                            return View(destination);
+                        }
+                    }
+
+                    // Update other properties
                     existingDestination.Area = destination.Area;
 
                     // Update Image if provided
@@ -130,6 +162,7 @@ namespace TheBlogProject.Controllers
                         existingDestination.ContentType = _imageService.ContentType(newImage);
                     }
 
+                    // Save changes to database
                     _context.Update(existingDestination);
                     await _context.SaveChangesAsync();
 

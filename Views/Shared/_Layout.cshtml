@@ -15,51 +15,54 @@
 </head>
 <body>
     <header class="site-header">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow w-100">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Life in Travel</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Life in Travel</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <!-- Make the "Destinations" dropdown header clickable -->
+                            <a asp-controller="Destinations" asp-action="Index">
+                                Destinations
+                            </a>class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <!-- Render the dropdown items using the ViewComponent -->
+                            @await Component.InvokeAsync("Destinations")
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Destinations" asp-action="Index">Destinations</a>
+                            <a class="nav-link" asp-controller="Blogs" asp-action="Index">Blogs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Blogs" asp-action="Index">Blogs</a>
+                            <a class="nav-link" asp-controller="Posts" asp-action="Index">Posts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Posts" asp-action="Index">Posts</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="About">About</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
                         </li>
                         @if (User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Blogs" asp-action="Create">Create Blog</a>
+                                <a class="nav-link" asp-controller="Blogs" asp-action="Create">Create Blog</a>
                             </li>
-                        }
-                        @if (User.IsInRole("Administrator"))
-                        {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Posts" asp-action="Create">Create Post</a>
+                                <a class="nav-link" asp-controller="Posts" asp-action="Create">Create Post</a>
                             </li>
                         }
-
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Contact">Contact</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Contact">Contact</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
+
+
+
         <!-- Removed search feature for now. Want to see how it looks without. Don't know what purpose it will serve
         <div class="userSearch">
             <div class="searchIndex">
@@ -132,16 +135,6 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        tinymce.init({
-            selector: 'textarea.tinymce-editor',
-            valid_elements: 'p,strong,em,ul,li,a[href|title]',
-            menubar: false,
-            plugins: 'lists link image table code',
-            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | code'
-        });
-    </script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

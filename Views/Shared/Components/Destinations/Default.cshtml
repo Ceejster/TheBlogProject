@@ -1,0 +1,17 @@
+﻿@model List<Destination>
+
+<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    @if (Model.Any())
+    {
+        foreach (var destination in Model)
+        {
+            <li>
+                <a class="dropdown-item" asp-controller="Destinations" asp-action="Details" asp-route-slug="@destination.Slug">@destination.Area</a>
+            </li>
+        }
+    }
+    else
+    {
+        <li><a class="dropdown-item" href="#">No destinations found</a></li>
+    }
+</ul>

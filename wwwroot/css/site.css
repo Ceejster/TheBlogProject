@@ -7,7 +7,25 @@ a {
     text-decoration: none;
 }
 
-/* Home Index */
+                    /* NAV BAR*/
+.navbar {
+    background: linear-gradient(90deg, #f3f4f6, #e5e7eb);
+}
+
+.nav-link {
+    transition: color 0.2s ease;
+}
+
+    .nav-link:hover {
+        color: #007bff;
+    }
+
+.dropdown-menu {
+    border-radius: 0.5rem;
+}
+
+
+                    /* Home Index */
 .blogHeader {
     margin: 2.5rem 0; /* Add some spacing around the section */
     padding-bottom: 2.5rem;

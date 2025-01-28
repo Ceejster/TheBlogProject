@@ -100,11 +100,30 @@ app.UseAuthorization();
 
 // For better SEO 
 app.MapControllerRoute(
-    name: "blog",
-    pattern: "area/{destinationSlug}/{blogSlug}",
-    defaults: new { controller = "Blogs", action = "Details" },
-    constraints: new { destinationSlug = @"[\w\-]+", blogSlug = @"[\w\-]+" }
+    name: "destination",
+    pattern: "destination/{slug}",
+    defaults: new { controller = "Destinations", action = "Details" },
+    constraints: new { slug = @"[\w\-]+" }
 );
+
+app.MapControllerRoute(
+    name: "blog",
+    pattern: "blog/{slug}",
+    defaults: new { controller = "Blogs", action = "Details" },
+    constraints: new { slug = @"[\w\-]+" }
+);
+
+app.MapControllerRoute(
+    name: "post",
+    pattern: "post/{slug}",
+    defaults: new { controller = "Posts", action = "Details" },
+    constraints: new { slug = @"[\w\-]+" }
+);
+
+// Default fallback route
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 //OG use if anything broken
 app.MapControllerRoute(

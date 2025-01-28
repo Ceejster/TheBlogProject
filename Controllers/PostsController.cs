@@ -28,7 +28,7 @@ namespace TheBlogProject.Controllers
             _blogSearchService = blogSearchService;
         }
 
-        // For users searching the blogs for key words. Reference the service for more insight
+        // For users searching the blogs for key words. Reference the service for more info
         public IActionResult SearchIndex(string searchTerm)
         {
             ViewData["SearchTerm"] = searchTerm;
@@ -57,7 +57,10 @@ namespace TheBlogProject.Controllers
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(string slug)
         {
-            if (string.IsNullOrEmpty(slug)) return NotFound();
+            if (string.IsNullOrEmpty(slug))
+            {
+                return NotFound();
+            }
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
@@ -66,7 +69,10 @@ namespace TheBlogProject.Controllers
                 .ThenInclude(c => c.BlogUser)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
 
-            if (post == null) return NotFound();
+            if (post == null)
+            {
+                return NotFound();
+            }
             return View(post);
         }
 
@@ -86,6 +92,18 @@ namespace TheBlogProject.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Generate the slug
+                post.Slug = _slugService.GenerateSlug(post.Title);
+                // Validate the slug
+                var (isValid, errorMessage) = _slugService.ValidateSlug(post.Slug, "destination");
+
+                if (!isValid)
+                {
+                    ModelState.AddModelError("Slug", errorMessage);
+                    ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", post.BlogUserId);
+                    return View(post);
+                }
+
                 // Sanitize content before saving
                 post.Content = _sanitizeService.Sanitize(post.Content) ?? string.Empty;
                 post.Abstract = _sanitizeService.Sanitize(post.Abstract) ?? string.Empty;
@@ -97,21 +115,7 @@ namespace TheBlogProject.Controllers
                 post.ImageData = await _imageService.EncodeImageAsync(post.Image);
                 post.ContentType = _imageService.ContentType(post.Image);
 
-                // Generate and validate slug
-                var slug = _slugService.UrlFriendly(post.Title);
-                var (isValid, errorMessage) = _slugService.ValidateSlug(slug, "post");
-
-                if (!isValid)
-                {
-                    ModelState.AddModelError("Title", errorMessage);
-                    ViewData["TagValues"] = string.Join(",", tagValues);
-                    ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
-                    return View(post);
-                }
-
-                post.Slug = slug;
-
-                // Add the post
+                // Add the post to database
                 _context.Add(post);
                 await _context.SaveChangesAsync();
 
@@ -149,14 +153,21 @@ namespace TheBlogProject.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post updatedPost, IFormFile? newImage, List<string> tagValues)
         {
-            if (id != updatedPost.Id) return NotFound();
+            if (id != updatedPost.Id)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
                     var existingPost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == updatedPost.Id);
-                    if (existingPost == null) return NotFound();
+
+                    if (existingPost == null) 
+                    { 
+                        return NotFound(); 
+                    }
 
                     // Check if BlogId has changed
                     if (existingPost.BlogId != updatedPost.BlogId) existingPost.BlogId = updatedPost.BlogId;
@@ -164,19 +175,21 @@ namespace TheBlogProject.Controllers
                     // Check if the title has changed and validate slug
                     if (!string.Equals(existingPost.Title, updatedPost.Title, StringComparison.OrdinalIgnoreCase))
                     {
-                        var newSlug = _slugService.UrlFriendly(updatedPost.Title);
-                        var (isValid, errorMessage) = _slugService.ValidateSlug(newSlug, "post");
-
-                        if (!isValid)
+                        //Regenerate the slug if Area has been changed
+                        if (existingPost.Title != updatedPost.Title)
                         {
-                            ModelState.AddModelError("Title", errorMessage);
-                            ViewData["TagValues"] = string.Join(",", tagValues);
-                            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", existingPost.BlogId);
-                            return View(existingPost);
+                            existingPost.Slug = _slugService.GenerateSlug(existingPost.Title);
+
+                            // Validate the new slug
+                            var (isValid, errorMessage) = _slugService.ValidateSlug(existingPost.Slug, "destination");
+                            if (!isValid)
+                            {
+                                ModelState.AddModelError("Slug", errorMessage);
+                                return View(updatedPost);
+                            }
                         }
 
                         existingPost.Title = updatedPost.Title;
-                        existingPost.Slug = newSlug;
                     }
 
                     // Update sanitized fields
