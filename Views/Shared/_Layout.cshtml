@@ -28,9 +28,9 @@
                         </li>
                         <li class="nav-item dropdown">
                             <!-- Make the "Destinations" dropdown header clickable -->
-                            <a asp-controller="Destinations" asp-action="Index">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Destinations
-                            </a>class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            </a>
                             <!-- Render the dropdown items using the ViewComponent -->
                             @await Component.InvokeAsync("Destinations")
                         </li>

@@ -1,51 +1,61 @@
 ﻿@using TheBlogProject.Services
-
-@inject IImageService imageService
 @model IEnumerable<TheBlogProject.Models.Destination>
+@inject IImageService imageService
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Destinations";
 }
 
-<h1>Index</h1>
+<div class="destination-list">
+    <h1>Explore Our Destinations</h1>
+    <p>Click on a destination name to view all related blog posts, or directly explore individual posts by clicking the banners below.</p>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Area)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BlogUser)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var destination in Model)
-        {
-        <tr>
-            <td>
-                    @Html.DisplayFor(modelItem => destination.Area)
-            </td>
-                <td>
-                    <img src="@imageService.DecodeImage(destination.ImageData, destination.ContentType)" class="img-fluid" />
-                </td>
-            <td>
-                    @Html.DisplayFor(modelItem => destination.BlogUser.DisplayName)
-            </td>
-            <td>
-                    <a asp-action="Edit" asp-route-id="@destination.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-slug="@destination.Slug">@destination.Area</a> |
-                    <a asp-action="Delete" asp-route-id="@destination.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    @if (User.IsInRole("Administrator"))
+    {
+        <p>
+            <a asp-action="Create" class="btn btn-primary">Create New Destination</a>
+        </p>
+    }
+
+    @foreach (var destination in Model)
+    {
+        <section class="destination-section">
+            <!-- Destination Name -->
+            <h2 class="destination-name">
+                <a asp-action="Details" asp-route-slug="@destination.Slug">
+                    @destination.Area
+                </a>
+            </h2>
+
+            <!-- Blog Banners -->
+            <div class="blog-banners">
+                @if (destination.Blogs != null && destination.Blogs.Any())
+                {
+                    @foreach (var blog in destination.Blogs)
+                    {
+                        <div class="blog-banner">
+                            <a asp-controller="Blogs" asp-action="Details" asp-route-slug="@blog.Slug">
+                                <div class="banner-image" style="background-image: url('@imageService.DecodeImage(blog.ImageData, blog.ContentType)');">
+                                    <span class="banner-title">@blog.Name</span>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No blogs available for this destination.</p>
+                }
+            </div>
+
+            <!-- Actions for Edit/Delete -->
+            @if (User.IsInRole("Administrator"))
+            {
+                <div class="destination-actions">
+                    <a asp-action="Edit" asp-route-id="@destination.Id" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@destination.Id" class="btn btn-danger">Delete</a>
+                </div>
+            }
+        </section>
+    }
+</div>

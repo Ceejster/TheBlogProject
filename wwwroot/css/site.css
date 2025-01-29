@@ -201,7 +201,7 @@ a {
         color: #666;
     }
 
-        /* DESTINATIONS INDEX LAYOUT */
+                                /* DESTINATIONS INDEX LAYOUT */
 /* Container for All Destination Cards */
 .destination-details-container {
     display: grid;
@@ -232,9 +232,7 @@ a {
     }
 }
 
-
-
-/* Blog Cards Layout */
+                            /* Blog Cards Layout */
 .destination-details {
     margin-top: 2rem;
 }
@@ -327,7 +325,8 @@ a {
         color: #666;
     }
 
-/* CONTACT FORM */
+                            /* CONTACT FORM */
+
 /* Container for the entire contact section */
 .contact-section {
     background-color: white; /* Light background for the section */
@@ -603,6 +602,101 @@ a {
     justify-content: end;
 }
 
+                        /* DESTINATIONS */
+.destination-list {
+    margin: 2rem auto;
+    max-width: 900px;
+    font-family: Arial, sans-serif;
+}
+
+.destination-name {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+    .destination-name a {
+        text-decoration: none;
+        color: #007BFF;
+    }
+
+        .destination-name a:hover {
+            text-decoration: underline;
+        }
+
+.destination-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.blog-banners {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.blog-banner {
+    flex: 1 1 calc(33.333% - 1rem);
+    max-width: calc(33.333% - 1rem);
+    min-width: 200px;
+    height: 150px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.banner-title {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    width: 100%;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.destination-actions {
+    margin-top: 1rem;
+    text-align: right;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #007BFF;
+    border: none;
+}
+
+.btn-warning {
+    background-color: #FFC107;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #DC3545;
+    border: none;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
 
 /* Footer */
 .bi {
