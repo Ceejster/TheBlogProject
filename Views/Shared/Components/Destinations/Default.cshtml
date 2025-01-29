@@ -1,6 +1,7 @@
 ﻿@model List<Destination>
 
 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <a asp-controller="Destinations" asp-action="Index" class="dropdown-item">All Spots</a>
     @if (Model.Any())
     {
         foreach (var destination in Model)

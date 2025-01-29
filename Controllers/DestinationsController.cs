@@ -29,7 +29,9 @@ namespace TheBlogProject.Controllers
         // GET: Destinations
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Destination.Include(d => d.BlogUser);
+            var applicationDbContext = _context.Destination
+                .Include(d => d.BlogUser)
+                .ThenInclude(b => b.Blogs);
             var destinations = await applicationDbContext.ToListAsync();
 
             return View(destinations);
