@@ -159,10 +159,10 @@ namespace TheBlogProject.Controllers
                     //Regenerate the slug if Area has been changed
                     if (existingBlog.Name != blog.Name)
                     {
-                        existingBlog.Slug = _slugService.GenerateSlug(existingBlog.Name);
+                        existingBlog.Slug = _slugService.GenerateSlug(blog.Name);
 
                         // Validate the new slug
-                        var (isValid, errorMessage) = _slugService.ValidateSlug(existingBlog.Slug, "destination");
+                        var (isValid, errorMessage) = _slugService.ValidateSlug(existingBlog.Slug, "blog");
                         if (!isValid)
                         {
                             ModelState.AddModelError("Slug", errorMessage);

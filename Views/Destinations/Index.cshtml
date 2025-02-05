@@ -6,19 +6,19 @@
     ViewData["Title"] = "Destinations";
 }
 
-<div class="destination-list">
-    <h1>Explore Our Destinations</h1>
-    <p>Click on a destination name to view all related blog posts, or directly explore individual posts by clicking the banners below.</p>
 <div class="destination-list-index">
-    <h1>Explore Our Destinations</h1>
-    <p>Click on a destination name to view all related blog posts, or directly explore individual posts by clicking the banners below.</p>
+    <div class="destination-header-index">
+        <h1>Destinations</h1>
+        <p>Since leaving Canada I've traveled lots of Europe, a ton of Asia. Since Cait and I have left Vietnam, we've been thorugh the Americas, South Africa, and now Europe (again).</p>
 
-    @if (User.IsInRole("Administrator"))
-    {
-        <p>
-            <a asp-action="Create" class="btn btn-primary">Create New Destination</a>
-        </p>
-    }
+        @if (User.IsInRole("Administrator"))
+        {
+            <p>
+                <a asp-action="Create" class="btn btn-primary">Create New Destination</a>
+            </p>
+        }
+    </div>
+    
 
     @foreach (var destination in Model)
     {
@@ -38,7 +38,7 @@
                     {
                         <div class="blog-banner-index">
                             <a asp-controller="Blogs" asp-action="Details" asp-route-slug="@blog.Slug">
-                                <div class="banner-image-index" style="background-image: url('@imageService.DecodeImage(blog.ImageData, blog.ContentType)');">
+                                <div class="banner-image-index row-cols-sm-2" style="background-image: url('@imageService.DecodeImage(blog.ImageData, blog.ContentType)');">
                                     <span class="banner-title-index">@blog.Name</span>
                                 </div>
                             </a>
@@ -51,14 +51,6 @@
                 }
             </div>
 
-            <!-- Actions for Edit/Delete -->
-            @if (User.IsInRole("Administrator"))
-            {
-                <div class="destination-actions">
-                    <a asp-action="Edit" asp-route-id="@destination.Id" class="btn btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@destination.Id" class="btn btn-danger">Delete</a>
-                </div>
-            }
         </section>
     }
 </div>

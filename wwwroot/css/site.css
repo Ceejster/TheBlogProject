@@ -56,8 +56,9 @@ a {
 
 .blog {
     background-color: white;
-    margin: 2rem;
+    margin: 0.5rem;
     border-radius: 5px;
+    padding: 0.5rem;
 }
 /* Blog Banner */
 .blog-banner {
@@ -201,7 +202,7 @@ a {
         color: #666;
     }
 
-/* DESTINATIONS INDEX LAYOUT */
+                            /* DESTINATIONS INDEX LAYOUT */
 /* Container for All Destination Cards */
 .destination-details-container {
     display: grid;
@@ -606,19 +607,25 @@ a {
 .destination-list-index {
     margin: 2rem auto;
     max-width: 900px;
-    font-family: Arial, sans-serif;
+}
+
+.destination-header-index {
+    justify-content: center;
+    align-content: center;
+    text-align: center;
 }
 
 .destination-name-index {
-    font-size: 1.75rem;
+    font-size: 1.85rem;
     font-weight: bold;
-    color: #333;
+    color: black;
     margin-bottom: 1rem;
+    text-align: center;
 }
 
     .destination-name-index a {
         text-decoration: none;
-        color: #007BFF;
+        color: black;
     }
 
         .destination-name-index a:hover {
@@ -628,7 +635,7 @@ a {
 .destination-section-index {
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid black;
 }
 
 .blog-banners-index {
@@ -639,9 +646,9 @@ a {
 
 .blog-banner-index {
     flex: 1 1 calc(33.333% - 1rem);
-    max-width: calc(33.333% - 1rem);
+    max-width: 25rem;
     min-width: 200px;
-    height: 150px;
+    height: 17rem;
     border-radius: 10px;
     overflow: hidden;
     position: relative;
@@ -696,6 +703,26 @@ a {
 
 .btn:hover {
     opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .destination-section-index {
+        flex-direction: column;
+    }
+
+    .destination-name-index {
+        text-align: center;
+    }
+
+    .blog-banners-index {
+        justify-content: center;
+    }
+
+    .blog-banner-index {
+        flex: 1 1 100%; /* Full width on small screens */
+        max-width: 100%;
+        height: 20rem;
+    }
 }
 
 /* Footer */
