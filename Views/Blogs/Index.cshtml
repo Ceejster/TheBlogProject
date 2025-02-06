@@ -1,5 +1,5 @@
-﻿@using TheBlogProject.Services
-
+﻿@using TheBlogProject.Enums
+@using TheBlogProject.Services
 @inject IImageService imageService
 @model IEnumerable<TheBlogProject.Models.Blog>
 
@@ -7,78 +7,56 @@
     ViewData["Title"] = "Blogs";
 }
 
-<h1>Blogs</h1>
-@if (User.IsInRole("Administrator"))
-{
-    <p>
-        <a asp-action="Create">Write new blog?</a>
-    </p>
-}
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th class="d-none d-lg-table-cell">
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th class="d-none d-lg-table-cell">
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BlogUserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Model => Model.BlogUser)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var blog in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => blog.Name)
-                </td>
-                <td>
-                    @Html.Raw(blog.Description)
-                </td>
-                <td class="d-none d-lg-table-cell">@blog.Created.ToString("yyyy-MM-dd")</td>
-                <td class="d-none d-lg-table-cell">
-                    @if (blog.Updated.HasValue)
+<!-- Main Container -->
+<div class="blogview-container">
+    @foreach (var blog in Model)
+    {
+        <!-- Blog Post Container -->
+        <div class="blogview-post-container">
+            <!-- Blog Banner Section -->
+            <div class="blogview-banner" style="background-image: url('@imageService.DecodeImage(blog.ImageData, blog.ContentType)');">
+                <div class="blogview-banner-overlay">
+                    <h2 class="blogview-banner-title">@blog.Name</h2>
+                    <p class="blogview-banner-description">@blog.Description</p>
+                    @if (User.IsInRole("Administrator"))
                     {
-                        @blog.Updated?.ToString("yyyy-MM-dd")
-
+                        <div class="blogview-admin-actions">
+                            <a asp-action="Edit" asp-route-id="@blog.Id" class="blogview-btn blogview-btn-edit">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@blog.Id" class="blogview-btn blogview-btn-delete">Delete</a>
+                            <a asp-action="Details" asp-route-slug="@blog.Slug" class="blogview-btn blogview-btn-details">Details</a>
+                        </div>
                     }
-                </td>
-                <td>
-                    <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" class="img-fluid" />
-                </td>
-                <td>
-                    @blog.BlogUser?.DisplayName
-                </td>
-                <td>
-                    @blog.BlogUser
-                </td>
-                @if (User.IsInRole("Administrator"))
-                {
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@blog.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-slug="@blog.Slug">@blog.Name</a> |
-                        <a asp-action="Delete" asp-route-id="@blog.Id">Delete</a>
-                    </td>
-                }
+                </div>
+            </div>
 
-            </tr>
-        }
-    </tbody>
-</table>
+            <!-- Posts Grid Section -->
+            <div class="blogview-posts-grid">
+                <h3 class="blogview-posts-grid-title">Cities & Things</h3>
+                <div class="blogview-grid-container">
+                    @foreach (var post in blog.Posts)
+                    {
+                        @if (post.ReadyStatus.ToString() == "ProductionReady" ||
+                       (post.ReadyStatus.ToString() == "PreviewReady" &&
+                       (User.IsInRole(BlogRoles.Moderator.ToString()) || User.IsInRole(BlogRoles.Administrator.ToString()))))
+                        {
+                            <div class="blogview-post-card">
+                                <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">
+                                    <div class="blogview-post-image">
+                                        <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" alt="@post.Title" />
+                                    </div>
+                                    <div class="blogview-post-content">
+                                        <h4 class="blogview-post-title">@post.Title</h4>
+                                        @if (!string.IsNullOrEmpty(post.Abstract))
+                                        {
+                                            <p class="blogview-post-summary">@Html.Raw(post.Abstract)</p>
+                                        }
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

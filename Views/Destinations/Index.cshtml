@@ -7,6 +7,7 @@
 }
 
 <div class="destination-list-index">
+    <hr />
     <div class="destination-header-index">
         <h1>Destinations</h1>
         <p>Since leaving Canada I've traveled lots of Europe, a ton of Asia. Since Cait and I have left Vietnam, we've been thorugh the Americas, South Africa, and now Europe (again).</p>
@@ -18,7 +19,7 @@
             </p>
         }
     </div>
-    
+    <hr />
 
     @foreach (var destination in Model)
     {
@@ -49,8 +50,15 @@
                 {
                     <p>No blogs available for this destination.</p>
                 }
+                
             </div>
-
+            @if (User.IsInRole("Administrator"))
+            {
+                <div class="postView-Index-admin-actions">
+                    <a asp-action="Edit" asp-route-id="@destination.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@destination.Id">Delete</a>
+                </div>
+            }
         </section>
     }
 </div>

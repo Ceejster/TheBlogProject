@@ -1,106 +1,59 @@
 ﻿@using TheBlogProject.Services
+@using TheBlogProject.Enums
 
 @inject IImageService imageService
-
 @model IEnumerable<TheBlogProject.Models.Post>
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "All Posts";
+    var orderedPosts = Model.OrderByDescending(p => p.Created);
 }
 
-<h1>Posts</h1>
+<div class="postView-Index-container">
+    <!-- Header Section -->
+    <div class="postView-Index-header">
+        <h1 class="postView-Index-title">All the places and things we've done</h1>
+        <p class="postView-Index-description">
+            These may not be in exact order as I'm trying to add trips from a long time ago. 
+            This is a place for us to log the places we've been and have it as a memory for the future.
+        </p>
+    </div>
 
-@if (User.IsInRole("Administrator"))
-{
-    <p>
-        <a asp-action="Create">Write new post?</a>
-    </p>
-}
+    <!-- Admin Create Button -->
+    @if (User.IsInRole("Administrator"))
+    {
+        <div class="postView-Index-admin-header">
+            <a asp-action="Create" class="postView-Index-create-button">Create New Post</a>
+        </div>
+    }
 
+    <!-- Posts Grid -->
+    <div class="postView-Index-grid">
+        @foreach (var post in orderedPosts)
+        {
+            @if (post.ReadyStatus == ReadyStatus.ProductionReady || User.IsInRole("Administrator"))
+            {
+                <div class="postView-Index-card">
+                    <div class="postView-Index-image-container">
+                        <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" class="postView-Index-image" alt="@post.Title">
+                        <div class="postView-Index-titleOverlay">
+                            <h3 class="postView-Index-card-title">@post.Title</h3>
+                        </div>
 
-<div class="container">
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.BlogId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Title)
-                    </th>
-                    <th class="d-none d-lg-table-cell">
-                        @Html.DisplayNameFor(model => model.Created)
-                    </th>
-                    <th class="d-none d-lg-table-cell">
-                        @Html.DisplayNameFor(model => model.Updated)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Image)
-                    </th>
+                        <!-- Centered clickable Explore button (remains as before) -->
+                        <a asp-action="Details" asp-route-slug="@post.Slug" class="postView-Explore">
+                            Explore
+                        </a>
+                    </div>
                     @if (User.IsInRole("Administrator"))
                     {
-                        <th>
-                            @Html.DisplayNameFor(model => model.ReadyStatus)
-                        </th>
+                        <div class="postView-Index-admin-actions">
+                            <a asp-action="Edit" asp-route-id="@post.Id" class="postView-Index-edit">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@post.Id" class="postView-Index-delete">Delete</a>
+                        </div>
                     }
-                    <th>
-                        @Html.DisplayNameFor(model => model.BlogUser)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var post in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.Raw(post.BlogId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => post.Title)
-                        </td>
-                        <td class="d-none d-lg-table-cell">@post.Created?.ToString("yyyy-MM-dd")</td>
-                        <td class="d-none d-lg-table-cell">
-                            @if (post.Updated.HasValue)
-                            {
-                                @post.Updated?.ToString("yyyy-MM-dd")
-                            }
-                        </td>
-                        <td>
-                            <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" class="img-fluid" />
-                        </td>
-                        @if (User.IsInRole("Administrator"))
-                        {
-                            <td>
-                                @Html.DisplayFor(modelItem => post.ReadyStatus)
-                            </td>
-                        }
-
-                        <td>
-                            @post.BlogUser?.UserName
-                        </td>
-                        @if (User.IsInRole("Administrator"))
-                        {
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@post.Id">Edit</a>
-                                <a asp-action="Details" asp-route-slug="@post.Slug">@post.Title</a> 
-                                <a asp-action="Delete" asp-route-id="@post.Id">Delete</a>
-                            </td>
-                        }
-                        @if (!User.IsInRole("Administrator"))
-                        {
-                            <td>
-                                <a asp-action="Details" asp-route-slug="@post.Slug">Details</a>
-                            </td>
-                        }
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </div>
+            }
+        }
     </div>
 </div>
-<form asp-controller="Comments" asp-action="Create">
-</form>
-
-<!--Eventually display comments and author photo.-->

@@ -29,7 +29,9 @@ namespace TheBlogProject.Controllers
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Blogs.Include(b => b.BlogUser);
+            var applicationDbContext = _context.Blogs
+                .Include(b => b.BlogUser)
+                .Include(p => p.Posts);
             var blogs = await applicationDbContext.ToListAsync();
             return View(blogs); // Pass blogs to the view
         }
@@ -156,10 +158,10 @@ namespace TheBlogProject.Controllers
                         return NotFound();
                     }
 
-                    //Regenerate the slug if Area has been changed
+                    //Regenerate the slug if Name has been changed
                     if (existingBlog.Name != blog.Name)
                     {
-                        existingBlog.Slug = _slugService.GenerateSlug(blog.Name);
+                        existingBlog.Slug = _slugService.GenerateSlug(existingBlog.Name);
 
                         // Validate the new slug
                         var (isValid, errorMessage) = _slugService.ValidateSlug(existingBlog.Slug, "blog");

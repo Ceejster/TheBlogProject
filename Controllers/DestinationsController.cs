@@ -143,7 +143,7 @@ namespace TheBlogProject.Controllers
                     //Regenerate the slug if Area has been changed
                     if (existingDestination.Area != destination.Area)
                     {
-                        existingDestination.Slug = _slugService.GenerateSlug(existingDestination.Area);
+                        existingDestination.Slug = _slugService.GenerateSlug(destination.Area);
 
                         // Validate the new slug
                         var (isValid, errorMessage) = _slugService.ValidateSlug(existingDestination.Slug, "destination");
