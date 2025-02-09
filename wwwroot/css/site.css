@@ -25,9 +25,9 @@ a {
 }
 
 
-/* Home Index */
+                                                /* Home Index */
 .blogHeader {
-    margin: 2.5rem 0; /* Add some spacing around the section */
+    margin: 2.5rem 0;
     padding-bottom: 2.5rem;
     border-bottom: 2px solid black;
 }
@@ -130,11 +130,9 @@ a {
     }
 
 .post-cards {
-    display: grid; /* Use grid for layout */
-    grid-template-columns: repeat(3, 1fr); /* Default: 4 cards per row */
-    gap: 20px; /* Space between cards */
-    justify-content: center; /* Center cards horizontally */
-    align-content: center; /* Center cards vertically */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 5px;
 }
 
 .post-cards-center {
@@ -163,10 +161,12 @@ a {
 
 .post-card {
     border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
+    border-radius: 5px;
+    text-align: center;
     background: whitesmoke;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
     .post-card:hover {
