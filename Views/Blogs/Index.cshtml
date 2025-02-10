@@ -7,17 +7,37 @@
     ViewData["Title"] = "Blogs";
 }
 
-<!-- Main Container -->
 <div class="blogview-container">
     @foreach (var blog in Model)
     {
-        <!-- Blog Post Container -->
         <div class="blogview-post-container">
-            <!-- Blog Banner Section -->
-            <div class="blogview-banner" style="background-image: url('@imageService.DecodeImage(blog.ImageData, blog.ContentType)');">
-                <div class="blogview-banner-overlay">
-                    <h2 class="blogview-banner-title">@blog.Name</h2>
-                    <p class="blogview-banner-description">@blog.Description</p>
+            <!-- Image/Text Split Section -->
+            <div class="blogview-content-split">
+                <!-- Image Section (60%) -->
+                <div class="blogview-image-container">
+                    <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" 
+                         class="blogview-main-image" 
+                         alt="@blog.Name" />
+                </div>
+
+                <!-- Text Content Section (40%) -->
+                <div class="blogview-text-container">
+                    <div class="blogview-header-group">
+                        <h2 class="blogview-banner-title">@blog.Name</h2>
+                        <p class="blogview-banner-description">@blog.Description</p>
+                        <div class="blogview-header-underline"></div>
+                    </div>
+                    
+                    @* @if (!string.IsNullOrEmpty(blog.Details))
+                    {
+                        <div class="blogview-details">
+                            @Html.Raw(blog.Details)
+                        </div>
+                    } *@
+                    <div class="blogview-details">
+                        <p>DETAILS HERE</p>
+                    </div>
+
                     @if (User.IsInRole("Administrator"))
                     {
                         <div class="blogview-admin-actions">
@@ -31,7 +51,6 @@
 
             <!-- Posts Grid Section -->
             <div class="blogview-posts-grid">
-                <h3 class="blogview-posts-grid-title">Cities & Things</h3>
                 <div class="blogview-grid-container">
                     @foreach (var post in blog.Posts)
                     {
@@ -42,7 +61,8 @@
                             <div class="blogview-post-card">
                                 <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">
                                     <div class="blogview-post-image">
-                                        <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" alt="@post.Title" />
+                                        <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" 
+                                             alt="@post.Title" />
                                     </div>
                                     <div class="blogview-post-content">
                                         <h4 class="blogview-post-title">@post.Title</h4>

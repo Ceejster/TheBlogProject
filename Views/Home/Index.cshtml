@@ -42,7 +42,7 @@
     <div class="blog">
         <!-- Blog Banner with Name Overlaid -->
         <div class="blog-banner">
-            <a asp-controller="Destinations" asp-action="Details" asp-route-slug="@blog.Slug">
+            <a asp-controller="Blogs" asp-action="Details" asp-route-slug="@blog.Slug">
                 <div class="banner-image-container" style="background-image: url('@imageService.DecodeImage(blog.ImageData, blog.ContentType)');">
                     <!-- Country Title and Description -->
                     <div class="country-title">
