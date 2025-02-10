@@ -7,36 +7,40 @@
     ViewData["Title"] = "Blogs";
 }
 
-<div class="blogview-container">
+<div class="blogview-contained">
     @foreach (var blog in Model)
     {
-        <div class="blogview-post-container">
+        <div class="blogview-post-contained">
             <!-- Image/Text Split Section -->
             <div class="blogview-content-split">
                 <!-- Image Section (60%) -->
-                <div class="blogview-image-container">
+                <div class="blogview-image-contained">
                     <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" 
                          class="blogview-main-image" 
                          alt="@blog.Name" />
                 </div>
 
                 <!-- Text Content Section (40%) -->
-                <div class="blogview-text-container">
+                <div class="blogview-text-contained">
                     <div class="blogview-header-group">
                         <h2 class="blogview-banner-title">@blog.Name</h2>
                         <p class="blogview-banner-description">@blog.Description</p>
                         <div class="blogview-header-underline"></div>
                     </div>
                     
-                    @* @if (!string.IsNullOrEmpty(blog.Details))
+                    @if (!string.IsNullOrEmpty(blog.Details))
                     {
                         <div class="blogview-details">
                             @Html.Raw(blog.Details)
                         </div>
-                    } *@
-                    <div class="blogview-details">
-                        <p>DETAILS HERE</p>
-                    </div>
+                    }
+                    <hr />
+                    @if (blog.Time > 0 && !string.IsNullOrEmpty(blog.TimeUnit))
+                    {
+                        <div class="blogview-duration">
+                            <strong>Duration:</strong> @blog.Time @blog.TimeUnit
+                        </div>
+                    }
 
                     @if (User.IsInRole("Administrator"))
                     {

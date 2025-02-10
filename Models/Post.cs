@@ -8,19 +8,22 @@ namespace TheBlogProject.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "Blog Name")]
+        [Display(Name = "Country")]
         public required int BlogId { get; set; }
         public string? BlogUserId { get; set; }
 
         [Required]
+        [Display(Name = "City or place")]
         [StringLength(50, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 3)]
         public required string Title { get; set; }
 
         [Required]
+        [Display(Name = "Abstract, short write up")]
         [StringLength(250, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 10)]
         public required string Abstract { get; set; }
 
         [Required]
+        [Display(Name = "Content, all the info")]
         public required string Content { get; set; }
 
         [DataType(DataType.Date)]

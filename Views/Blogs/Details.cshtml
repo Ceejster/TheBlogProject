@@ -23,6 +23,21 @@
         <dd class = "col-sm-10">
             @Html.Raw(Model.Description)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Details)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(Model.Details)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Time)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.Raw(Model.Time)
+        </dd>
+        <dd class="col-sm-6">
+           @Html.Raw(Model.TimeUnit)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Created)
         </dt>

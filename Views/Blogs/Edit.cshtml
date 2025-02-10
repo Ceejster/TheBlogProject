@@ -26,6 +26,29 @@
                 <textarea asp-for="Description" class="form-control tinymce-editor"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Details" class="control-label"></label>
+                <textarea asp-for="Details" class="form-control tinymce-editor"></textarea>
+                <span asp-validation-for="Details" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label asp-for="Time" class="control-label"></label>
+                    <input asp-for="Time" class="form-control" type="number" step="0.5" min="0" required />
+                    <span asp-validation-for="Time" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="TimeUnit" class="control-label"></label>
+                    <select asp-for="TimeUnit" class="form-control" required>
+                        <option value="Days">Days</option>
+                        <option value="Weeks">Weeks</option>
+                        <option value="Months">Months</option>
+                        <option value="Years">Years</option>
+                    </select>
+                    <span asp-validation-for="TimeUnit" class="text-danger"></span>
+                </div>
+            </div>
             <div>
                 <p>Current image:</p>
                 @if (Model.ImageData != null && !string.IsNullOrEmpty(Model.ContentType))

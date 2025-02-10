@@ -27,18 +27,32 @@
     </div>
 </div>
 
+<!-- City Legend Section -->
+<div class="city-legend">
+    <h4>Cities Featured:</h4>
+    <ul>
+        @{
+            // Collect all posts from all blogs
+            var allPosts = Model.SelectMany(b => b.Posts);
+
+            foreach (var post in allPosts)
+            {
+                // Apply the same visibility logic as in the post display
+                bool isProductionReady = post.ReadyStatus == ReadyStatus.ProductionReady;
+                bool isPreviewAndAuthorized = post.ReadyStatus == ReadyStatus.PreviewReady
+                && (User.IsInRole(BlogRoles.Moderator.ToString()) || User.IsInRole(BlogRoles.Administrator.ToString()));
+
+                if (isProductionReady || isPreviewAndAuthorized)
+                {
+                    <li><a href="@Url.Action("Details", "Posts", new { slug = post.Slug })">@post.Title</a></li>
+                }
+            }
+        }
+    </ul>
+</div>
 
 @foreach (var blog in Model)
 {
-    @* <div class="city-legend">
-        <h4>Cities Featured:</h4>
-        <ul>
-            @foreach (var post in blog.Posts)
-            {
-                <li><a href="@Url.Action("Details", "Posts", new { id = post.Id })">@post.Title</a></li>
-            }
-        </ul>
-    </div>  *@
     <div class="blog">
         <!-- Blog Banner with Name Overlaid -->
         <div class="blog-banner">
@@ -62,7 +76,7 @@
 
         <!-- Blog Posts Section -->
         <div class="post-list">
-            <h3>Cities & Places We've Been To</h3>
+            <h3>Cities & Places</h3>
             <div class="post-cards">
                 @foreach (var post in blog.Posts)
                 {

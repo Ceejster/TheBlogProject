@@ -83,7 +83,7 @@ namespace TheBlogProject.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,Moderator")]
-        public async Task<IActionResult> Create([Bind("DestinationId,Name,Description,Image")] Blog blog)
+        public async Task<IActionResult> Create([Bind("DestinationId,Name,Description,Details,Time,TimeUnit,Image")] Blog blog)
         {
             if (ModelState.IsValid)
             {
@@ -101,6 +101,7 @@ namespace TheBlogProject.Controllers
 
                 //Sanitize raw HTML
                 blog.Description = _sanitizeService.Sanitize(blog.Description) ?? string.Empty;
+                blog.Details = _sanitizeService.Sanitize(blog.Details) ?? string.Empty;
 
                 blog.BlogUserId = _userManager.GetUserId(User);
                 blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
@@ -138,7 +139,7 @@ namespace TheBlogProject.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Blog blog, IFormFile? newImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Details,Time,TimeUnit")] Blog blog, IFormFile? newImage)
         {
             if (id != blog.Id)
             {
@@ -151,6 +152,7 @@ namespace TheBlogProject.Controllers
                 {
                     //Sanitize raw HTML
                     blog.Description = _sanitizeService.Sanitize(blog.Description) ?? string.Empty;
+                    blog.Details = _sanitizeService.Sanitize(blog.Details) ?? string.Empty;
 
                     var existingBlog = await _context.Blogs.FindAsync(id);
                     if (existingBlog == null)
@@ -175,6 +177,9 @@ namespace TheBlogProject.Controllers
                     // Update properties
                     existingBlog.Name = blog.Name;
                     existingBlog.Description = blog.Description;
+                    existingBlog.Details = blog.Details;
+                    existingBlog.Time = blog.Time;
+                    existingBlog.TimeUnit = blog.TimeUnit;
                     existingBlog.Updated = DateTime.UtcNow;
 
                     // Update Image if provided
