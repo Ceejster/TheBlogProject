@@ -42,7 +42,7 @@ namespace TheBlogProject.Controllers
         {
             if (string.IsNullOrEmpty(slug))
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var destination = await _context.Destination
@@ -52,7 +52,7 @@ namespace TheBlogProject.Controllers
 
             if (destination == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             return View(destination);
@@ -107,13 +107,13 @@ namespace TheBlogProject.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var destination = await _context.Destination.FindAsync(id);
             if (destination == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             return View(destination);
         }
@@ -126,7 +126,7 @@ namespace TheBlogProject.Controllers
         {
             if (id != destination.Id)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             if (ModelState.IsValid)
@@ -137,7 +137,7 @@ namespace TheBlogProject.Controllers
 
                     if (existingDestination == null)
                     {
-                        return NotFound();
+                        return View("NotFound");
                     }
 
                     //Regenerate the slug if Area has been changed
@@ -173,7 +173,7 @@ namespace TheBlogProject.Controllers
                 {
                     if (!DestinationExists(destination.Id))
                     {
-                        return NotFound();
+                        return View("NotFound");
                     }
                     else
                     {
@@ -191,7 +191,7 @@ namespace TheBlogProject.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var destination = await _context.Destination
@@ -199,7 +199,7 @@ namespace TheBlogProject.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (destination == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             return View(destination);

@@ -68,13 +68,13 @@ namespace TheBlogProject.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var comment = await _context.Comments.FindAsync(id);
             if (comment == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", comment.BlogUserId);
             ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);
@@ -89,7 +89,7 @@ namespace TheBlogProject.Controllers
         {
             if (id != comment.Id)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             if (ModelState.IsValid)
@@ -106,7 +106,7 @@ namespace TheBlogProject.Controllers
                 {
                     if (!CommentExists(comment.Id))
                     {
-                        return NotFound();
+                        return View("NotFound");
                     }
                     else
                     {
@@ -124,7 +124,7 @@ namespace TheBlogProject.Controllers
         {
             if (id != comment.Id)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             if (ModelState.IsValid)
@@ -143,7 +143,7 @@ namespace TheBlogProject.Controllers
                 {
                     if (!CommentExists(comment.Id))
                     {
-                        return NotFound();
+                        return View("NotFound");
                     }
                     else
                     {
@@ -159,7 +159,7 @@ namespace TheBlogProject.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var comment = await _context.Comments
@@ -169,7 +169,7 @@ namespace TheBlogProject.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (comment == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             return View(comment);

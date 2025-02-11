@@ -16,7 +16,7 @@
                 @foreach (var blog in Model.Blogs)
                 {
                     <div class="blog-card">
-                        <a asp-controller="Blogs" asp-action="Details" asp-route-slug="@blog.Slug">
+                        <a asp-controller="Blogs" asp-action="BlogsRedirect" asp-route-slug="@blog.Slug">
                             <div class="blog-image-container">
                                 <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" alt="Blog Image" class="blog-image" />
                             </div>

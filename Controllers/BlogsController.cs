@@ -27,26 +27,36 @@ namespace TheBlogProject.Controllers
         }
 
         // GET: Blogs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string slug)
         {
             var applicationDbContext = _context.Blogs
                 .Include(b => b.BlogUser)
                 .Include(p => p.Posts);
+
             var blogs = await applicationDbContext.ToListAsync();
+
+            ViewBag.ScrollToSlug = slug;
+
             return View(blogs); // Pass blogs to the view
         }
 
-        public async Task<IActionResult> BlogIndex(int? id)
+        public async Task<IActionResult> BlogsRedirect(string slug)
         {
-            if (id == null)
+            if (slug == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
-            var blogs = _context.Blogs
-                .Where(b => b.DestinationId == id)
-                .Include(b => b.BlogUser);
-            return View("Index", blogs);
+            var blog = await _context.Blogs
+                .Include(b => b.BlogUser)
+                .FirstOrDefaultAsync(b => b.Slug == slug);
+
+            if (blog == null)
+            {
+                return View("NotFound");
+            }
+
+            return RedirectToAction("Index", new { slug = slug });
         }
 
 
@@ -55,7 +65,7 @@ namespace TheBlogProject.Controllers
         {
             if (string.IsNullOrEmpty(slug))
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var blog = await _context.Blogs
@@ -65,7 +75,7 @@ namespace TheBlogProject.Controllers
 
             if (blog == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             return View(blog);
@@ -124,13 +134,13 @@ namespace TheBlogProject.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var blog = await _context.Blogs.FindAsync(id);
             if (blog == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             return View(blog);
         }
@@ -143,7 +153,7 @@ namespace TheBlogProject.Controllers
         {
             if (id != blog.Id)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             if (ModelState.IsValid)
@@ -157,7 +167,7 @@ namespace TheBlogProject.Controllers
                     var existingBlog = await _context.Blogs.FindAsync(id);
                     if (existingBlog == null)
                     {
-                        return NotFound();
+                        return View("NotFound");
                     }
 
                     //Regenerate the slug if Name has been changed
@@ -196,7 +206,7 @@ namespace TheBlogProject.Controllers
                 {
                     if (!BlogExists(blog.Id))
                     {
-                        return NotFound();
+                        return View("NotFound");
                     }
                     else
                     {
@@ -216,7 +226,7 @@ namespace TheBlogProject.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var blog = await _context.Blogs
@@ -224,7 +234,7 @@ namespace TheBlogProject.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blog == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             return View(blog);

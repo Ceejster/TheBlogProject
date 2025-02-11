@@ -6,6 +6,11 @@ body {
 
 a {
     text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    color: gray;
 }
 
 @media (min-width: 576px) {
@@ -13,42 +18,44 @@ a {
         min-width: 576px;
     }
 }
+
 @media (min-width: 768px) {
     .container, .container-md, .container-sm {
         min-width: 768px;
     }
 }
+
 @media (min-width: 992px) {
     .container, .container-sm {
         min-width: 992px;
     }
 }
 
-    /* NAV BAR*/
+/* NAV BAR*/
 .navbar {
-        background: linear-gradient(90deg, #f3f4f6, #e5e7eb);
-        border: 2px solid gray;
-        position: fixed;
-        padding: 1rem;
-        width: 100%;
-        top: 0%;
-        z-index: 999;
+    background: linear-gradient(90deg, #f3f4f6, #e5e7eb);
+    border: 2px solid gray;
+    position: fixed;
+    padding: 1rem;
+    width: 100%;
+    top: 0%;
+    z-index: 999;
 }
 
-    .nav-link {
-        transition: color 0.2s ease;
+.nav-link {
+    transition: color 0.2s ease;
+}
+
+    .nav-link:hover {
+        color: black;
     }
 
-        .nav-link:hover {
-            color: #007bff;
-        }
-
-    .dropdown-menu {
-        border-radius: 0.5rem;
-    }
+.dropdown-menu {
+    border-radius: 0.5rem;
+}
 
 
-                        /* HOME INDEX */
+/* HOME INDEX */
 
 /* LEGEND*/
 .city-legend {
@@ -100,1144 +107,1186 @@ a {
             }
 
 .blogHeader {
-        margin: 2.5rem 0;
-        padding-bottom: 2.5rem;
-        border-bottom: 2px solid black;
+    margin: 2.5rem 0;
+    padding-bottom: 2.5rem;
+    border-bottom: 2px solid black;
 }
 
-.blogHeader img {
-            max-width: 100%; /* Ensure the image is responsive */
-            height: auto; /* Maintain aspect ratio */
-            border-radius: 5px; /* Optional: Add rounded corners for aesthetics */
-}
-
-        .blogHeader h1 {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .blogHeader p {
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #333; /* Optional: Add text color for better readability */
-        }
-
-    .blogHeaderText {
-        text-align: end;
-    }
-
-    .blog {
-        background-color: white;
-        margin: 0.5rem;
-        border-radius: 5px;
-        padding: 0.5rem;
-    }
-    /* Blog Banner */
-    .blog-banner {
-        position: relative;
-        width: 100%;
-        overflow: hidden;
-    }
-
-    .banner-image-container {
-        position: relative;
-    }
-
-    .banner-image-container {
-        width: 100%;
-        height: 25rem; /* Keeps the height consistent */
-        background-size: cover; /* Ensures the image covers the entire area */
-        background-position: center; /* Centers the image */
-        background-repeat: no-repeat; /* Prevents tiling */
-        position: relative;
-        border-radius: 5px;
-    }
-
-    .country-title {
-        position: absolute;
-        bottom: 15%;
-        left: 50%;
-        transform: translateX(-50%);
-        color: white;
-        background-color: rgba(0, 0, 0, 0.4);
-        padding: 10px 10px;
-        font-size: 24px;
-        font-weight: bold;
-        text-align: center;
-        border-radius: 5px;
-        min-width: 20rem;
-    }
-
-        .country-title p {
-            font-size: 15px;
-            font-weight: lighter;
-            text-align: center;
-        }
-
-    /* Blog Metadata */
-    .blog-meta {
-        position: absolute;
-        bottom: 10px;
-        right: 20px;
-        text-align: right;
-        color: white;
-        font-size: 0.6rem;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Improves readability */
-        background-color: rgba(0, 0, 0, 0.4);
-        padding: 0.2rem;
-        border-radius: 5px;
-    }
-
-        .blog-meta p {
-            margin: 0;
-        }
-
-    /* Post Cards Layout */
-    .post-list {
-        margin-top: 0.5rem;
-    }
-
-        .post-list h3 {
-            text-align: center;
-        }
-
-    .post-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 5px;
-    }
-
-    .post-cards-center {
-        display: flex;
-        justify-content: center;
-        align-content: center;
-    }
-
-    @media (max-width: 1025px) { /* For tablets or smaller screens */
-        .post-cards {
-            grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
-        }
-    }
-
-    @media (max-width: 768px) { /* For tablets or smaller screens */
-        .post-cards {
-            grid-template-columns: repeat(1, 1fr); /* 2 cards per row */
-        }
-    }
-
-    @media (max-width: 576px) { /* For extra small screens */
-        .post-cards {
-            grid-template-columns: repeat(1, 1fr); /* 2 cards per row, full width */
-        }
-    }
-
-    .post-card {
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        text-align: center;
-        background: whitesmoke;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-        .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-    .post-image-container {
-        width: auto;
-        height: 250px; /* Set a consistent height for images */
-        overflow: hidden;
-    }
-
-    .post-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .post-content {
-        padding: 15px;
-        text-align: center;
-        color: black;
-    }
-
-        .post-content h4 {
-            font-size: 18px;
-            margin: 0 0 10px;
-        }
-
-        .post-content p {
-            font-size: 14px;
-            color: #666;
-        }
-
-    /* DESTINATIONS INDEX LAYOUT */
-    /* Container for All Destination Cards */
-    .destination-details-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* Display 3 destination cards per row */
-        gap: 20px;
-        justify-content: center;
-        align-content: center;
-        padding: 20px;
-    }
-
-    .destination-card {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow: hidden;
-        background: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    @media (max-width: 1025px) {
-        .destination-details-container {
-            grid-template-columns: repeat(2, 1fr); /* 2 destination cards per row on tablets */
-        }
-    }
-
-    @media (max-width: 768px) {
-        .destination-details-container {
-            grid-template-columns: repeat(1, 1fr); /* 1 destination card per row on smaller screens */
-        }
-    }
-
-    /* Blog Cards Layout */
-    .destination-details {
-        margin-top: 2rem;
-    }
-
-    .area-banner {
-        min-height: 50rem; /* Increased height */
-        text-align: center;
-        margin: auto;
-        justify-content: center;
-        align-items: center;
-        position: relative; /* Position for layering content */
-        background-size: cover; /* Ensure image fits properly */
-        background-position: center; /* Center the image */
-        background-repeat: no-repeat;
-        border-radius: 5px;
-    }
-
-    .blog-list {
-        margin-top: 0.5rem;
-    }
-
-        .blog-list h3 {
-            text-align: center;
-        }
-
-    .blog-cards {
-        display: grid; /* Use grid for layout */
-        grid-template-columns: repeat(3, 1fr); /* Default: 4 cards per row */
-        gap: 20px; /* Space between cards */
-        justify-content: center; /* Center cards horizontally */
-        align-content: center; /* Center cards vertically */
-        margin: 1rem;
-    }
-
-    @media (max-width: 1025px) { /* For tablets or smaller screens */
-        .blog-cards {
-            grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
-        }
-    }
-
-    @media (max-width: 768px) { /* For tablets or smaller screens */
-        .blog-cards {
-            grid-template-columns: repeat(1, 1fr); /* 2 cards per row */
-        }
-    }
-
-    @media (max-width: 576px) { /* For extra small screens */
-        .blog-cards {
-            grid-template-columns: repeat(1, 1fr); /* 2 cards per row, full width */
-        }
-    }
-
-    .blog-card {
-        border-radius: 5px;
-        overflow: hidden;
-        background: #fff;
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    }
-
-        .blog-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-    .blog-image-container {
-        width: auto;
-        height: 250px; /* Set a consistent height for images */
-        overflow: hidden;
-    }
-
-    .blog-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .blog-content {
-        padding: 15px;
-        text-align: center;
-        color: black;
-    }
-
-        .blog-content h4 {
-            font-size: 18px;
-            margin: 0 0 10px;
-        }
-
-        .blog-content p {
-            font-size: 14px;
-            color: #666;
-        }
-
-    /* CONTACT FORM */
-
-    /* Container for the entire contact section */
-    .contact-section {
-        background-color: white; /* Light background for the section */
-        padding: 40px 20px; /* Add spacing around the section */
-        border-radius: 5px;
-    }
-
-    /* Default layout (desktop and larger screens) */
-    .contact-container {
-        display: flex; /* Keep the side-by-side layout */
-        justify-content: space-between; /* Space the sections appropriately */
-        align-items: stretch; /* Ensure both sections align in height */
-        gap: 20px; /* Add spacing between the two sections */
-        flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    }
-
-    /* Responsive layout for smaller screens */
-    @media (max-width: 768px) {
-        .contact-left {
-            order: 2; /* Move the left section to the bottom */
-        }
-
-        .contact-right {
-            order: 1; /* Ensure the form is at the top */
-        }
-
-        .contact-container {
-            flex-direction: column; /* Stack items vertically */
-        }
-    }
-
-    /* Left section (quick write-up) */
-    .contact-left {
-        display: flex; /* Enable flexbox */
-        flex-direction: column; /* Keep the content vertical */
-        justify-content: center; /* Center vertically */
-        align-items: center; /* Center horizontally */
-        text-align: center; /* Center the text itself */
-        padding: 20px; /* Add some padding for spacing */
-        border-radius: 8px; /* Optional: rounded corners */
-        flex: 1; /* Allow it to take an equal portion of space */
-        text-align: end;
-    }
-
-    /* Right section (contact form) */
-    .contact-right {
-        flex: 1; /* Take up available space */
-        max-width: 55%; /* Limit the width of the form section */
-    }
-
-    /* Form styling */
-    .contact-form .form-group {
-        margin-bottom: 20px; /* Space between form fields */
-    }
-
-    .contact-form label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-        color: #555;
-    }
-
-    .contact-input,
-    .contact-textarea {
-        width: 100%; /* Full width for inputs */
-        padding: 10px;
-        border: 1px solid #ccc; /* Subtle border */
-        border-radius: 4px; /* Rounded corners */
-        font-size: 1rem;
-        box-sizing: border-box; /* Include padding in width */
-    }
-
-    .contact-textarea {
-        resize: vertical; /* Allow resizing only vertically */
-    }
-
-    /* Responsive behavior */
-    @media (max-width: 768px) {
-        .contact-container {
-            flex-direction: column; /* Stack sections vertically */
-        }
-
-        .contact-left,
-        .contact-right {
-            max-width: 100%; /* Full width for both sections */
-        }
-    }
-
-    .profile-img {
-        width: 10rem; /* Set the width */
+    .blogHeader img {
+        max-width: 100%; /* Ensure the image is responsive */
         height: auto; /* Maintain aspect ratio */
-        border-radius: 90%; /* Make it a circle */
-        display: block; /* Ensure proper layout for centering */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for better appearance */
-        justify-content: center;
-        align-items: center;
+        border-radius: 5px; /* Optional: Add rounded corners for aesthetics */
     }
 
-    .d-flex {
-        display: flex;
-    }
-
-    .justify-content-center {
-        justify-content: center;
-    }
-
-    .align-items-center {
-        align-items: center;
-    }
-
-    .form-group {
-        margin-bottom: 1rem;
-    }
-
-    #tagValues {
+    .blogHeader h1 {
+        font-size: 2rem;
         font-weight: bold;
+        margin-bottom: 15px;
     }
 
-    .postDetailTags {
-        text-align: center;
-        font-weight: bold;
+    .blogHeader p {
         font-size: 1rem;
-    }
-
-    .commonButton {
-        justify-content: center;
-        display: inline-block;
-        color: #fff;
-        background-color: #343a40; /* Dark background like Bootstrap's btn-dark */
-        border: 1px solid #343a40; /* Matching border */
-        padding: 0.375rem 0.75rem; /* Padding similar to Bootstrap buttons */
-        font-size: 1rem; /* Font size */
         line-height: 1.5;
+        color: #333; /* Optional: Add text color for better readability */
+    }
+
+.blogHeaderText {
+    text-align: end;
+}
+
+.blog {
+    background-color: white;
+    margin: 0.5rem;
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+/* Blog Banner */
+.blog-banner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.banner-image-container {
+    position: relative;
+}
+
+.banner-image-container {
+    width: 100%;
+    height: 25rem; /* Keeps the height consistent */
+    background-size: cover; /* Ensures the image covers the entire area */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+    position: relative;
+    border-radius: 5px;
+}
+
+.country-title {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 10px 10px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    min-width: 20rem;
+}
+
+    .country-title p {
+        font-size: 15px;
+        font-weight: lighter;
         text-align: center;
+    }
+
+/* Blog Metadata */
+.blog-meta {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    text-align: right;
+    color: white;
+    font-size: 0.6rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Improves readability */
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 0.2rem;
+    border-radius: 5px;
+}
+
+    .blog-meta p {
+        margin: 0;
+    }
+
+/* Post Cards Layout */
+.post-list {
+    margin-top: 0.5rem;
+}
+
+    .post-list h3 {
+        text-align: center;
+    }
+
+.post-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 5px;
+}
+
+.post-cards-center {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+@media (max-width: 1025px) { /* For tablets or smaller screens */
+    .post-cards {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+    }
+}
+
+@media (max-width: 768px) { /* For tablets or smaller screens */
+    .post-cards {
+        grid-template-columns: repeat(1, 1fr); /* 2 cards per row */
+    }
+}
+
+@media (max-width: 576px) { /* For extra small screens */
+    .post-cards {
+        grid-template-columns: repeat(1, 1fr); /* 2 cards per row, full width */
+    }
+}
+
+.post-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    background: whitesmoke;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .post-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+.post-image-container {
+    width: auto;
+    height: 250px; /* Set a consistent height for images */
+    overflow: hidden;
+}
+
+.post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-content {
+    padding: 15px;
+    text-align: center;
+    color: black;
+}
+
+    .post-content h4 {
+        font-size: 18px;
+        margin: 0 0 10px;
+    }
+
+    .post-content p {
+        font-size: 14px;
+        color: #666;
+    }
+
+/* DESTINATIONS INDEX LAYOUT */
+/* Container for All Destination Cards */
+.destination-details-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Display 3 destination cards per row */
+    gap: 20px;
+    justify-content: center;
+    align-content: center;
+    padding: 20px;
+}
+
+.destination-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1025px) {
+    .destination-details-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 destination cards per row on tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .destination-details-container {
+        grid-template-columns: repeat(1, 1fr); /* 1 destination card per row on smaller screens */
+    }
+}
+
+/* Blog Cards Layout */
+.destination-details {
+    margin-top: 2rem;
+}
+
+.area-banner {
+    min-height: 50rem; /* Increased height */
+    text-align: center;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Position for layering content */
+    background-size: cover; /* Ensure image fits properly */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat;
+    border-radius: 5px;
+}
+
+.blog-list {
+    margin-top: 0.5rem;
+}
+
+    .blog-list h3 {
+        text-align: center;
+    }
+
+.blog-cards {
+    display: grid; /* Use grid for layout */
+    grid-template-columns: repeat(3, 1fr); /* Default: 4 cards per row */
+    gap: 20px; /* Space between cards */
+    justify-content: center; /* Center cards horizontally */
+    align-content: center; /* Center cards vertically */
+    margin: 1rem;
+}
+
+@media (max-width: 1025px) { /* For tablets or smaller screens */
+    .blog-cards {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+    }
+}
+
+@media (max-width: 768px) { /* For tablets or smaller screens */
+    .blog-cards {
+        grid-template-columns: repeat(1, 1fr); /* 2 cards per row */
+    }
+}
+
+@media (max-width: 576px) { /* For extra small screens */
+    .blog-cards {
+        grid-template-columns: repeat(1, 1fr); /* 2 cards per row, full width */
+    }
+}
+
+.blog-card {
+    border-radius: 5px;
+    overflow: hidden;
+    background: #fff;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+    .blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+.blog-image-container {
+    width: auto;
+    height: 250px; /* Set a consistent height for images */
+    overflow: hidden;
+}
+
+.blog-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.blog-content {
+    padding: 15px;
+    text-align: center;
+    color: black;
+}
+
+    .blog-content h4 {
+        font-size: 18px;
+        margin: 0 0 10px;
+    }
+
+    .blog-content p {
+        font-size: 14px;
+        color: #666;
+    }
+
+                                /* CONTACT FORM- Removed for now + Contact Page*/
+.contactPage-contained {
+    margin-top: 1.5rem;
+}
+
+.contactHeader {
+    text-align: center;
+}
+
+.contactHeader-info p {
+    padding: 0 2.5rem 0 2.5rem; /* Add padding inside the paragraph */
+}
+
+/* Container for the entire contact section */
+.contact-section {
+    background-color: white; /* Light background for the section */
+    padding: 40px 20px; /* Add spacing around the section */
+    border-radius: 5px;
+}
+
+/* Default layout (desktop and larger screens) */
+.contact-container {
+    display: flex; /* Keep the side-by-side layout */
+    justify-content: space-between; /* Space the sections appropriately */
+    align-items: stretch; /* Ensure both sections align in height */
+    gap: 20px; /* Add spacing between the two sections */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 768px) {
+    .contact-left {
+        order: 2; /* Move the left section to the bottom */
+    }
+
+    .contact-right {
+        order: 1; /* Ensure the form is at the top */
+    }
+
+    .contact-container {
+        flex-direction: column; /* Stack items vertically */
+    }
+}
+
+/* Left section (quick write-up) */
+.contact-left {
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Keep the content vertical */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    text-align: center; /* Center the text itself */
+    padding: 20px; /* Add some padding for spacing */
+    border-radius: 8px; /* Optional: rounded corners */
+    flex: 1; /* Allow it to take an equal portion of space */
+    text-align: end;
+}
+
+/* Right section (contact form) */
+.contact-right {
+    flex: 1; /* Take up available space */
+    max-width: 55%; /* Limit the width of the form section */
+}
+
+/* Form styling */
+.contact-form .form-group {
+    margin-bottom: 20px; /* Space between form fields */
+}
+
+.contact-form label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.contact-input,
+.contact-textarea {
+    width: 100%; /* Full width for inputs */
+    padding: 10px;
+    border: 1px solid #ccc; /* Subtle border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 1rem;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.contact-textarea {
+    resize: vertical; /* Allow resizing only vertically */
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+    .contact-container {
+        flex-direction: column; /* Stack sections vertically */
+    }
+
+    .contact-left,
+    .contact-right {
+        max-width: 100%; /* Full width for both sections */
+    }
+}
+
+.profile-img {
+    width: 10rem; /* Set the width */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 90%; /* Make it a circle */
+    display: block; /* Ensure proper layout for centering */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for better appearance */
+    justify-content: center;
+    align-items: center;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+#tagValues {
+    font-weight: bold;
+}
+
+.postDetailTags {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.commonButton {
+    justify-content: center;
+    display: inline-block;
+    color: #fff;
+    background-color: #343a40; /* Dark background like Bootstrap's btn-dark */
+    border: 1px solid #343a40; /* Matching border */
+    padding: 0.375rem 0.75rem; /* Padding similar to Bootstrap buttons */
+    font-size: 1rem; /* Font size */
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 0.25rem; /* Rounded corners */
+    cursor: pointer;
+    transition: all 0.15s ease-in-out; /* Smooth hover transition */
+    margin: 0.5rem;
+}
+
+    .commonButton:hover {
+        background-color: dimgray; /* Darker shade on hover */
+    }
+
+.tagButton {
+    justify-content: center;
+    display: inline-block;
+    color: #fff;
+    background-color: #343a40; /* Dark background like Bootstrap's btn-dark */
+    border: 1px solid #343a40; /* Matching border */
+    padding: 0.375rem 0.75rem; /* Padding similar to Bootstrap buttons */
+    font-size: 1rem; /* Font size */
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 0.25rem; /* Rounded corners */
+    cursor: pointer;
+    transition: all 0.15s ease-in-out; /* Smooth hover transition */
+}
+
+    .tagButton:hover {
+        background-color: #23272b; /* Slightly darker background on hover */
+        border-color: #1d2124; /* Matching border on hover */
+        color: azure;
+    }
+
+    .tagButton:active {
+        background-color: #1d2124; /* Active state background */
+        border-color: #171a1d; /* Active state border */
+        transform: scale(0.95); /* Slight scale effect on click */
+    }
+
+    .tagButton:disabled {
+        background-color: #6c757d; /* Disabled state background */
+        border-color: #6c757d; /* Disabled state border */
+        cursor: not-allowed;
+        opacity: 0.65;
+    }
+
+.center {
+    justify-content: center;
+    text-align: center;
+}
+
+
+.userSearch {
+    display: flex;
+    justify-content: end;
+}
+
+.searchIndex {
+    margin-right: 1rem;
+    width: 20rem;
+}
+
+.card-title {
+    color: white;
+}
+
+.commentCards {
+    background-color: #f8f9fa; /* Light background color */
+    border: 1px solid #dee2e6; /* Border with light gray color */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Padding for inner content */
+    margin: 10px 0; /* Spacing between cards */
+    max-width: 80%; /* Restrict width to not fill the entire column */
+}
+
+.commentUserCard {
+    display: flex;
+    align-items: center; /* Center-align image and name */
+    width: 120px; /* Fixed width to standardize size */
+    text-align: center; /* Center-align text within the card */
+    padding: 10px; /* Add padding for spacing */
+}
+
+/* User Image */
+.commentImage {
+    width: 60px; /* Smaller size for the image */
+    height: 60px; /* Match height to width for a square */
+    object-fit: cover; /* Ensure image maintains aspect ratio */
+    margin-bottom: 5px; /* Space between image and name */
+}
+
+/* User Name */
+.commentUserName {
+    font-size: 1rem; /* Adjust font size */
+    margin: 0; /* Remove default margin */
+    word-wrap: break-word; /* Handle long names properly */
+}
+
+/* Comment Text */
+.commentText {
+    text-align: start; /* Center-align the comment text */
+}
+
+/* Posted Date */
+.postedDate {
+    align-self: flex-end; /* Pushes the date to the bottom right */
+    margin-left: auto; /* Ensures alignment to the right */
+    font-size: 0.9rem; /* Slightly smaller font size */
+    color: #6c757d; /* Muted color for date */
+}
+
+
+.commentImage {
+    width: 40px; /* Smaller size for the image */
+    height: 40px; /* Match height to width for a square */
+    object-fit: cover; /* Ensures image maintains aspect ratio */
+    margin-right: 10px; /* Space between image and text */
+    margin-top: 5px; /* Adjust vertical spacing */
+    justify-content: center;
+    align-content: center;
+}
+
+.commentUserName {
+    display: inline-block; /* Ensures inline alignment */
+    margin-left: 10px; /* Space to the right of the image */
+    font-size: 1rem; /* Adjust font size */
+    vertical-align: middle; /* Aligns with the image */
+}
+
+.commentBox {
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Padding for inner content */
+    margin: 10px 0; /* Spacing between cards */
+    max-width: 80%; /* Restrict width to not fill the entire column */
+}
+
+.moderationButtons {
+    display: flex;
+    justify-content: end;
+}
+
+                                    /* DESTINATION INDEX LAYOUT*/
+.destination-list-index {
+    margin: 2rem auto;
+}
+
+.destination-header-index {
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border-bottom: 2px solid black;
+    padding-bottom: 2rem;
+}
+
+.destination-name-index {
+    font-size: 1.85rem;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+    .destination-name-index a {
         text-decoration: none;
-        border-radius: 0.25rem; /* Rounded corners */
-        cursor: pointer;
-        transition: all 0.15s ease-in-out; /* Smooth hover transition */
-        margin: 0.5rem;
+        color: black;
     }
 
-        .commonButton:hover {
-            background-color: darkred; /* Darker shade on hover */
-        }
+.destination-section-index {
+    margin-bottom: 2rem;
 
-    .tagButton {
-        justify-content: center;
-        display: inline-block;
-        color: #fff;
-        background-color: #343a40; /* Dark background like Bootstrap's btn-dark */
-        border: 1px solid #343a40; /* Matching border */
-        padding: 0.375rem 0.75rem; /* Padding similar to Bootstrap buttons */
-        font-size: 1rem; /* Font size */
-        line-height: 1.5;
-        text-align: center;
-        text-decoration: none;
-        border-radius: 0.25rem; /* Rounded corners */
-        cursor: pointer;
-        transition: all 0.15s ease-in-out; /* Smooth hover transition */
-    }
+}
 
-        .tagButton:hover {
-            background-color: #23272b; /* Slightly darker background on hover */
-            border-color: #1d2124; /* Matching border on hover */
-            color: azure;
-        }
+.blog-banners-index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
 
-        .tagButton:active {
-            background-color: #1d2124; /* Active state background */
-            border-color: #171a1d; /* Active state border */
-            transform: scale(0.95); /* Slight scale effect on click */
-        }
+.blog-banner-index {
+    flex: 1 1 calc(33.333% - 1rem);
+    max-width: 25rem;
+    min-width: 200px;
+    height: 17rem;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-        .tagButton:disabled {
-            background-color: #6c757d; /* Disabled state background */
-            border-color: #6c757d; /* Disabled state border */
-            cursor: not-allowed;
-            opacity: 0.65;
-        }
+.banner-image-index {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
 
-    .center {
-        justify-content: center;
-        text-align: center;
-    }
+.banner-title-index {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    width: 100%;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 1rem;
+}
 
+.destination-actions-index {
+    margin-top: 1rem;
+    text-align: right;
+}
 
-    .userSearch {
-        display: flex;
-        justify-content: end;
-    }
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #fff;
+}
 
-    .searchIndex {
-        margin-right: 1rem;
-        width: 20rem;
-    }
+.btn-primary {
+    background-color: black;
+    border: none;
+}
 
-    .card-title {
-        color: white;
-    }
+.btn-warning {
+    background-color: #FFC107;
+    border: none;
+}
 
-    .commentCards {
-        background-color: #f8f9fa; /* Light background color */
-        border: 1px solid #dee2e6; /* Border with light gray color */
-        border-radius: 5px; /* Rounded corners */
-        padding: 15px; /* Padding for inner content */
-        margin: 10px 0; /* Spacing between cards */
-        max-width: 80%; /* Restrict width to not fill the entire column */
-    }
+.btn-danger {
+    background-color: #DC3545;
+    border: none;
+}
 
-    .commentUserCard {
-        display: flex;
-        align-items: center; /* Center-align image and name */
-        width: 120px; /* Fixed width to standardize size */
-        text-align: center; /* Center-align text within the card */
-        padding: 10px; /* Add padding for spacing */
-    }
+.btn:hover {
+    opacity: 0.8;
+}
 
-    /* User Image */
-    .commentImage {
-        width: 60px; /* Smaller size for the image */
-        height: 60px; /* Match height to width for a square */
-        object-fit: cover; /* Ensure image maintains aspect ratio */
-        margin-bottom: 5px; /* Space between image and name */
-    }
-
-    /* User Name */
-    .commentUserName {
-        font-size: 1rem; /* Adjust font size */
-        margin: 0; /* Remove default margin */
-        word-wrap: break-word; /* Handle long names properly */
-    }
-
-    /* Comment Text */
-    .commentText {
-        text-align: start; /* Center-align the comment text */
-    }
-
-    /* Posted Date */
-    .postedDate {
-        align-self: flex-end; /* Pushes the date to the bottom right */
-        margin-left: auto; /* Ensures alignment to the right */
-        font-size: 0.9rem; /* Slightly smaller font size */
-        color: #6c757d; /* Muted color for date */
-    }
-
-
-    .commentImage {
-        width: 40px; /* Smaller size for the image */
-        height: 40px; /* Match height to width for a square */
-        object-fit: cover; /* Ensures image maintains aspect ratio */
-        margin-right: 10px; /* Space between image and text */
-        margin-top: 5px; /* Adjust vertical spacing */
-        justify-content: center;
-        align-content: center;
-    }
-
-    .commentUserName {
-        display: inline-block; /* Ensures inline alignment */
-        margin-left: 10px; /* Space to the right of the image */
-        font-size: 1rem; /* Adjust font size */
-        vertical-align: middle; /* Aligns with the image */
-    }
-
-    .commentBox {
-        border-radius: 5px; /* Rounded corners */
-        padding: 15px; /* Padding for inner content */
-        margin: 10px 0; /* Spacing between cards */
-        max-width: 80%; /* Restrict width to not fill the entire column */
-    }
-
-    .moderationButtons {
-        display: flex;
-        justify-content: end;
-    }
-
-    /* DESTINATION INDEX LAYOUT*/
-    .destination-list-index {
-        margin: 2rem auto;
-    }
-
-    .destination-header-index {
-        justify-content: center;
-        align-content: center;
-        text-align: center;
+@media (max-width: 768px) {
+    .destination-section-index {
+        flex-direction: column;
     }
 
     .destination-name-index {
-        font-size: 1.85rem;
-        font-weight: bold;
-        color: black;
-        margin-bottom: 1rem;
         text-align: center;
-    }
-
-        .destination-name-index a {
-            text-decoration: none;
-            color: black;
-        }
-
-            .destination-name-index a:hover {
-                text-decoration: underline;
-            }
-
-    .destination-section-index {
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid black;
     }
 
     .blog-banners-index {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
+        justify-content: center;
     }
 
     .blog-banner-index {
-        flex: 1 1 calc(33.333% - 1rem);
-        max-width: 25rem;
-        min-width: 200px;
-        height: 17rem;
-        border-radius: 10px;
-        overflow: hidden;
-        position: relative;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        flex: 1 1 100%; /* Full width on small screens */
+        max-width: 100%;
+        height: 20rem;
     }
+}
 
-    .banner-image-index {
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        position: relative;
-    }
+/* BLOG INDEX VIEW */
+.blogview-contained {
+    margin: 0 auto;
+    padding: 20px;
+}
 
-    .banner-title-index {
-        position: absolute;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.6);
-        color: #fff;
-        width: 100%;
-        padding: 0.5rem;
-        text-align: center;
-        font-size: 1rem;
-    }
+.blogView-spacer {
+    padding-top: 2rem;
+}
 
-    .destination-actions-index {
-        margin-top: 1rem;
-        text-align: right;
-    }
-
-    .btn {
-        padding: 0.5rem 1rem;
-        border-radius: 5px;
-        text-decoration: none;
-        color: #fff;
-    }
-
-    .btn-primary {
-        background-color: #007BFF;
-        border: none;
-    }
-
-    .btn-warning {
-        background-color: #FFC107;
-        border: none;
-    }
-
-    .btn-danger {
-        background-color: #DC3545;
-        border: none;
-    }
-
-    .btn:hover {
-        opacity: 0.8;
-    }
-
-    @media (max-width: 768px) {
-        .destination-section-index {
-            flex-direction: column;
-        }
-
-        .destination-name-index {
-            text-align: center;
-        }
-
-        .blog-banners-index {
-            justify-content: center;
-        }
-
-        .blog-banner-index {
-            flex: 1 1 100%; /* Full width on small screens */
-            max-width: 100%;
-            height: 20rem;
-        }
-    }
-
-    /* BLOG INDEX VIEW */
+/* Mobile-first adjustments */
+@media (max-width: 768px) {
     .blogview-contained {
-        margin: 0 auto;
-        padding: 20px;
-    }
-    /* Mobile-first adjustments */
-    @media (max-width: 768px) {
-        .blogview-contained {
-            padding-right: 0; /* Remove side padding on mobile */
-            padding-left: 0;
-            width: 100%;
-        }
-
-        .blogview-post-contained {
-            margin-bottom: 20px;
-            border-radius: 0;
-            box-shadow: none;
-            border: none;
-            border-bottom: 1px solid #e0e0e0; /* Add separation between posts */
-        }
+        padding-right: 0; /* Remove side padding on mobile */
+        padding-left: 0;
+        width: 100%;
     }
 
     .blogview-post-contained {
         margin-bottom: 20px;
-        border: 1px solid #e0e0e0;
-        border-radius: 5px 5px 0 0;
-        overflow: hidden;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+        border-bottom: 1px solid #e0e0e0; /* Add separation between posts */
+    }
+}
+
+.blogview-post-contained {
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.blogview-banner {
+    position: relative;
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+}
+
+.blogview-banner-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    padding: 20px;
+    color: white;
+}
+
+.blogview-banner-title {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.blogview-banner-description {
+    font-size: 1.2rem;
+    margin: 10px 0 0;
+}
+
+.blogview-admin-actions {
+    margin-top: 10px;
+}
+
+.blogview-btn {
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+    color: black;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+    .blogview-btn:hover {
         background: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        color: #333;
     }
 
-    .blogview-banner {
-        position: relative;
-        height: 400px;
-        background-size: cover;
-        background-position: center;
-    }
+.blogview-btn-edit {
+    border-color: #28a745;
+}
 
-    .blogview-banner-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
-        padding: 20px;
-        color: white;
-    }
+.blogview-btn-delete {
+    border-color: #dc3545;
+}
 
-    .blogview-banner-title {
-        font-size: 2.5rem;
-        margin: 0;
-    }
+.blogview-btn-details {
+    border-color: black;
+}
 
-    .blogview-banner-description {
-        font-size: 1.2rem;
-        margin: 10px 0 0;
-    }
+.blogview-content-split {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 0.25rem;
+}
 
-    .blogview-admin-actions {
-        margin-top: 10px;
-    }
+.blogview-image-contained {
+    flex: 0 0 60%;
+    position: relative;
+    min-height: 300px;
+}
 
-    .blogview-btn {
-        margin-right: 10px;
-        padding: 5px 10px;
-        border: 1px solid white;
-        border-radius: 5px;
-        color: black;
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: background 0.3s ease, color 0.3s ease;
-    }
+.blogview-main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
 
-        .blogview-btn:hover {
-            background: white;
-            color: #333;
-        }
+.blogview-text-contained {
+    flex: 0 0 38%;
+    padding: 1rem;
+    padding-right: 2rem;
+    display: flex;
+    flex-direction: column;
+}
 
-    .blogview-btn-edit {
-        border-color: #28a745;
-    }
+.blogview-header-group {
+    margin-bottom: 1.5rem;
+}
 
-    .blogview-btn-delete {
-        border-color: #dc3545;
-    }
+.blogview-header-underline {
+    width: 60px;
+    height: 3px;
+    background-color: #333;
+    margin: 1rem 0;
+}
 
-    .blogview-btn-details {
-        border-color: #007bff;
-    }
+.blogview-details {
+    flex-grow: 1;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #444;
+}
 
+/* Responsive Design */
+@media (max-width: 768px) {
     .blogview-content-split {
-        display: flex;
-        gap: 2rem;
-        margin-bottom: 0.25rem;
+        flex-direction: column;
     }
 
     .blogview-image-contained {
-        flex: 0 0 60%;
-        position: relative;
-        min-height: 300px;
-    }
-
-    .blogview-main-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 5px;
+        flex: 1 1 100%;
+        min-height: 200px;
     }
 
     .blogview-text-contained {
-        flex: 0 0 38%;
-        padding: 1rem;
-        padding-right: 2rem;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .blogview-header-group {
-        margin-bottom: 1.5rem;
+        flex: 1 1 100%;
+        padding: 0;
+        margin: 0 1rem 0 1rem;
     }
 
     .blogview-header-underline {
-        width: 60px;
-        height: 3px;
-        background-color: #333;
-        margin: 1rem 0;
+        margin: 0.5rem 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .blogview-banner-title {
+        font-size: 1.8rem;
+    }
+
+    .blogview-banner-description {
+        font-size: 1rem;
     }
 
     .blogview-details {
-        flex-grow: 1;
-        font-size: 0.95rem;
-        line-height: 1.6;
-        color: #444;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .blogview-content-split {
-            flex-direction: column;
-        }
-
-        .blogview-image-contained {
-            flex: 1 1 100%;
-            min-height: 200px;
-        }
-
-        .blogview-text-contained {
-            flex: 1 1 100%;
-            padding: 0;
-            margin: 0 1rem 0 1rem;
-        }
-
-        .blogview-header-underline {
-            margin: 0.5rem 0;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .blogview-banner-title {
-            font-size: 1.8rem;
-        }
-
-        .blogview-banner-description {
-            font-size: 1rem;
-        }
-
-        .blogview-details {
-            font-size: 0.9rem;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .blogview-text-contained {
-            padding: 0 15px !important; /* Force side padding on smallest screens */
-            margin: 0 1rem 0 1rem;
-        }
-
-        .blogview-header-group,
-        .blogview-details {
-            padding: 0 15px; /* Maintain internal spacing */
-        }
-
-        .blogview-content-split {
-            gap: 1rem; /* Reduce vertical gap between image and text */
-        }
-
-        .blogview-main-image {
-            border-radius: 0; /* Full-bleed image on mobile */
-        }
-    }
-
-    @media (max-width: 991px) {
-        .blogview-contained {
-            margin: 0;
-            padding: 0;
-        }
-
-        .blogview-post-contained {
-            margin: 0;
-            padding: 0;
-        }
-    }
-    /* Posts Grid */
-    .blogview-posts-grid {
-    }
-
-    .blogview-posts-grid-title {
-        text-align: center;
-        font-size: 2rem;
-        color: #333;
-    }
-
-    .blogview-grid-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 5px;
-    }
-
-    .blogview-post-card {
-        text-align: center;
-        background: whitesmoke;
-        border-radius: 5px 5px 0 0;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-        .blogview-post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-    .blogview-post-image img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-    }
-
-    .blogview-post-content {
-        padding-left: 15px;
-    }
-
-    .blogview-post-title {
-        font-size: 1.2rem;
-        margin: 0 0 10px;
-        color: #333;
-    }
-
-    .blogview-post-summary {
         font-size: 0.9rem;
-        color: #666;
-        margin: 0 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .blogview-text-contained {
+        padding: 0 15px !important; /* Force side padding on smallest screens */
+        margin: 0 1rem 0 1rem;
     }
 
-    .blogview-post-date {
-        font-size: 0.8rem;
-        color: #999;
+    .blogview-header-group,
+    .blogview-details {
+        padding: 0 15px; /* Maintain internal spacing */
+    }
+
+    .blogview-content-split {
+        gap: 1rem; /* Reduce vertical gap between image and text */
+    }
+
+    .blogview-main-image {
+        border-radius: 0; /* Full-bleed image on mobile */
+    }
+}
+
+@media (max-width: 991px) {
+    .blogview-contained {
         margin: 0;
+        padding: 0;
     }
 
-    /* POST INDEX VIEW */
-    .postView-Index-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
+    .blogview-post-contained {
+        margin-bottom: 0;
+        padding: 0;
+    }
+}
+/* Posts Grid */
+.blogview-posts-grid {
+}
+
+.blogview-posts-grid-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+}
+
+.blogview-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 5px;
+}
+
+.blogview-post-card {
+    text-align: center;
+    background: whitesmoke;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .blogview-post-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
-    .postView-Index-header {
-        text-align: center;
-        margin-bottom: 3rem;
-    }
+.blogview-post-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
 
-    .postView-Index-title {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-    }
+.blogview-post-content {
+    padding-left: 15px;
+}
 
-    .postView-Index-description {
-        font-size: 1.1rem;
-        color: #666;
-        max-width: 800px;
-        margin: 0 auto;
-    }
+.blogview-post-title {
+    font-size: 1.2rem;
+    margin: 0 0 10px;
+    color: #333;
+}
 
-    .postView-Index-admin-header {
-        margin-bottom: 2rem;
-        text-align: right;
-    }
+.blogview-post-summary {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 0 10px;
+}
 
-    .postView-Index-create-button {
-        background: #007bff;
-        color: white;
-        padding: 0.8rem 1.5rem;
-        border-radius: 4px;
-        text-decoration: none;
-    }
+.blogview-post-date {
+    font-size: 0.8rem;
+    color: #999;
+    margin: 0;
+}
 
-    .postView-Index-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 2rem;
-    }
+                                /* POST INDEX VIEW */
+.postView-Index-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
 
-    .postView-Index-card {
-        background: white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        display: flex;
-        flex-direction: column;
-    }
+.postView-Index-header {
+    text-align: center;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid black;
+}
 
-    .postView-Index-image-container {
-        position: relative;
-        height: 200px;
-        overflow: hidden;
-    }
+.postView-Index-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
 
-    .postView-Index-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+.postView-Index-description {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto;
+}
 
-    .postView-Index-image-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 1rem;
-        background: linear-gradient(transparent, rgba(0,0,0,0.7));
-    }
+.postView-Index-admin-header {
+    margin-top: 2rem;
+    text-align: right;
+}
 
-    .postView-Index-titleOverlay {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60%;
-        text-align: center;
-        padding: 10px 0; /* Adjust vertical padding as needed */
-        background: rgba(0, 0, 0, 0.4); /* Optional: a semi-transparent background for readability */
-    }
+.postView-Index-create-button {
+    background: black;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+}
 
-    /* Title styling */
-    .postView-Index-card-title {
-        color: white;
-        margin: 0;
-        font-size: 1.2rem;
-    }
+.postView-Index-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding-top: 2rem;
+}
 
-    .postView-Explore {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border: 2px solid #fff;
-        padding: 5px 10px;
-        text-align: center;
+.postView-Index-card {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.postView-Index-image-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.postView-Index-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.postView-Index-image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+}
+
+.postView-Index-titleOverlay {
+    position: absolute;
+    top: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    text-align: center;
+    padding: 5px 0; /* Adjust vertical padding as needed */
+    background: rgba(0, 0, 0, 0.6); /* Optional: a semi-transparent background for readability */
+}
+
+/* Title styling */
+.postView-Index-card-title {
+    color: white;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.postView-Explore {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #fff;
+    padding: 5px 10px;
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5); /* optional background to improve contrast */
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+    .postView-Explore:hover {
+        background: rgba(0, 0, 0, 0.7);
         color: #fff;
-        background: rgba(0, 0, 0, 0.5); /* optional background to improve contrast */
-        text-decoration: none;
-        font-size: 1.2em;
-        transition: background 0.2s ease, color 0.2s ease;
     }
 
-        .postView-Explore:hover {
-            background: rgba(0, 0, 0, 0.7);
-            color: #fff;
-        }
 
+.postView-Index-admin-actions {
+    display: flex;
+    gap: 1rem;
+}
 
-    .postView-Index-admin-actions {
-        display: flex;
-        gap: 1rem;
+.postView-Index-edit {
+    color: black;
+    text-decoration: none;
+}
+
+.postView-Index-delete {
+    color: #dc3545;
+    text-decoration: none;
+}
+
+/* ABOUT PAGE */
+.about {
+    margin: 0 auto;
+}
+
+/* Each section wrapper (optional but useful for spacing between sections) */
+.aboutSection {
+    margin-bottom: 2.5rem;
+    margin-top: 2.5rem;
+}
+
+/* Header styling */
+.aboutHeader {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.aboutContent {
+    flex-wrap: wrap; /* Allow wrapping if needed */
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem; /* Space between image and text */
+    max-width: 50rem; /* Maximum width for the combined content */
+    margin: 0 auto; /* Center the container */
+}
+
+/* Image container styling */
+.aboutImage {
+    flex: 1 1 300px; /* Grow/shrink as needed with a minimum width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .aboutImage img {
+        width: 100%; /* Image fills its container */
+        max-width: 60rem; /* But never exceeds this size */
+        height: auto; /* Keep aspect ratio */
     }
 
-    .postView-Index-edit {
-        color: #007bff;
-        text-decoration: none;
-    }
+/* Write-up container styling */
+.aboutWriteup {
+    flex: 1 1 300px; /* Grow/shrink similarly */
+    text-align: center; /* Center the text */
+    padding: 2rem 2rem 0.1rem 2rem;
+}
 
-    .postView-Index-delete {
-        color: #dc3545;
-        text-decoration: none;
-    }
-
-    /* ABOUT PAGE */
-    .about {
-        margin: 0 auto;
-    }
-
-    /* Each section wrapper (optional but useful for spacing between sections) */
-    .aboutSection {
-        margin-bottom: 2.5rem;
-        margin-top: 2.5rem;
-    }
-
-    /* Header styling */
-    .aboutHeader {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
     .aboutContent {
-        flex-wrap: wrap; /* Allow wrapping if needed */
-        justify-content: center;
-        align-items: flex-start;
-        gap: 2rem; /* Space between image and text */
-        max-width: 50rem; /* Maximum width for the combined content */
-        margin: 0 auto; /* Center the container */
+        flex-direction: column; /* Stack image and text vertically */
+        gap: 1rem; /* Reduce gap if desired */
     }
+}
 
-    /* Image container styling */
-    .aboutImage {
-        flex: 1 1 300px; /* Grow/shrink as needed with a minimum width */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+                        /* POST DETAIL VIEW*/
+.postDetail-banner{
+    margin-top: 2.5rem;
+    text-align: center;
+}
 
-        .aboutImage img {
-            width: 100%; /* Image fills its container */
-            max-width: 60rem; /* But never exceeds this size */
-            height: auto; /* Keep aspect ratio */
-        }
+.postDetail-banner h1 {
+    padding-bottom: 2rem;
+}
 
-    /* Write-up container styling */
-    .aboutWriteup {
-        flex: 1 1 300px; /* Grow/shrink similarly */
-        text-align: center; /* Center the text */
-        padding: 2rem 2rem 0.1rem 2rem;
-    }
+.postDetail-img {
+    width: 100%;
+    max-width: 300rem;
+    height: auto; /* Keeps the aspect ratio intact */
+    display: block; /* Ensures proper centering when combined with auto margins */
+    margin-left: auto;
+    margin-right: auto;
+}
 
-    /* Responsive adjustments for smaller screens */
-    @media (max-width: 768px) {
-        .aboutContent {
-            flex-direction: column; /* Stack image and text vertically */
-            gap: 1rem; /* Reduce gap if desired */
-        }
-    }
+.postDetail-content {
+    white-space: pre-wrap; /* Preserves spaces, tabs, and line breaks */
+}
 
-    /* Footer */
-    .bi {
-        color: black;
-    }
+/* Footer */
+.bi {
+    color: black;
+}
+
+.site-footer a[href^="mailto:"] {
+    color: black; 
+}

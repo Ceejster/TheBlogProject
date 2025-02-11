@@ -29,7 +29,7 @@
 
 <!-- City Legend Section -->
 <div class="city-legend">
-    <h4>Cities Featured:</h4>
+    <h4>Cities Visited:</h4>
     <ul>
         @{
             // Collect all posts from all blogs
@@ -56,7 +56,7 @@
     <div class="blog">
         <!-- Blog Banner with Name Overlaid -->
         <div class="blog-banner">
-            <a asp-controller="Blogs" asp-action="Details" asp-route-slug="@blog.Slug">
+            <a asp-controller="Blogs" asp-action="BlogsRedirect" asp-route-slug="@blog.Slug">
                 <div class="banner-image-container" style="background-image: url('@imageService.DecodeImage(blog.ImageData, blog.ContentType)');">
                     <!-- Country Title and Description -->
                     <div class="country-title">
@@ -72,7 +72,6 @@
                 </div>
             </a>
         </div>
-
 
         <!-- Blog Posts Section -->
         <div class="post-list">

@@ -5,89 +5,100 @@
     ViewData["Title"] = "Contact Me";
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="contactPage-contained">
+    <div class="contactHeader">
+        <h2>@ViewData["Title"]</h2>
+        <div class="contactHeader-info">
+            <p>
+                I'm always happy to hear from people, learn where you've been, an even places you'd recommend.
+                Looking to contact me to get more info on places? Want tips or advice?
+                Feel free to reach out!
+            </p>
+        </div>
+    </div>
+    
 
-<p>Looking to contact me to get more info on places? Want tips or advice? Feel free to reach out!</p>
+    <div class="col-md-8 justify-center">
+        <form asp-action="Contact" method="post">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
 
-<div class="col-md-8 justify-center">
-    <form asp-action="Contact" method="post">
-        <div class="form-group">
-            <label asp-for="Name" class="control-label"></label>
-            <input asp-for="Name" class="form-control" placeholder="Name" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" type="tel" class="form-control" placeholder="Optional" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Subject" class="control-label"></label>
+                <input asp-for="Subject" class="form-control" placeholder="Subject" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Message" class="control-label"></label>
+                <textarea asp-for="Message" class="form-control" placeholder="Whats on your mind?" rows="4"></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+    </div>
+
+    <hr />
+
+    <h3>FAQ</h3>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="faqHeadingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne" aria-expanded="false" aria-controls="faqCollapseOne">
+                    How long does it take to get a response?
+                </button>
+            </h2>
+            <div id="faqCollapseOne" class="accordion-collapse collapse" aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    I usually respond within 24-48 hours. If I am traveling, it might take a bit longer.
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Email" class="control-label"></label>
-            <input asp-for="Email" class="form-control" placeholder="Email" />
-            <span asp-validation-for="Email" class="text-danger"></span>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="faqHeadingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseTwo" aria-expanded="false" aria-controls="faqCollapseTwo">
+                    Can I request personalized travel advice?
+                </button>
+            </h2>
+            <div id="faqCollapseTwo" class="accordion-collapse collapse" aria-labelledby="faqHeadingTwo" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Absolutely! If you have specific questions or need tailored advice, feel free to include details in your message.
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Phone" class="control-label"></label>
-            <input asp-for="Phone" type="tel" class="form-control" placeholder="Optional" />
-            <span asp-validation-for="Phone" class="text-danger"></span>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="faqHeadingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseThree" aria-expanded="false" aria-controls="faqCollapseThree">
+                    Do you charge for consultations or advice?
+                </button>
+            </h2>
+            <div id="faqCollapseThree" class="accordion-collapse collapse" aria-labelledby="faqHeadingThree" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    No, I am happy to share tips and advice for free. Traveling is a shared experience and I would not be wherre I am today if it was for the people helping me along the way.
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-            <label asp-for="Subject" class="control-label"></label>
-            <input asp-for="Subject" class="form-control" placeholder="Subject" />
-            <span asp-validation-for="Subject" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Message" class="control-label"></label>
-            <textarea asp-for="Message" class="form-control" placeholder="Whats on your mind?" rows="4"></textarea>
-            <span asp-validation-for="Message" class="text-danger"></span>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Send Message</button>
-    </form>
+    </div>
 </div>
 
-<hr />
-
-<h3>FAQ</h3>
-<div class="accordion" id="faqAccordion">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="faqHeadingOne">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne" aria-expanded="false" aria-controls="faqCollapseOne">
-                How long does it take to get a response?
-            </button>
-        </h2>
-        <div id="faqCollapseOne" class="accordion-collapse collapse" aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-                I usually respond within 24-48 hours. If I am traveling, it might take a bit longer.
-            </div>
-        </div>
-    </div>
-
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="faqHeadingTwo">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseTwo" aria-expanded="false" aria-controls="faqCollapseTwo">
-                Can I request personalized travel advice?
-            </button>
-        </h2>
-        <div id="faqCollapseTwo" class="accordion-collapse collapse" aria-labelledby="faqHeadingTwo" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-                Absolutely! If you have specific questions or need tailored advice, feel free to include details in your message.
-            </div>
-        </div>
-    </div>
-
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="faqHeadingThree">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseThree" aria-expanded="false" aria-controls="faqCollapseThree">
-                Do you charge for consultations or advice?
-            </button>
-        </h2>
-        <div id="faqCollapseThree" class="accordion-collapse collapse" aria-labelledby="faqHeadingThree" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-                No, I am happy to share tips and advice for free. Traveling is a shared experience and I would not be wherre I am today if it was for the people helping me along the way.
-            </div>
-        </div>
-    </div>
-</div>
 
 @section Scripts {
     <!-- Add validation scripts -->

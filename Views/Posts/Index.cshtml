@@ -19,14 +19,6 @@
         </p>
     </div>
 
-    <!-- Admin Create Button -->
-    @if (User.IsInRole("Administrator"))
-    {
-        <div class="postView-Index-admin-header">
-            <a asp-action="Create" class="postView-Index-create-button">Create New Post</a>
-        </div>
-    }
-
     <!-- Posts Grid -->
     <div class="postView-Index-grid">
         @foreach (var post in orderedPosts)
@@ -56,4 +48,11 @@
             }
         }
     </div>
+    <!-- Admin Create Button -->
+    @if (User.IsInRole("Administrator"))
+    {
+        <div class="postView-Index-admin-header">
+            <a asp-action="Create" class="postView-Index-create-button">Create New Post</a>
+        </div>
+    }
 </div>

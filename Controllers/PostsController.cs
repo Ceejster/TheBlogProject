@@ -46,20 +46,12 @@ namespace TheBlogProject.Controllers
             return View(posts);
         }
 
-        // BlogPostIndex
-        public async Task<IActionResult> BlogPostIndex(int? id)
-        {
-            if (id == null) return NotFound();
-            var posts = _context.Posts.Where(p => p.Id == id);
-            return View("Index", posts);
-        }
-
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(string slug)
         {
             if (string.IsNullOrEmpty(slug))
             {
-                return NotFound();
+                return View("NotFound");
             }
             var post = await _context.Posts
                 .Include(p => p.Blog)
@@ -71,7 +63,7 @@ namespace TheBlogProject.Controllers
 
             if (post == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             return View(post);
         }
@@ -137,10 +129,10 @@ namespace TheBlogProject.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null) return View("NotFound");
 
             var post = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
-            if (post == null) return NotFound();
+            if (post == null) return View("NotFound");
 
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             ViewData["TagValues"] = string.Join(", ", post.Tags.Select(t => t.Text));
@@ -155,7 +147,7 @@ namespace TheBlogProject.Controllers
         {
             if (id != updatedPost.Id)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             if (ModelState.IsValid)
@@ -165,8 +157,8 @@ namespace TheBlogProject.Controllers
                     var existingPost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == updatedPost.Id);
 
                     if (existingPost == null) 
-                    { 
-                        return NotFound(); 
+                    {
+                        return View("NotFound");
                     }
 
                     // Check if BlogId has changed
@@ -217,7 +209,7 @@ namespace TheBlogProject.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PostExists(updatedPost.Id)) return NotFound();
+                    if (!PostExists(updatedPost.Id)) return View("NotFound");
                     else throw;
                 }
                 return RedirectToAction(nameof(Index));
@@ -231,14 +223,14 @@ namespace TheBlogProject.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null) return View("NotFound");
 
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (post == null) return NotFound();
+            if (post == null) return View("NotFound");
             return View(post);
         }
 

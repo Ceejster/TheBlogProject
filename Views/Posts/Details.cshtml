@@ -10,85 +10,26 @@
 @{
     ViewData["Title"] = "Details";
 }
-<h1>Details</h1>
 
-
+<div class="postDetail-banner">
+    <h1>@Html.Raw(Model.Title)</h1>
+    <div class="postDetail-image">
+        <!-- Added the "postDetail-img" class to control sizing -->
+        <img class="postDetail-img" src="@imageService.DecodeImage(Model.ImageData, Model.ContentType)" alt="@Model.Title" />
+    </div>
+</div>
+<br />
 <!--Post Content-->
 <article>
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-md-10 mx-auto">
-                @Html.Raw(Model.Content)
+            <div class="col-lg-8 col-md-10 mx-auto postDetail-content">
+@Html.Raw(Model.Content)
             </div>
         </div>
     </div>
 </article>
 
-<hr />
-<article>
-    <div class="row">
-        <div class="col postDetailTags">
-            Tags
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            @if (Model.Tags != null && Model.Tags.Any())
-            {
-                <p>Tags:</p>
-                <div class="center">
-                    @foreach (var tag in Model.Tags)
-                    {
-                        <a class="tagButton" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
-                    }
-                </div>
-            }
-            else
-            {
-                <p>No tags available.</p>
-            }
-        </div>
-    </div>
-</article>
-<hr />
-
-
-<form asp-controller="Comments" asp-action="Create">
-</form>
-<!-- For authenticated users to view extra actions -->
-<div class="">
-    @if (User.IsInRole("Administrator"))
-    {
-        <div class="commonButton">
-            <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
-        </div>
-        
-    }
-    <div class="commonButton">
-        <a asp-action="Index">Back to List</a>
-    </div>
-    
-</div>
-
-<!-- Comment section -->
-<div>
-    @if (User.Identity.IsAuthenticated)
-    {
-        <form asp-action="Create" asp-controller="Comments" method="post">
-            <!-- Hidden field for PostId-->
-            @Html.Hidden("PostId", Model.Id)
-            <div class="form-group commentBox">
-                <label class="control-label" for="Body">Add Comment</label>
-                <textarea name="Body" id="Body" class="form-control" rows="10"></textarea>
-            </div>
-            <button type="submit" class="commonButton">Comment</button>
-        </form>
-    }
-    else
-    {
-        <a class="commonButton" asp-area="Identity" asp-page="/Account/Login">Login to comment</a>
-    }
-</div>
 <hr />
 
 <!-- Temporary style? -->
@@ -228,4 +169,45 @@
 
         <hr />
     }
+</div>
+<hr />
+
+
+<form asp-controller="Comments" asp-action="Create">
+</form>
+<div class="row-cols-2">
+    <!-- For authenticated users to view extra actions -->
+    <div>
+        @if (User.IsInRole("Administrator"))
+        {
+            <div class="commonButton">
+                <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+            </div>
+
+        }
+        <div class="commonButton">
+            <a asp-action="Index">Back to List</a>
+        </div>
+
+    </div>
+
+    <!-- Comment section -->
+    <div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form asp-action="Create" asp-controller="Comments" method="post">
+                <!-- Hidden field for PostId-->
+                @Html.Hidden("PostId", Model.Id)
+                <div class="form-group commentBox">
+                    <label class="control-label" for="Body">Add Comment</label>
+                    <textarea name="Body" id="Body" class="form-control" rows="10"></textarea>
+                </div>
+                <button type="submit" class="commonButton">Comment</button>
+            </form>
+        }
+        else
+        {
+            <a class="commonButton" asp-area="Identity" asp-page="/Account/Login">Login to comment</a>
+        }
+    </div>
 </div>

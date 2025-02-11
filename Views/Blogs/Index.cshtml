@@ -8,79 +8,107 @@
 }
 
 <div class="blogview-contained">
-    @foreach (var blog in Model)
-    {
-        <div class="blogview-post-contained">
-            <!-- Image/Text Split Section -->
-            <div class="blogview-content-split">
-                <!-- Image Section (60%) -->
-                <div class="blogview-image-contained">
-                    <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" 
-                         class="blogview-main-image" 
-                         alt="@blog.Name" />
-                </div>
+    <!-- Header Section -->
+    <div class="postView-Index-header">
+        <h1 class="postView-Index-title">Countries & Places</h1>
+        <p class="postView-Index-description">
+            Here you can find a list of the countries that we've been to, how long we have been there (sometimes lived there), and where we have been in those countries.
+            Some places may have a lot of info, some a bit less. It all depends on the things we did. Sometimes we are trying to relax and don't get up to much, while other places, we are full on tourists.
+            You can check everything out, or just choose the places that pique your interest. If you're wanting more info on a place feel free to reach out and I'd love to help if I remember/can!
+        </p>
+    </div>
 
-                <!-- Text Content Section (40%) -->
-                <div class="blogview-text-contained">
-                    <div class="blogview-header-group">
-                        <h2 class="blogview-banner-title">@blog.Name</h2>
-                        <p class="blogview-banner-description">@blog.Description</p>
-                        <div class="blogview-header-underline"></div>
+    <div class="blogView-spacer">
+        @foreach (var blog in Model)
+        {
+            <div id="@blog.Slug" class="blogview-post-contained">
+                <!-- Image/Text Split Section -->
+                <div class="blogview-content-split">
+                    <!-- Image Section (60%) -->
+                    <div class="blogview-image-contained">
+                        <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)"
+                             class="blogview-main-image"
+                             alt="@blog.Name" />
                     </div>
-                    
-                    @if (!string.IsNullOrEmpty(blog.Details))
-                    {
-                        <div class="blogview-details">
-                            @Html.Raw(blog.Details)
-                        </div>
-                    }
-                    <hr />
-                    @if (blog.Time > 0 && !string.IsNullOrEmpty(blog.TimeUnit))
-                    {
-                        <div class="blogview-duration">
-                            <strong>Duration:</strong> @blog.Time @blog.TimeUnit
-                        </div>
-                    }
 
-                    @if (User.IsInRole("Administrator"))
-                    {
-                        <div class="blogview-admin-actions">
-                            <a asp-action="Edit" asp-route-id="@blog.Id" class="blogview-btn blogview-btn-edit">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@blog.Id" class="blogview-btn blogview-btn-delete">Delete</a>
-                            <a asp-action="Details" asp-route-slug="@blog.Slug" class="blogview-btn blogview-btn-details">Details</a>
+                    <!-- Text Content Section (40%) -->
+                    <div class="blogview-text-contained">
+                        <div class="blogview-header-group">
+                            <h2 class="blogview-banner-title">@blog.Name</h2>
+                            <p class="blogview-banner-description">@blog.Description</p>
+                            <div class="blogview-header-underline"></div>
                         </div>
-                    }
-                </div>
-            </div>
 
-            <!-- Posts Grid Section -->
-            <div class="blogview-posts-grid">
-                <div class="blogview-grid-container">
-                    @foreach (var post in blog.Posts)
-                    {
-                        @if (post.ReadyStatus.ToString() == "ProductionReady" ||
-                       (post.ReadyStatus.ToString() == "PreviewReady" &&
-                       (User.IsInRole(BlogRoles.Moderator.ToString()) || User.IsInRole(BlogRoles.Administrator.ToString()))))
+                        @if (!string.IsNullOrEmpty(blog.Details))
                         {
-                            <div class="blogview-post-card">
-                                <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">
-                                    <div class="blogview-post-image">
-                                        <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" 
-                                             alt="@post.Title" />
-                                    </div>
-                                    <div class="blogview-post-content">
-                                        <h4 class="blogview-post-title">@post.Title</h4>
-                                        @if (!string.IsNullOrEmpty(post.Abstract))
-                                        {
-                                            <p class="blogview-post-summary">@Html.Raw(post.Abstract)</p>
-                                        }
-                                    </div>
-                                </a>
+                            <div class="blogview-details">
+                                @Html.Raw(blog.Details)
                             </div>
                         }
-                    }
+                        <hr />
+                        @if (blog.Time > 0 && !string.IsNullOrEmpty(blog.TimeUnit))
+                        {
+                            <div class="blogview-duration">
+                                <strong>Duration:</strong> @blog.Time @blog.TimeUnit
+                            </div>
+                        }
+
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <div class="blogview-admin-actions">
+                                <a asp-action="Edit" asp-route-id="@blog.Id" class="blogview-btn blogview-btn-edit">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@blog.Id" class="blogview-btn blogview-btn-delete">Delete</a>
+                                <a asp-action="Details" asp-route-slug="@blog.Slug" class="blogview-btn blogview-btn-details">Details</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Posts Grid Section -->
+                <div class="blogview-posts-grid">
+                    <div class="blogview-grid-container">
+                        @foreach (var post in blog.Posts)
+                        {
+                            @if (post.ReadyStatus.ToString() == "ProductionReady" ||
+                           (post.ReadyStatus.ToString() == "PreviewReady" &&
+                           (User.IsInRole(BlogRoles.Moderator.ToString()) || User.IsInRole(BlogRoles.Administrator.ToString()))))
+                            {
+                                <div class="blogview-post-card">
+                                    <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">
+                                        <div class="blogview-post-image">
+                                            <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)"
+                                                 alt="@post.Title" />
+                                        </div>
+                                        <div class="blogview-post-content">
+                                            <h4 class="blogview-post-title">@post.Title</h4>
+                                            @if (!string.IsNullOrEmpty(post.Abstract))
+                                            {
+                                                <p class="blogview-post-summary">@Html.Raw(post.Abstract)</p>
+                                            }
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+            <hr />
+        }
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var slug = '@ViewBag.ScrollToSlug'; // Get the slug from the ViewBag
+            if (slug) {
+                var element = document.getElementById(slug); // Find the blog element by its slug
+                if (element) {
+                    // Scroll to the blog element smoothly
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });
+    </script>
+}
