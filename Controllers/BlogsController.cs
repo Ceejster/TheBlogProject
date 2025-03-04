@@ -37,6 +37,13 @@ namespace TheBlogProject.Controllers
 
             ViewBag.ScrollToSlug = slug;
 
+            // Set generic SEO metadata for the Blogs listing page
+            ViewData["Title"] = "Great Travel Countries | Our Life in Travel";
+            ViewData["MetaDescription"] = "Discover all the countries we've traveled to and what we think about them";
+            ViewData["CanonicalUrl"] = Url.Action("Index", "Blogs", null, Request.Scheme);
+            // Optionally, set a default image for social sharing if needed:
+            // ViewData["ImageUrl"] = Url.Content("~/images/default-blog-og.jpg");
+
             return View(blogs); // Pass blogs to the view
         }
 
@@ -77,6 +84,15 @@ namespace TheBlogProject.Controllers
             {
                 return View("NotFound");
             }
+
+            // Setting SEO Fata dynamically
+            ViewData["Title"] = blog.Name;
+            ViewData["MetaDescription"] = blog.Details;
+
+            // OPTIONAL Set a cononical URL if needed
+            ViewData["CanonicalUrl"] = Url.Action("Details", "Blogs", new {slug = blog.Slug}, Request.Scheme);
+            //Choose an image for this
+            //ViewData["ImageUrl"] = _imageService.DecodeImage(blog.ImageData, blog.ContentType);
 
             return View(blog);
         }

@@ -43,6 +43,13 @@ namespace TheBlogProject.Controllers
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
                 .ToListAsync();
+
+            // Generic SEO data for the posts listing page
+            ViewData["Title"] = "Travel Posts";
+            ViewData["MetaDescription"] = "Browse our collection of travel posts featuring adventures, tips, and inspiring stories.";
+            ViewData["CanonicalUrl"] = Url.Action("Index", "Posts", null, Request.Scheme);
+
+
             return View(posts);
         }
 
@@ -65,6 +72,14 @@ namespace TheBlogProject.Controllers
             {
                 return View("NotFound");
             }
+
+            // Dynamic SEO data for the specific post
+            ViewData["Title"] = post.Title;
+            ViewData["MetaDescription"] = post.Abstract; // Or any summary field you prefer
+            ViewData["CanonicalUrl"] = Url.Action("Details", "Posts", new { slug = post.Slug }, Request.Scheme);
+            //ViewData["ImageUrl"] = _imageService.DecodeImage(post.ImageData, post.ContentType);
+
+
             return View(post);
         }
 

@@ -26,6 +26,13 @@ namespace TheBlogProject.Controllers
                 .Include(b => b.Posts) // Load posts for each blog
                 .ToListAsync();
 
+            // Generic SEO data for the home page
+            ViewData["Title"] = "Our Life in Travel";
+            ViewData["MetaDescription"] = "Discover travel experiences, tips, and adventures that my wife and I do around the world.";
+            ViewData["CanonicalUrl"] = Url.Action("Index", "Home", null, Request.Scheme);
+            // Optionally, you might set an ImageUrl for social sharing if it applies to the home page
+            //ViewData["ImageUrl"] = _imageService.DecodeImage(blog.ImageData, blog.ContentType);
+
             return View(blogs); // Pass the blogs with posts to the view
         }
 

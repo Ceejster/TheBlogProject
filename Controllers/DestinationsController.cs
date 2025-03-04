@@ -34,6 +34,13 @@ namespace TheBlogProject.Controllers
                 .ThenInclude(b => b.Blogs);
             var destinations = await applicationDbContext.ToListAsync();
 
+            // Set generic SEO metadata for the Blogs listing page
+            ViewData["Title"] = "Our Life in Travel - Destinations";
+            ViewData["MetaDescription"] = "Discover the continents we've been to and all the countries we've visited within";
+            ViewData["CanonicalUrl"] = Url.Action("Index", "Destinations", null, Request.Scheme);
+            // Optionally, set a default image for social sharing if needed:
+            // ViewData["ImageUrl"] = Url.Content("~/images/default-blog-og.jpg");
+
             return View(destinations);
         }
 

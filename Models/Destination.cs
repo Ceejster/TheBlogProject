@@ -15,6 +15,9 @@ namespace TheBlogProject.Models
         public required string Area { get; set; }
         public string? Slug { get; set; }
 
+        [Display(Name = "Alternate Image Text")]
+        public string Alt { get; set; }
+
         [Display(Name = "Blog Image")]
         public byte[]? ImageData { get; set; }
 

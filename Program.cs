@@ -120,12 +120,7 @@ app.MapControllerRoute(
     constraints: new { slug = @"[\w\-]+" }
 );
 
-// Default fallback route
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-//OG use if anything broken
+// Default fallback route use if anything broken
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

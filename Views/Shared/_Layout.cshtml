@@ -5,14 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Life in Travel</title>
 
+    <!-- Meta Description -->
+    <meta name="description" content="@(ViewData["MetaDescription"] ?? "Discover travel experiences and adventures with Life in Travel.")" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="@(ViewData["CanonicalUrl"] ?? Url.Action("Index", "Home", null, Context.Request.Scheme))" />
+
+    <!-- Open Graph Tags for social sharing -->
+    <meta property="og:title" content="@ViewData["Title"]" />
+    <meta property="og:description" content="@ViewData["MetaDescription"]" />
+    <meta property="og:url" content="@ViewData["CanonicalUrl"]" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="@(ViewData["ImageUrl"] ?? Url.Content("~/images/candcatvineyard.jpg"))" />
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@ViewData["Title"]" />
+    <meta name="twitter:description" content="@ViewData["MetaDescription"]" />
+    <meta name="twitter:image" content="@ViewData["ImageUrl"]" />
+
+    <!-- Stylesheets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TheBlogProject.styles.css" asp-append-version="true" />
 
     <!--TinyMCE integration-->
-    <script src="https://cdn.tiny.cloud/1/irkc0iejql1hl34e3s6yiuvnslby9sluoig07ngrx87gnd9i/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
+
 <body>
     <header class="site-header">
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
@@ -133,8 +154,8 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js" async></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" aysnc></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

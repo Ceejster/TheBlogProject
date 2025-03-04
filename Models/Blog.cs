@@ -36,6 +36,9 @@ namespace TheBlogProject.Models
         public DateTime? Updated { get; set; }
         public string? Slug { get; set; }
 
+        [Display(Name = "Alternate Image Text")]
+        public string Alt { get; set; }
+
         [Display(Name = "Blog Image")]
         public byte[]? ImageData { get; set; }
 

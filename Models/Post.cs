@@ -38,6 +38,9 @@ namespace TheBlogProject.Models
 
         public string? Slug { get; set; }
 
+        [Display(Name = "Alternate Image Text")]
+        public string Alt { get; set; }
+
         [Display(Name = "Post Image")]
         public byte[]? ImageData { get; set; }
 
